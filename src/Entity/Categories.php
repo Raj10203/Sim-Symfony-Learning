@@ -28,7 +28,14 @@ class Categories
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+    }
+
+    #[ORM\PreUpdate]
+    function preUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
     }
 
     #[ORM\Column]

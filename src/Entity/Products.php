@@ -31,6 +31,18 @@ class Products
     #[ORM\Column]
     private ?\DateTimeImmutable $deletedAt = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+    }
+
+    #[ORM\PreUpdate]
+    function preUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+    }
+
     public function getId(): ?int
     {
         return $this->id;
