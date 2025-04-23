@@ -49,6 +49,18 @@ class Categories
         return $this->id;
     }
 
+    public function softDelete(): static
+    {
+        $this->deletedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+        return $this;
+    }
+
+    public function restore(): static
+    {
+        $this->deletedAt = null;
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;

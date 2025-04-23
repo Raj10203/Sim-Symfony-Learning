@@ -3,10 +3,25 @@
 {% block title %}Categories{% endblock %}
 
 {% block body %}
-    <h1>Categories</h1>
-
-    <table class="table">
-        <tbody>
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Product /</span> Categories
+    </h4>
+    <div class="card pb-5 container">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Categories</h5>
+            <div>
+                <a href="{{ path('app_categories_index') }}" class="btn btn-secondary">
+                    <i class="fa-solid fa-arrow-left pe-2"></i>
+                    <span class="d-none d-sm-inline-block">Back to List</span>
+                </a>
+                <a href="{{ path('app_categories_new') }}" class="btn btn-primary">
+                    <i class="bx bx-plus me-0 me-sm-1"></i>
+                    <span class="d-none d-sm-inline-block">Add Category</span>
+                </a>
+            </div>
+        </div>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ category.id }}</td>
@@ -33,14 +48,13 @@
             </tr>
             <tr>
                 <th>DeletedAt</th>
-                <td>{{ category.deletedAt ? category.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ category.deletedAt ? category.deletedAt|date('Y-m-d H:i:s') : 'Null' }}</td>
             </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_categories_index') }}">back to list</a>
-
-    <a href="{{ path('app_categories_edit', {'id': category.id}) }}">edit</a>
-
-    {{ include('categories/_delete_form.html.twig') }}
+            </tbody>
+        </table>
+        <div class="d-flex p-2">
+            <a href="{{ path('app_categories_edit', {'id': category.id}) }}" class="btn btn-primary">Edit</a>
+            {{ include('categories/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

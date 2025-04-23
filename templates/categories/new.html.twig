@@ -3,20 +3,17 @@
 {% block title %}New Categories{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Create new Categories</h1>
-        {{ include('categories/_form.html.twig') }}
-        <a href="{{ path('app_categories_index') }}">back to list</a>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Product /</span> Categories
+    </h4>
+    <div class="card pb-5">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Categories</h5>
+            <a href="{{ path('app_categories_index') }}" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left pe-2"></i>
+                <span class="d-none d-sm-inline-block">Back to List</span>
+            </a>
         </div>
+        {{ include('categories/_form.html.twig') }}
     </div>
-
 {% endblock %}
