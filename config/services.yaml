@@ -19,6 +19,18 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/SneatBundle/'
+
+    # SneatBundle services
+    App\SneatBundle\:
+        resource: '../src/SneatBundle/'
+        exclude:
+            - '../src/SneatBundle/Resources/'
+
+    App\SneatBundle\Command\InstallAssetsCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+        tags: [ 'console.command' ]
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
