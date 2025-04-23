@@ -11,6 +11,7 @@ import './styles/app.css';
 const $ = require('jquery');
 
 // js files
+import './js/main'
 import './js/menu';
 import './libs/jquery/jquery';
 import './libs/perfect-scrollbar/perfect-scrollbar'

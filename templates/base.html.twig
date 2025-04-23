@@ -37,6 +37,9 @@
 
     <!-- Config -->
     <script src="{{ asset('bundles/sneat/assets/js/config.js') }}"></script>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
 </head>
 
 <body>
@@ -260,9 +263,7 @@
 
 <!-- Main JS -->
 {#<script src="{{ asset('bundles/sneat/assets/js/main.js') }}"></script>#}
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
+
 <script>
     $('#{{ current_page ?? 'aside-menu-dashboard' }}').addClass('active');
 </script>
