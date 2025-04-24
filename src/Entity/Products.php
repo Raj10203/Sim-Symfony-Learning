@@ -20,8 +20,9 @@ class Products
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?int $categoryId = null;
+    #[ORM\ManyToOne(targetEntity: Categories::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categories $category = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -29,11 +30,17 @@ class Products
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\Column]
     private ?bool $active = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+    }
 
     public function getId(): ?int
     {
@@ -64,15 +71,14 @@ class Products
         return $this;
     }
 
-    public function getCategoryId(): ?int
+    public function getCategory(): ?Categories
     {
-        return $this->categoryId;
+        return $this->category;
     }
 
-    public function setCategoryId(int $categoryId): static
+    public function setCategory(?Categories $category): self
     {
-        $this->categoryId = $categoryId;
-
+        $this->category = $category;
         return $this;
     }
 

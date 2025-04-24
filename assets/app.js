@@ -8,11 +8,13 @@ import './bootstrap.js';
 // any CSS you import will output into a single css file (app.css in this case)
 // css
 import './styles/app.css';
-const $ = require('jquery');
+import Swal from "sweetalert2";
+import $ from 'jquery';
+window.$ = $;
+window.jQuery = $;
 
 // js files
-import './js/main'
-import './js/menu';
-import './libs/jquery/jquery';
 import './libs/perfect-scrollbar/perfect-scrollbar'
 import 'bootstrap';
+import './js/menu';
+import './js/main';

@@ -2,10 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Categories;
 use App\Entity\Products;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,10 +20,20 @@ class ProductsType extends AbstractType
                     'class' => 'form-control',
                 ]
             ])
-            ->add('imagePath', null, [
+            ->add('description', null, [
                 'attr' => [
                     'class' => 'form-control',
                 ]
+            ])
+            ->add('category', EntityType::class, [
+                'class' => Categories::class,
+                'choice_label' => 'name',
+                'required' => true,
+                'label' => 'Category',
+                'placeholder' => 'Select category',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('active', ChoiceType::class, [
                 'choices' => [
@@ -36,14 +47,7 @@ class ProductsType extends AbstractType
                 'attr' => [
                     'class' => 'form-select',
                 ]
-            ])
-            ->add('save', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary',
-                ]
-            ])
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

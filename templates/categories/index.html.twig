@@ -5,16 +5,6 @@
 {% block title %}Categories index{% endblock %}
 
 {% block body %}
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown button
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-    </div>
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Product /</span> Categories
     </h4>
@@ -47,8 +37,8 @@
                         <td>{{ category.name }}</td>
                         <td>{{ category.description }}</td>
                         <td>{{ category.active ? 'Yes' : 'No' }}</td>
-                        <td>{{ category.createdAt ? category.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                        <td>{{ category.updatedAt ? category.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ category.createdAt ? category.createdAt|date('d-m-Y H:i:s') : '' }}</td>
+                        <td>{{ category.updatedAt ? category.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                         <td>
                             <a href="{{ path('app_categories_show', {'id': category.id}) }}">show</a>
                             <a href="{{ path('app_categories_edit', {'id': category.id}) }}">edit</a>

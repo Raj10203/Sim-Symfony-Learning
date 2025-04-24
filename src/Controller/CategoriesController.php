@@ -58,8 +58,7 @@ final class CategoriesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_categories_edit', methods: ['GET', 'POST'])]
-    public function edit(Request        $request, Categories $category, EntityManagerInterface $entityManager,
-                         CacheInterface $cache): Response
+    public function edit(Request $request, Categories $category, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
         $form = $this->createForm(CategoriesType::class, $category);
         $form->handleRequest($request);
@@ -77,8 +76,7 @@ final class CategoriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_categories_delete', methods: ['POST'])]
-    public function delete(Request        $request, Categories $category, EntityManagerInterface $entityManager,
-                           CacheInterface $cache): Response
+    public function delete(Request $request, Categories $category, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->getPayload()->getString('_token'))) {
             $category->setDeletedAt(new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata')));
