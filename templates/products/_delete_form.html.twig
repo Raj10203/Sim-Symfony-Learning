@@ -1,0 +1,7 @@
+<div class="mx-1">
+    <form method="post" action="{{ path('app_products_delete', {'id': product.id}) }}" id="delete_product_form"
+          class="delete-form" data-product-name="{{ product.name|default('this item') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>

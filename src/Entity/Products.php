@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductsRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
@@ -16,11 +17,12 @@ class Products
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $imagePath = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
 
-    #[ORM\Column]
-    private ?bool $active = null;
+    #[ORM\ManyToOne(targetEntity: Categories::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categories $category = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -28,18 +30,15 @@ class Products
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
+
+    #[ORM\Column]
+    private ?bool $active = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
-        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
-    }
-
-    #[ORM\PreUpdate]
-    function preUpdate(): void
-    {
         $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
     }
 
@@ -60,27 +59,26 @@ class Products
         return $this;
     }
 
-    public function getImagePath(): ?string
+    public function getDescription(): ?string
     {
-        return $this->imagePath;
+        return $this->description;
     }
 
-    public function setImagePath(string $imagePath): static
+    public function setDescription(string $description): static
     {
-        $this->imagePath = $imagePath;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function isActive(): ?bool
+    public function getCategory(): ?Categories
     {
-        return $this->active;
+        return $this->category;
     }
 
-    public function setActive(bool $active): static
+    public function setCategory(?Categories $category): self
     {
-        $this->active = $active;
-
+        $this->category = $category;
         return $this;
     }
 
@@ -116,6 +114,18 @@ class Products
     public function setDeletedAt(\DateTimeImmutable $deletedAt): static
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): static
+    {
+        $this->active = $active;
 
         return $this;
     }

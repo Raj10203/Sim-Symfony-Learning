@@ -5,23 +5,31 @@ namespace App\Repository;
 use App\Entity\Categories;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Cache\CacheItemInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @extends ServiceEntityRepository<Categories>
  */
 class CategoriesRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private CacheInterface  $cache
+    )
     {
         parent::__construct($registry, Categories::class);
     }
 
     public function findAllActive(): array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.deletedAt IS NULL')
-            ->getQuery()
-            ->getResult();
+        return $this->cache->get('categories', function (CacheItemInterface $cacheItem) {
+            $cacheItem->expiresAfter(600);
+            return $this->createQueryBuilder('c')
+                ->andWhere('c.deletedAt IS NULL')
+                ->getQuery()
+                ->getResult();
+        });
     }
     //    /**
     //     * @return Categories[] Returns an array of Categories objects

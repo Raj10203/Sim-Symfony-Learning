@@ -6,5 +6,15 @@ import './bootstrap.js';
  * (and its CSS file) in your base layout (base.html.twig).
  */
 // any CSS you import will output into a single css file (app.css in this case)
+// css
 import './styles/app.css';
+import Swal from "sweetalert2";
+import $ from 'jquery';
+window.$ = $;
+window.jQuery = $;
+
+// js files
+import './libs/perfect-scrollbar/perfect-scrollbar'
 import 'bootstrap';
+import './js/menu';
+import './js/main';
