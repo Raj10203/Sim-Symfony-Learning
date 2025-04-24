@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% set current_page = 'aside-menu-sites' %}
+
+{% block title %}Sites index{% endblock %}
+
+{% block body %}
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Sites
+    </h3>
+    <!-- Category List Card -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Sites</h5>
+            <a href="{{ path('app_sites_new') }}" class="btn btn-primary">
+                <i class="bx bx-plus me-0 me-sm-1"></i>
+                <span class="d-none d-sm-inline-block">Add Site</span>
+            </a>
+        </div>
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Location</th>
+                    <th>Active</th>
+                    <th>CreatedAt</th>
+                    <th>UpdatedAt</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for site in sites %}
+                    <tr>
+                        <td>{{ site.id }}</td>
+                        <td>{{ site.name }}</td>
+                        <td class="text-wrap"> {{ site.address|length > 50 ? site.address[:47] ~ "..." : site
+                            .address
+                            }}</td>
+                        <td class="text-wrap">
+                            <a href="{{ site.location }}" target="_blank">
+                                {{ site.name }}
+                            </a>
+                        </td>
+                        <td>{{ site.active ? 'Yes' : 'No' }}</td>
+                        <td>{{ site.createdAt ? site.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ site.updatedAt ? site.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_sites_show', {'id': site.id}) }}">show</a>
+                            <a href="{{ path('app_sites_edit', {'id': site.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

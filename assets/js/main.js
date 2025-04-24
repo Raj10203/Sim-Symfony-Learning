@@ -124,6 +124,7 @@ function isMacOS() {
   return /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
 }
 
+//my default js
 $('.delete-form').on('submit', function (e) {
   e.preventDefault();
 

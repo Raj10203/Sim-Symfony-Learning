@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sites{% endblock %}
+
+{% block body %}
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Sites
+    </h3>
+    <div class="card pb-2 container-fluid">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Site</h5>
+            <div>
+                <a href="{{ path('app_sites_index') }}" class="btn btn-secondary">
+                    <i class="bx bx-arrow-back me-0 me-sm-1"></i>
+                    <span class="d-none d-sm-inline-block">Back to List</span>
+                </a>
+                <a href="{{ path('app_sites_new') }}" class="btn btn-primary">
+                    <i class="bx bx-plus me-0 me-sm-1"></i>
+                    <span class="d-none d-sm-inline-block">Add Site</span>
+                </a>
+            </div>
+        </div>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ site.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ site.name }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ site.address }}</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>{{ site.location }}</td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td>{{ site.active ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ site.createdAt ? site.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ site.updatedAt ? site.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ site.deletedAt ? site.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="d-flex p-2">
+            <a href="{{ path('app_sites_edit', {'id': site.id}) }}" class="btn btn-primary">Edit</a>
+            {{ include('sites/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
