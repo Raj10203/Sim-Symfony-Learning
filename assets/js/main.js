@@ -123,3 +123,24 @@ document.addEventListener('DOMContentLoaded', function () {
 function isMacOS() {
   return /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
 }
+
+$('.delete-form').on('submit', function (e) {
+  e.preventDefault();
+
+  let $form = $(this);
+  let productName = $form.data('product-name');
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `You are about to delete ${productName}. This action cannot be undone.`,
+    icon: 'warning',
+    confirmButtonText: 'Yes, delete it!',
+    customClass: {
+      confirmButton: 'btn btn-danger',
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $form.off('submit').submit();
+    }
+  });
+});
