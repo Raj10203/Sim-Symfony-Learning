@@ -8,10 +8,10 @@ import './bootstrap.js';
 // any CSS you import will output into a single css file (app.css in this case)
 // css
 import './styles/app.css';
-import Swal from "sweetalert2";
 import $ from 'jquery';
+import Swal from 'sweetalert2';
+window.Swal = Swal;
 window.$ = $;
-window.jQuery = $;
 
 // js files
 import './libs/perfect-scrollbar/perfect-scrollbar'
