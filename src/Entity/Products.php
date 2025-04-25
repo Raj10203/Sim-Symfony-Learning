@@ -23,15 +23,16 @@ class Products
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(targetEntity: Categories::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Categories $category = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\Column]
     private ?bool $active = null;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categories $category = null;
 
     public function __construct()
     {
@@ -68,17 +69,6 @@ class Products
         return $this;
     }
 
-    public function getCategory(): ?Categories
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Categories $category): self
-    {
-        $this->category = $category;
-        return $this;
-    }
-
     public function getDeletedAt(): ?\DateTimeImmutable
     {
         return $this->deletedAt;
@@ -99,6 +89,18 @@ class Products
     public function setActive(bool $active): static
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Categories
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Categories $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
