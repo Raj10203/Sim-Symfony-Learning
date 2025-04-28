@@ -2,6 +2,14 @@
 
 {% block title %}Sites{% endblock %}
 
+{% block additional_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#admin-li').addClass('active open');
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <h3 class="fw-bold py-3 mb-4 ms-3">
         Sites
@@ -36,7 +44,11 @@
             </tr>
             <tr>
                 <th>Location</th>
-                <td>{{ site.location }}</td>
+                <td>
+                    <a href="{{ site.location }}" target="_blank">
+                        {{ site.name }}
+                    </a>
+                </td>
             </tr>
             <tr>
                 <th>Active</th>

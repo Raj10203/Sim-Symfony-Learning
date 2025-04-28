@@ -4,6 +4,14 @@
 
 {% block title %}Products index{% endblock %}
 
+{% block additional_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#admin-li').addClass('active open');
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <h3 class="fw-bold py-3 mb-4 ms-3">
         Products

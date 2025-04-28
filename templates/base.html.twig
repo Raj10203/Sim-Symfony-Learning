@@ -46,6 +46,8 @@
             });
         </script>
     {% endblock %}
+    {% block additional_js %}
+    {% endblock %}
 </head>
 
 <body>
@@ -74,37 +76,49 @@
                     </a>
                 </li>
 
-                <!-- Categories -->
-                <li class="menu-item" id="aside-menu-categories">
-                    <a href="{{ path('app_categories_index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-category"></i>
-                        <div data-i18n="Categories">Categories</div>
+                {% if is_granted('ROLE_ADMIN') %}
+                <!-- Admin -->
+                <li class="menu-item" id="admin-li">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons bx bx-layout"></i>
+                        <div class="text-truncate" data-i18n="Layouts">Admin</div>
                     </a>
-                </li>
 
-                <!-- Products -->
-                <li class="menu-item" id="aside-menu-products">
-                    <a href="{{ path('app_products_index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-box"></i>
-                        <div data-i18n="Categories">Products</div>
-                    </a>
-                </li>
+                    <ul class="menu-sub">
+                    <!-- Categories -->
+                        <li class="menu-item" id="aside-menu-categories">
+                            <a href="{{ path('app_categories_index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-category"></i>
+                                <div data-i18n="Categories">Categories</div>
+                            </a>
+                        </li>
 
-                <!-- Users -->
-                <li class="menu-item" id="aside-menu-users">
-                    <a href="#" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-user"></i>
-                        <div data-i18n="Users">Users</div>
-                    </a>
-                </li>
+                        <!-- Products -->
+                        <li class="menu-item" id="aside-menu-products">
+                            <a href="{{ path('app_products_index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-box"></i>
+                                <div data-i18n="Categories">Products</div>
+                            </a>
+                        </li>
 
-                <!-- Sites -->
-                <li class="menu-item" id="aside-menu-sites">
-                    <a href="{{ path('app_sites_index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-sitemap"></i>
-                        <div data-i18n="Sites">Sites</div>
-                    </a>
+                        <!-- Users -->
+                        <li class="menu-item" id="aside-menu-users">
+                            <a href="#" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Users">Users</div>
+                            </a>
+                        </li>
+
+                        <!-- Sites -->
+                        <li class="menu-item" id="aside-menu-sites">
+                            <a href="{{ path('app_sites_index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-sitemap"></i>
+                                <div data-i18n="Sites">Sites</div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                {% endif %}
             </ul>
         </aside>
         <!-- / Menu -->
@@ -130,7 +144,6 @@
                         </div>
                     </div>
                     <!-- /Search -->
-
                     <ul class="navbar-nav flex-row align-items-center ms-auto">
                         <!-- User -->
                         <li class="nav-item navbar-dropdown dropdown-user dropdown">

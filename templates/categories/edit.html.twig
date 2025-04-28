@@ -4,9 +4,12 @@
 
 {% block title %}Edit Categories{% endblock %}
 
-
-{% block custome_javascript %}
-
+{% block additional_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#admin-li').addClass('active open');
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
