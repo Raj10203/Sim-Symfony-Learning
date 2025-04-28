@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 
-#[Route('/categories')]
+#[Route('/admin/categories')]
 final class CategoriesController extends AbstractController
 {
     #[Route(name: 'app_categories_index', methods: ['GET'])]

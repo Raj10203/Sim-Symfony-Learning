@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/sites')]
+#[Route('/admin/sites')]
 final class SitesController extends AbstractController
 {
     #[Route(name: 'app_sites_index', methods: ['GET'])]
