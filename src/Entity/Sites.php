@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SitesRepository::class)]
 class Sites
@@ -16,27 +17,34 @@ class Sites
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('site')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('site:read')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('site')]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('site:read')]
     private ?string $location = null;
 
     #[ORM\Column]
+    #[Groups('site')]
     private ?bool $active = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('site')]
     private ?\DateTimeImmutable $deletedAt = null;
 
     /**
      * @var Collection<int, User>
      */
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'site')]
+    #[Groups('user_details')]
     private Collection $users;
 
     public function __construct()

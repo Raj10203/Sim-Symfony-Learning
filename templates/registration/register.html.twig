@@ -1,0 +1,77 @@
+{% extends 'auth.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('.select2-dropdown').select2({
+                placeholder: 'Select roles',
+                allowClear: true, // Allow clearing selection
+                multiple: true, // Enable multiple selections
+                closeOnSelect: false, // Prevent closing the dropdown after each select
+                templateResult: function (data) {
+                    // Custom template for rendering selected items (optional)
+                    return data.text;
+                },
+                templateSelection: function (data) {
+                    return data.text;
+                }
+            });
+
+
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+    <h4 class="mb-1">Adventure starts here 🚀</h4>
+    <p class="mb-6">Make your app management easy and fun!</p>
+
+    {{ form_errors(registrationForm) }}
+    {{ form_start(registrationForm) }}
+    <div class="form-group my-4">
+        {{ form_row(registrationForm.email) }}
+    </div>
+
+    <div class="form-group my-4">
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+    </div>
+
+    <div class="form-group my-4">
+        {{ form_row(registrationForm.firstName, {
+        }) }}
+    </div>
+
+    <div class="form-group my-4">
+        {{ form_row(registrationForm.lastName, {
+        }) }}
+    </div>
+
+    <div class="form-group my-4">
+        {{ form_row(registrationForm.site, {
+        }) }}
+    </div>
+
+    <div class="form-group my-4">
+        {{ form_label(registrationForm.roles) }}
+        <div class="input-group">
+            {{ form_widget(registrationForm.roles, {'attr': {'class': 'select2-dropdown'}}) }}
+        </div>
+    </div>
+
+    <button class="btn btn-primary d-grid w-100">Sign up</button>
+    {{ form_end(registrationForm) }}
+
+    <p class="text-center">
+        <span>Already have an account?</span>
+        <a href="{{ path('app_auth_login') }}">
+            <span>Sign in instead</span>
+        </a>
+    </p>
+{% endblock %}

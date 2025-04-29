@@ -6,9 +6,14 @@ security:
             ROLE_SITE_CRUD,
             ROLE_CATEGORY_CRUD,
             ROLE_PRODUCT_CRUD,
+            ROLE_USER_CRUD,
             ROLE_ALLOWED_TO_SWITCH
         ]
-        ROLE_HQ_MANAGER: []
+        ROLE_HQ_MANAGER: [
+            ROLE_CATEGORY_CRUD,
+            ROLE_SITE_CRUD,
+            ROLE_PRODUCT_CRUD
+        ]
         ROLE_HQ_EMPLOYEE: []
         ROLE_SITE_MANAGER: []
         ROLE_SITE_EMPLOYEE: []

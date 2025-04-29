@@ -14,6 +14,8 @@ window.Swal = Swal;
 window.$ = $;
 
 // js files
+import 'select2/dist/css/select2.min.css';
+import 'select2';
 import './libs/perfect-scrollbar/perfect-scrollbar'
 import 'bootstrap';
 import './js/menu';

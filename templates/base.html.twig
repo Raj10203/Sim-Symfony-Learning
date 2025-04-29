@@ -127,8 +127,8 @@
         <div class="layout-page">
             <!-- Navbar -->
             <nav class="layout-navbar container-fluid navbar navbar-expand-xl navbar-detached align-items-center
-                bg-navbar-theme" id="layout-navbar" {{ is_granted('IS_IMPERSONATOR') ? 'style="background-color: rgb
-                (231, 231, 255) !important;"' }}>
+                bg-navbar-theme" id="layout-navbar" {{ is_granted('IS_IMPERSONATOR') ? 'style="background-color:
+                rgb(231, 231, 255) !important;"' }}>
                 {% if is_granted('IS_IMPERSONATOR') %}
                     <a href="?_switch_user=_exit" class="btn btn-primary me-2">Exit</a>
                 {% endif %}
