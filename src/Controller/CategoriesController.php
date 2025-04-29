@@ -6,14 +6,15 @@ use App\Entity\Categories;
 use App\Form\CategoriesType;
 use App\Repository\CategoriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Cache\CacheInterface;
 
 #[Route('/admin/categories')]
+#[IsGranted('ROLE_CATEGORY_CRUD')]
 final class CategoriesController extends AbstractController
 {
     #[Route(name: 'app_categories_index', methods: ['GET'])]

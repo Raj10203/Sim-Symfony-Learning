@@ -10,9 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Cache\CacheInterface;
 
 #[Route('/admin/products')]
+#[IsGranted('ROLE_PRODUCT_CRUD')]
 final class ProductsController extends AbstractController
 {
     #[Route(name: 'app_products_index', methods: ['GET'])]
