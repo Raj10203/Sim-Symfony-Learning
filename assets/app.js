@@ -16,7 +16,18 @@ window.$ = $;
 // js files
 import 'select2/dist/css/select2.min.css';
 import 'select2';
+import 'select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css';
 import './libs/perfect-scrollbar/perfect-scrollbar'
 import 'bootstrap';
 import './js/menu';
 import './js/main';
+
+$('.select2-dropdown-multiple').select2({
+    theme: "bootstrap-5",
+    multiple: true,
+    closeOnSelect: false,
+});
+$('.select2-dropdown-single').select2({
+    theme: "bootstrap-5",
+    width: 'resolve'
+});

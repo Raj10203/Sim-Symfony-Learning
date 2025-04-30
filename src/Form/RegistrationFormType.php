@@ -71,8 +71,9 @@ class RegistrationFormType extends AbstractType
                 ],
                 'multiple' => true,
                 'label' => 'Roles',
+                'placeholder' => 'Select a Site',
                 'attr' => [
-                    'class' => 'select2-dropdown', // Class to apply Select2
+                    'class' => 'select2-dropdown',
                 ]
             ])
             ->add('plainPassword', PasswordType::class, [
