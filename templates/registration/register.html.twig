@@ -2,25 +2,44 @@
 
 {% block title %}Register{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #my-form .select2-container–default .select2-selection–single {
+            border: none;
+        }
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            /*border: none;*/
+            border: solid #696cff 1px;
+            box-shadow: 0 0 0 1px #696cff;
+        }
+        .select2-results__option--highlighted {
+            background-color: #696cff !important;
+            color: white !important;
+        }
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             $('.select2-dropdown').select2({
+                dropdownCssClass: "custom-dropdown",
                 placeholder: 'Select roles',
-                allowClear: true, // Allow clearing selection
-                multiple: true, // Enable multiple selections
-                closeOnSelect: false, // Prevent closing the dropdown after each select
+                allowClear: true,
+                multiple: true,
+                closeOnSelect: false,
                 templateResult: function (data) {
-                    // Custom template for rendering selected items (optional)
                     return data.text;
                 },
                 templateSelection: function (data) {
                     return data.text;
                 }
             });
-
-
         });
 
     </script>
@@ -60,9 +79,7 @@
 
     <div class="form-group my-4">
         {{ form_label(registrationForm.roles) }}
-        <div class="input-group">
-            {{ form_widget(registrationForm.roles, {'attr': {'class': 'select2-dropdown'}}) }}
-        </div>
+        {{ form_widget(registrationForm.roles, {'attr': {'class': 'select2-dropdown '}}) }}
     </div>
 
     <button class="btn btn-primary d-grid w-100">Sign up</button>
