@@ -18,11 +18,15 @@ body {
 }
 
 .select2-container--bootstrap-5.select2-container--focus .select2-selection, .select2-container--bootstrap-5.select2-container--open .select2-selection {
-    border: solid #696cff 1px;
+    border: solid #696cff 2px;
     box-shadow: 0 0 0 1px rgba(13, 110, 253, .25);
 }
 
 .select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field:focus {
     border: solid #696cff 1px;
+    box-shadow: 0 0 0 1px rgba(13, 110, 253, .25);
+}
+.select2-container--bootstrap-5 .select2-dropdown {
+    border: solid #696cff 2px;
     box-shadow: 0 0 0 1px rgba(13, 110, 253, .25);
 }

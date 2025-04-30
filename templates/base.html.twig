@@ -76,7 +76,8 @@
                     </a>
                 </li>
 
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_CATEGORY_CRUD') or is_granted('ROLE_PRODUCT_CRUD') or is_granted
+                    ('ROLE_SITE_CRUD') or is_granted('ROLE_USER_CRUD') %}
                     <!-- Admin -->
                     <li class="menu-item" id="admin-li">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -86,36 +87,44 @@
 
                         <ul class="menu-sub">
                             <!-- Categories -->
+                            {% if is_granted('ROLE_CATEGORY_CRUD') %}
                             <li class="menu-item" id="aside-menu-categories">
                                 <a href="{{ path('app_categories_index') }}" class="menu-link">
                                     <i class="menu-icon tf-icons bx bx-category"></i>
                                     <div data-i18n="Categories">Categories</div>
                                 </a>
                             </li>
+                            {% endif %}
 
                             <!-- Products -->
+                            {% if is_granted('ROLE_PRODUCT_CRUD') %}
                             <li class="menu-item" id="aside-menu-products">
                                 <a href="{{ path('app_products_index') }}" class="menu-link">
                                     <i class="menu-icon tf-icons bx bx-box"></i>
                                     <div data-i18n="Categories">Products</div>
                                 </a>
                             </li>
+                            {% endif %}
 
                             <!-- Users -->
+                            {% if is_granted('ROLE_USER_CRUD') %}
                             <li class="menu-item" id="aside-menu-users">
-                                <a href="#" class="menu-link">
+                                <a href="{{ path('app_user_index') }}" class="menu-link">
                                     <i class="menu-icon tf-icons bx bx-user"></i>
                                     <div data-i18n="Users">Users</div>
                                 </a>
                             </li>
+                            {% endif %}
 
                             <!-- Sites -->
+                            {% if is_granted('ROLE_SITE_CRUD') %}
                             <li class="menu-item" id="aside-menu-sites">
                                 <a href="{{ path('app_sites_index') }}" class="menu-link">
                                     <i class="menu-icon tf-icons bx bx-sitemap"></i>
                                     <div data-i18n="Sites">Sites</div>
                                 </a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                 {% endif %}

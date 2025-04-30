@@ -26,8 +26,10 @@ $('.select2-dropdown-multiple').select2({
     theme: "bootstrap-5",
     multiple: true,
     closeOnSelect: false,
+    width: '100%'
+
 });
 $('.select2-dropdown-single').select2({
     theme: "bootstrap-5",
-    width: 'resolve'
+    width: '100%'
 });
