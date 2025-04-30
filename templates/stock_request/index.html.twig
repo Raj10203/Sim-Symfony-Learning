@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StockRequest index{% endblock %}
+
+{% set current_page = 'aside-menu-stock-requests' %}
+
+{% block additional_js %}
+    {{ include('partials/active_menu_script.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <h1>StockRequest index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>From</th>
+                <th>To</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock_request in stock_requests %}
+            <tr>
+                <td>{{ stock_request.id }}</td>
+                <td>{{ stock_request.status.value }}</td>
+                <td>{{ stock_request.fromSite.name }}</td>
+                <td>{{ stock_request.toSite.name }}</td>
+                <td>{{ stock_request.createdAt ? stock_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ stock_request.updatedAt ? stock_request.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_stock_request_show', {'id': stock_request.id}) }}">show</a>
+                    <a href="{{ path('app_stock_request_edit', {'id': stock_request.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stock_request_new') }}">Create new</a>
+{% endblock %}

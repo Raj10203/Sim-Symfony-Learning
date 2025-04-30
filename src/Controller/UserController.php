@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/user')]
+#[Route('/admin/user')]
 final class UserController extends AbstractController
 {
     #[IsGranted('ROLE_USER_CRUD')]

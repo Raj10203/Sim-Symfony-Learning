@@ -5,11 +5,7 @@
 {% block title %}Products index{% endblock %}
 
 {% block additional_js %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            $('#admin-li').addClass('active open');
-        });
-    </script>
+    {{ include('partials/active_menu_script.html.twig') }}
 {% endblock %}
 
 {% block body %}
@@ -45,13 +41,17 @@
                         <td>{{ product.id }}</td>
                         <td>{{ product.name }}</td>
                         <td>{{ product.description }}</td>
-                            <td>{{ product.category.name }}</td>
+                        <td>{{ product.category.name }}</td>
                         <td>{{ product.active ? 'Yes' : 'No' }}</td>
                         <td>{{ product.createdAt ? product.createdAt|date('d-m-Y H:i:s') : '' }}</td>
                         <td>{{ product.updatedAt ? product.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                         <td>
-                            <a href="{{ path('app_products_show', {'id': product.id}) }}">show</a>
-                            <a href="{{ path('app_products_edit', {'id': product.id}) }}">edit</a>
+                            <a href="{{ path('app_products_show', {'id': product.id}) }}" class="btn btn-primary">
+                                <i class='bx bx-show-alt'></i>
+                            </a>
+                            <a href="{{ path('app_products_edit', {'id': product.id}) }}" class="btn btn-success">
+                                <i class='bx bxs-edit'></i>
+                            </a>
                         </td>
                     </tr>
                 {% else %}

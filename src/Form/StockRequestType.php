@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Sites;
+use App\Entity\StockRequest;
+use App\Entity\User;
+use App\Enum\Stock\StockRequestStatus;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class StockRequestType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('status', EnumType::class, [
+                'class' => StockRequestStatus::class,
+                'attr' => [
+                    'class' => 'select2-dropdown-single',
+                ]
+            ])
+            ->add('fromSite', EntityType::class, [
+                'class' => Sites::class,
+                'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'select2-dropdown-single',
+                ]
+            ])
+            ->add('toSite', EntityType::class, [
+                'class' => Sites::class,
+                'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'select2-dropdown-single',
+                ]
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => StockRequest::class,
+        ]);
+    }
+}

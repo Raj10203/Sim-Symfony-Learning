@@ -47,9 +47,23 @@ class Sites
     #[Groups('user_details')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, StockRequest>
+     */
+    #[ORM\OneToMany(targetEntity: StockRequest::class, mappedBy: 'fromSite')]
+    private Collection $stockRequestsFrom;
+
+    /**
+     * @var Collection<int, StockRequest>
+     */
+    #[ORM\OneToMany(targetEntity: StockRequest::class, mappedBy: 'toSite')]
+    private Collection $stockRequestsTo;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->stockRequestsFrom = new ArrayCollection();
+        $this->stockRequestsTo = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,6 +155,66 @@ class Sites
             // set the owning side to null (unless already changed)
             if ($user->getSite() === $this) {
                 $user->setSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StockRequest>
+     */
+    public function getStockRequestsFrom(): Collection
+    {
+        return $this->stockRequestsFrom;
+    }
+
+    public function addStockRequestsFrom(StockRequest $stockRequestsFrom): static
+    {
+        if (!$this->stockRequestsFrom->contains($stockRequestsFrom)) {
+            $this->stockRequestsFrom->add($stockRequestsFrom);
+            $stockRequestsFrom->setFromSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStockRequestsFrom(StockRequest $stockRequestsFrom): static
+    {
+        if ($this->stockRequestsFrom->removeElement($stockRequestsFrom)) {
+            // set the owning side to null (unless already changed)
+            if ($stockRequestsFrom->getFromSite() === $this) {
+                $stockRequestsFrom->setFromSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StockRequest>
+     */
+    public function getStockRequestsTo(): Collection
+    {
+        return $this->stockRequestsTo;
+    }
+
+    public function addStockRequestsTo(StockRequest $stockRequestsTo): static
+    {
+        if (!$this->stockRequestsTo->contains($stockRequestsTo)) {
+            $this->stockRequestsTo->add($stockRequestsTo);
+            $stockRequestsTo->setToSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStockRequestsTo(StockRequest $stockRequestsTo): static
+    {
+        if ($this->stockRequestsTo->removeElement($stockRequestsTo)) {
+            // set the owning side to null (unless already changed)
+            if ($stockRequestsTo->getToSite() === $this) {
+                $stockRequestsTo->setToSite(null);
             }
         }
 

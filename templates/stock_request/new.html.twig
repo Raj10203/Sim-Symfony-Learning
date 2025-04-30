@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New StockRequest{% endblock %}
+
+{% set current_page = 'aside-menu-stock-requests' %}
+
+{% block additional_js %}
+    {{ include('partials/active_menu_script.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <h1>Create new StockRequest</h1>
+
+    {{ include('stock_request/_form.html.twig') }}
+
+    <a href="{{ path('app_stock_request_index') }}">back to list</a>
+{% endblock %}

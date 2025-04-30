@@ -5,11 +5,7 @@
 {% block title %}Categories{% endblock %}
 
 {% block additional_js %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            $('#admin-li').addClass('active open');
-        });
-    </script>
+    {{ include('partials/active_menu_script.html.twig') }}
 {% endblock %}
 
 {% block body %}

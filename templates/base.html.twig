@@ -79,55 +79,82 @@
                 {% if is_granted('ROLE_CATEGORY_CRUD') or is_granted('ROLE_PRODUCT_CRUD') or is_granted
                     ('ROLE_SITE_CRUD') or is_granted('ROLE_USER_CRUD') %}
                     <!-- Admin -->
-                    <li class="menu-item" id="admin-li">
+                    <li class="menu-item" id="aside-menu-admin">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-layout"></i>
+                            <i class="menu-icon tf-icons bx bx-crown"></i>
                             <div class="text-truncate" data-i18n="Layouts">Admin</div>
                         </a>
 
                         <ul class="menu-sub">
                             <!-- Categories -->
                             {% if is_granted('ROLE_CATEGORY_CRUD') %}
-                            <li class="menu-item" id="aside-menu-categories">
-                                <a href="{{ path('app_categories_index') }}" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-category"></i>
-                                    <div data-i18n="Categories">Categories</div>
-                                </a>
-                            </li>
+                                <li class="menu-item" id="aside-menu-categories">
+                                    <a href="{{ path('app_categories_index') }}" class="menu-link">
+                                        <i class="menu-icon tf-icons bx bx-category"></i>
+                                        <div data-i18n="Categories">Categories</div>
+                                    </a>
+                                </li>
                             {% endif %}
 
                             <!-- Products -->
                             {% if is_granted('ROLE_PRODUCT_CRUD') %}
-                            <li class="menu-item" id="aside-menu-products">
-                                <a href="{{ path('app_products_index') }}" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-box"></i>
-                                    <div data-i18n="Categories">Products</div>
-                                </a>
-                            </li>
+                                <li class="menu-item" id="aside-menu-products">
+                                    <a href="{{ path('app_products_index') }}" class="menu-link">
+                                        <i class="menu-icon tf-icons bx bx-box"></i>
+                                        <div data-i18n="Categories">Products</div>
+                                    </a>
+                                </li>
                             {% endif %}
 
                             <!-- Users -->
                             {% if is_granted('ROLE_USER_CRUD') %}
-                            <li class="menu-item" id="aside-menu-users">
-                                <a href="{{ path('app_user_index') }}" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-user"></i>
-                                    <div data-i18n="Users">Users</div>
-                                </a>
-                            </li>
+                                <li class="menu-item" id="aside-menu-users">
+                                    <a href="{{ path('app_user_index') }}" class="menu-link">
+                                        <i class="menu-icon tf-icons bx bx-user"></i>
+                                        <div data-i18n="Users">Users</div>
+                                    </a>
+                                </li>
                             {% endif %}
 
                             <!-- Sites -->
                             {% if is_granted('ROLE_SITE_CRUD') %}
-                            <li class="menu-item" id="aside-menu-sites">
-                                <a href="{{ path('app_sites_index') }}" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-sitemap"></i>
-                                    <div data-i18n="Sites">Sites</div>
-                                </a>
-                            </li>
+                                <li class="menu-item" id="aside-menu-sites">
+                                    <a href="{{ path('app_sites_index') }}" class="menu-link">
+                                        <i class="menu-icon tf-icons bx bx-sitemap"></i>
+                                        <div data-i18n="Sites">Sites</div>
+                                    </a>
+                                </li>
                             {% endif %}
                         </ul>
                     </li>
                 {% endif %}
+
+                <!-- Stock -->
+                <li class="menu-item" id="aside-menu-stock">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons bx bx-layout"></i>
+                        <div class="text-truncate" data-i18n="Layouts">Stock</div>
+                    </a>
+
+                    <ul class="menu-sub">
+
+                        <!-- Requests -->
+                        <li class="menu-item" id="aside-menu-stock-requests">
+                            <a href="{{ path('app_stock_request_index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-spreadsheet"></i>
+                                <div data-i18n="Categories">Requests</div>
+                            </a>
+                        </li>
+
+                        <!-- Movements -->
+                        <li class="menu-item" id="aside-menu-stock-movements">
+                            <a href="{{ path('app_stock_request_index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-store"></i>
+                                <div data-i18n="Categories">Movements</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </aside>
         <!-- / Menu -->
@@ -179,10 +206,10 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <span class="fw-medium d-block">
-                                                    {{ app.user.firstName }}
+                                                    {{ app.user.firstName }}z
                                                     {{ app.user.lastName }}
                                                 </span>
-                                                <small class="text-muted">Admin</small>
+                                                <small class="text-muted">{{ app.user.email }}</small>
                                             </div>
                                         </div>
                                     </a>
