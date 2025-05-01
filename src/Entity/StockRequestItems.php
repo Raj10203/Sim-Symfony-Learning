@@ -26,10 +26,10 @@ class StockRequestItems
     private ?Products $product = null;
 
     #[ORM\Column]
-    private ?int $quantity_requested = null;
+    private ?int $quantityRequested = null;
 
     #[ORM\Column]
-    private ?int $quantity_approved = 0;
+    private ?int $quantityApproved = 0;
 
     #[ORM\Column(type: 'string', enumType: StockRequestStatus::class, name: 'status')]
     private StockRequestStatus $status = StockRequestStatus::Pending;
@@ -39,24 +39,24 @@ class StockRequestItems
         return $this->id;
     }
 
-    public function getRequestId(): ?StockRequest
+    public function getRequest(): ?StockRequest
     {
         return $this->stockRequest;
     }
 
-    public function setRequestId(?StockRequest $stockRequest): static
+        public function setRequest(?StockRequest $stockRequest): static
     {
         $this->stockRequest = $stockRequest;
 
         return $this;
     }
 
-    public function getProductId(): ?Products
+    public function getProduct(): ?Products
     {
         return $this->product;
     }
 
-    public function setProductId(?Products $product): static
+    public function setProduct(?Products $product): static
     {
         $this->product = $product;
 
@@ -65,24 +65,24 @@ class StockRequestItems
 
     public function getQuantityRequested(): ?int
     {
-        return $this->quantity_requested;
+        return $this->quantityRequested;
     }
 
-    public function setQuantityRequested(int $quantity_requested): static
+    public function setQuantityRequested(int $quantityRequested): static
     {
-        $this->quantity_requested = $quantity_requested;
+        $this->quantityRequested = $quantityRequested;
 
         return $this;
     }
 
     public function getQuantityApproved(): ?int
     {
-        return $this->quantity_approved;
+        return $this->quantityApproved;
     }
 
-    public function setQuantityApproved(int $quantity_approved): static
+    public function setQuantityApproved(int $quantityApproved): static
     {
-        $this->quantity_approved = $quantity_approved;
+        $this->quantityApproved = $quantityApproved;
 
         return $this;
     }

@@ -35,10 +35,10 @@
 
                 </div>
                 <div class="container-fluid">
-
-                    {{ form_start(stockRequestItemsForm) }}
+                    {#                    stockRequestItems #}
+                    {{ form_start(stock_request_items_form) }}
                     <div class="row">
-                        {% for field in stockRequestItemsForm %}
+                        {% for field in stock_request_items_form %}
                             {% if field.vars.name != '_token' %}
                                 <div class="form-group col-md-4 col-12 p-2">
                                     {{ form_row(field) }}
@@ -49,10 +49,48 @@
                             <input type="submit" value="Add Product" class="btn btn-primary"/>
                         </div>
                     </div>
-                    {{ form_end(stockRequestItemsForm) }}
+                    {{ form_end(stock_request_items_form) }}
                 </div>
                 <div class="my-2">
-                    {#                    {{ include('stock_request/_form.html.twig', {'button_label': 'Update'}) }} #}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Stock Request Id</th>
+                            <th>Quantity Requested</th>
+                            <th>Quantity Approved</th>
+                            <th>Product</th>
+                            <th>Quantity Approved By</th>
+                            <th>Status</th>
+                            <th>CreatedAt</th>
+                            <th>UpdatedAt</th>
+                            <th>actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for stock_request_item in stock_request_items %}
+                            <tr>
+                                <td>{{ stock_request_item.id }}</td>
+                                <td>{{ stock_request_item.request.id }}</td>
+                                <td>{{ stock_request_item.quantityRequested }}</td>
+                                <td>{{ stock_request_item.quantityApproved }}</td>
+                                <td>{{ stock_request_item.product.name }}</td>
+                                <td>{{ stock_request_item.status.value }}</td>
+                                <td>{{ stock_request_item.status.value }}</td>
+                                <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>{{ stock_request_item.updatedAt ? stock_request_item.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>
+                                    <a href="{{ path('app_stock_request_items_show', {'id': stock_request_item.id}) }}">show</a>
+                                    <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item.id}) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="10" class="text-center">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

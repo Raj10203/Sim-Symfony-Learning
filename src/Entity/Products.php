@@ -39,7 +39,7 @@ class Products
     /**
      * @var Collection<int, StockRequestItems>
      */
-    #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'productId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $stockRequestItems;
 
     public function __construct()

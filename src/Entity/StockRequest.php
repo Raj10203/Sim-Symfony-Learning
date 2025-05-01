@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 #[ORM\Entity(repositoryClass: StockRequestRepository::class)]
 class StockRequest
@@ -29,7 +30,7 @@ class StockRequest
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $requested_by = null;
+    private ?User $requestedBy = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
@@ -41,7 +42,7 @@ class StockRequest
     /**
      * @var Collection<int, StockRequestItems>
      */
-    #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'requestId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'stockRequest', orphanRemoval: true)]
     private Collection $stockRequestItems;
 
     public function __construct()
@@ -80,12 +81,12 @@ class StockRequest
 
     public function getRequestedBy(): ?User
     {
-        return $this->requested_by;
+        return $this->requestedBy;
     }
 
-    public function setRequestedBy(?User $requested_by): static
+    public function setRequestedBy(?User $requestedBy): static
     {
-        $this->requested_by = $requested_by;
+        $this->requestedBy = $requestedBy;
 
         return $this;
     }
@@ -126,7 +127,7 @@ class StockRequest
     {
         if (!$this->stockRequestItems->contains($stockRequestItem)) {
             $this->stockRequestItems->add($stockRequestItem);
-            $stockRequestItem->setRequestId($this);
+            $stockRequestItem->setRequest($this);
         }
 
         return $this;
@@ -135,12 +136,10 @@ class StockRequest
     public function removeStockRequestItem(StockRequestItems $stockRequestItem): static
     {
         if ($this->stockRequestItems->removeElement($stockRequestItem)) {
-            // set the owning side to null (unless already changed)
-            if ($stockRequestItem->getRequestId() === $this) {
-                $stockRequestItem->setRequestId(null);
+            if ($stockRequestItem->getRequest() === $this) {
+                $stockRequestItem->setRequest(null);
             }
         }
-
         return $this;
     }
 }

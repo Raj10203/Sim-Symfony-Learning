@@ -14,9 +14,10 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
         SitesFactory::createOne(['name'=>'Headquarters']);
-        SitesFactory::createMany(5);
-        UserFactory::createOne(['email'=>'admin@example.com']);
-        UserFactory::createMany(10);
+        UserFactory::createOne([
+            'email'=>'admin@example.com',
+            'password'=>'$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
+        ]);
         $manager->flush();
     }
 }

@@ -10,6 +10,7 @@ use App\Enum\Stock\StockRequestStatus;
 use App\Form\ProductsType;
 use App\Form\StockRequestItemsType;
 use App\Form\StockRequestType;
+use App\Repository\StockRequestItemsRepository;
 use App\Repository\StockRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,8 +34,8 @@ final class StockRequestController extends AbstractController
     {
         $draft = $stockRequestRepository->getDraftStockRequestIdByUser($this->getUser()->getId());
 
-        if($draft) {
-           return $this->redirectToRoute('app_stock_request_edit',  ['id' => $draft]);
+        if ($draft) {
+            return $this->redirectToRoute('app_stock_request_edit', ['id' => $draft]);
         }
         $stockRequest = new StockRequest();
         $product = new Products();
@@ -65,22 +66,25 @@ final class StockRequestController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_stock_request_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, StockRequest $stockRequest, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, StockRequest $stockRequest, EntityManagerInterface $entityManager, StockRequestItemsRepository $stockRequestItemsRepository): Response
     {
         $this->denyAccessUnlessGranted('EDIT', $stockRequest);
         $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest);
         $stockRequestForm->handleRequest($request);
         $stockRequestItem = new StockRequestItems();
 
-        $stockRequestItemForm = $this->createForm(StockRequestItemsType::class, $stockRequestItem);
+        $stockRequestItemForm = $this->createForm(StockRequestItemsType::class, $stockRequestItem, [
+            'stock_request' => $stockRequest
+        ]);
         $stockRequestItemForm
-            ->remove('requestedBy')
-            ->remove('requestId')
+            ->remove('request')
+            ->remove('stock_request')
             ->remove('quantity_approved')
             ->remove('status');
         $stockRequestItemForm->handleRequest($request);
 
         if ($stockRequestItemForm->isSubmitted() && $stockRequestItemForm->isValid()) {
+            $stockRequestItem->setRequest($stockRequest);
             $entityManager->persist($stockRequestItem);
             $entityManager->flush();
         }
@@ -90,11 +94,12 @@ final class StockRequestController extends AbstractController
             return $this->redirectToRoute('app_stock_request_index', [], Response::HTTP_SEE_OTHER);
         }
 
+
         return $this->render('stock_request/edit.html.twig', [
             'stock_request' => $stockRequest,
-            'stockRequestForm' => $stockRequestForm ,
-            'stockRequestItemsForm' => $stockRequestItemForm,
-            'stockRequestItems' => $stockRequest->getStockRequestItems()
+            'stock_request_form' => $stockRequestForm,
+            'stock_request_items_form' => $stockRequestItemForm,
+            'stock_request_items' => $stockRequestItemsRepository->findBy(['stockRequest' => $stockRequest]),
         ]);
     }
 

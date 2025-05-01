@@ -25,7 +25,7 @@ class StockRequestRepository extends ServiceEntityRepository
         $result = $this->createQueryBuilder('sr')
             ->select('sr.id')
             ->andWhere('sr.status = :status')
-            ->andWhere('sr.requested_by = :userId')
+            ->andWhere('sr.requestedBy = :userId')
             ->setParameter('status', 'draft')
             ->setParameter('userId', $userId)
             ->setMaxResults(1)
