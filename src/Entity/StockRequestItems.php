@@ -39,12 +39,12 @@ class StockRequestItems
         return $this->id;
     }
 
-    public function getRequest(): ?StockRequest
+    public function getStockRequest(): ?StockRequest
     {
         return $this->stockRequest;
     }
 
-        public function setRequest(?StockRequest $stockRequest): static
+        public function setstockRequest(?StockRequest $stockRequest): static
     {
         $this->stockRequest = $stockRequest;
 

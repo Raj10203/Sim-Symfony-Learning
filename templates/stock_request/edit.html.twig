@@ -45,7 +45,7 @@
                                 </div>
                             {% endif %}
                         {% endfor %}
-                        <div class="form-group col-md-3 col-12 d-flex align-items-center">
+                        <div class="form-group col-md-3 col-12 d-flex align-items-end p-2">
                             <input type="submit" value="Add Product" class="btn btn-primary"/>
                         </div>
                     </div>
@@ -60,7 +60,6 @@
                             <th>Quantity Requested</th>
                             <th>Quantity Approved</th>
                             <th>Product</th>
-                            <th>Quantity Approved By</th>
                             <th>Status</th>
                             <th>CreatedAt</th>
                             <th>UpdatedAt</th>
@@ -71,11 +70,10 @@
                         {% for stock_request_item in stock_request_items %}
                             <tr>
                                 <td>{{ stock_request_item.id }}</td>
-                                <td>{{ stock_request_item.request.id }}</td>
+                                <td>{{ stock_request_item.stockRequest.id }}</td>
                                 <td>{{ stock_request_item.quantityRequested }}</td>
                                 <td>{{ stock_request_item.quantityApproved }}</td>
                                 <td>{{ stock_request_item.product.name }}</td>
-                                <td>{{ stock_request_item.status.value }}</td>
                                 <td>{{ stock_request_item.status.value }}</td>
                                 <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td>{{ stock_request_item.updatedAt ? stock_request_item.updatedAt|date('Y-m-d H:i:s') : '' }}</td>

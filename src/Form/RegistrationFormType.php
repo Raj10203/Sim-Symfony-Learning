@@ -48,7 +48,7 @@ class RegistrationFormType extends AbstractType
                 'placeholder' => 'Select a Site',
                 'attr' => [
                     'placeholder' => 'Site',
-                    'class' => 'form-select select-site',
+                    'class' => 'select2-dropdown-single',
                 ],
             ])
             ->add('roles', ChoiceType::class, [
@@ -73,7 +73,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Roles',
                 'placeholder' => 'Select a Site',
                 'attr' => [
-                    'class' => 'select2-dropdown',
+                    'class' => 'select2-dropdown-single',
                 ]
             ])
             ->add('plainPassword', PasswordType::class, [

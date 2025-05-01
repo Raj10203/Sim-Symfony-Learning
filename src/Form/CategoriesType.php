@@ -33,10 +33,9 @@ class CategoriesType extends AbstractType
                 'label' => 'Status',
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-select',
+                    'class' => 'select2-dropdown-single',
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

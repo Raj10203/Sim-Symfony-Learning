@@ -31,9 +31,9 @@
                     <th>FirstName</th>
                     <th>LastName</th>
                     <th>Is Verified</th>
-                    <th>actions</th>
                     <th>Updated At</th>
                     <th>Created At</th>
+                    <th>actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,6 +49,8 @@
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.lastName }}</td>
                         <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+                        <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                         <td>
                             <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-primary">
                                 <i class='bx bx-show-alt'></i>
@@ -57,8 +59,6 @@
                                 <i class='bx bxs-edit'></i>
                             </a>
                         </td>
-                        <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                        <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                     </tr>
                 {% else %}
                     <tr>

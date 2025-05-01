@@ -20,7 +20,7 @@ class StockRequest
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'stockRequestsFrom')]
+#[ORM\ManyToOne(inversedBy: 'stockRequestsFrom')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Sites $fromSite = null;
 

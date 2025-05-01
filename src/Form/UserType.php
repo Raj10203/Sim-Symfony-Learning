@@ -46,7 +46,7 @@ class UserType extends AbstractType
                 'placeholder' => 'Select a Site',
                 'attr' => [
                     'placeholder' => 'Site',
-                    'class' => 'form-select select-site',
+                    'class' => 'select2-dropdown-single',
                 ],
             ])
             ->add('roles', ChoiceType::class, [
@@ -85,10 +85,9 @@ class UserType extends AbstractType
                 'label' => 'Status',
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-select',
+                    'class' => 'select2-dropdown-single',
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

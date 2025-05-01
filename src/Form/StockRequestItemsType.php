@@ -47,7 +47,7 @@ class StockRequestItemsType extends AbstractType
                     'class' => 'select2-dropdown-single',
                 ]
             ])
-            ->add('request', EntityType::class, [
+            ->add('stockRequest', EntityType::class, [
                 'class' => StockRequest::class,
                 'choice_label' => 'id',
                 'attr' => [

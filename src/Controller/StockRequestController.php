@@ -72,21 +72,21 @@ final class StockRequestController extends AbstractController
         $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest);
         $stockRequestForm->handleRequest($request);
         $stockRequestItem = new StockRequestItems();
-
         $stockRequestItemForm = $this->createForm(StockRequestItemsType::class, $stockRequestItem, [
             'stock_request' => $stockRequest
         ]);
         $stockRequestItemForm
-            ->remove('request')
-            ->remove('stock_request')
+            ->remove('stockRequest')
             ->remove('quantity_approved')
             ->remove('status');
         $stockRequestItemForm->handleRequest($request);
 
         if ($stockRequestItemForm->isSubmitted() && $stockRequestItemForm->isValid()) {
-            $stockRequestItem->setRequest($stockRequest);
+            $stockRequestItem->setstockRequest($stockRequest);
             $entityManager->persist($stockRequestItem);
             $entityManager->flush();
+
+            return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
         }
 
         if ($stockRequestForm->isSubmitted() && $stockRequestForm->isValid()) {
