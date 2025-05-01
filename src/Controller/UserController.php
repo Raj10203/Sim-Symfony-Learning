@@ -83,19 +83,6 @@ final class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/api/me', name: 'app_api_me')]
-    #[isGranted('ROLE_USER')]
-    public function apiMe(SerializerInterface $serializer): Response
-    {
-        $json = $serializer->serialize(
-            $this->getUser(),
-            'json',
-            ['groups' => ['user:read', 'site:read']]
-        );
-        return new JsonResponse($json, 200, [], true);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\Stock\StockRequestStatus;
 use App\Repository\StockRequestRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -35,6 +37,17 @@ class StockRequest
 
     #[ORM\Column(type: 'string', enumType: StockRequestStatus::class)]
     private StockRequestStatus $status;
+
+    /**
+     * @var Collection<int, StockRequestItems>
+     */
+    #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'requestId', orphanRemoval: true)]
+    private Collection $stockRequestItems;
+
+    public function __construct()
+    {
+        $this->stockRequestItems = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -97,6 +110,36 @@ class StockRequest
     public function setStatus(StockRequestStatus $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StockRequestItems>
+     */
+    public function getStockRequestItems(): Collection
+    {
+        return $this->stockRequestItems;
+    }
+
+    public function addStockRequestItem(StockRequestItems $stockRequestItem): static
+    {
+        if (!$this->stockRequestItems->contains($stockRequestItem)) {
+            $this->stockRequestItems->add($stockRequestItem);
+            $stockRequestItem->setRequestId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStockRequestItem(StockRequestItems $stockRequestItem): static
+    {
+        if ($this->stockRequestItems->removeElement($stockRequestItem)) {
+            // set the owning side to null (unless already changed)
+            if ($stockRequestItem->getRequestId() === $this) {
+                $stockRequestItem->setRequestId(null);
+            }
+        }
 
         return $this;
     }

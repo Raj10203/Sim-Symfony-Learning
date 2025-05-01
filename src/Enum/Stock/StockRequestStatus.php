@@ -4,9 +4,9 @@ namespace App\Enum\Stock;
 
 enum StockRequestStatus: string
 {
-    case DRAFT = 'draft';
-    case PENDING = 'pending';
-    case APPROVED = 'approved';
-    case REJECTED = 'rejected';
-    case FULFILLED = 'fulfilled';
+    case Draft = 'draft';
+    case Pending = 'pending';
+    case Approved = 'approved';
+    case Rejected = 'rejected';
+    case Fulfilled = 'fulfilled';
 }

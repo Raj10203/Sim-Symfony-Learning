@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -34,10 +36,17 @@ class Products
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $category = null;
 
+    /**
+     * @var Collection<int, StockRequestItems>
+     */
+    #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'productId', orphanRemoval: true)]
+    private Collection $stockRequestItems;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
         $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
+        $this->stockRequestItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +110,36 @@ class Products
     public function setCategory(?Categories $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StockRequestItems>
+     */
+    public function getStockRequestItems(): Collection
+    {
+        return $this->stockRequestItems;
+    }
+
+    public function addStockRequestItem(StockRequestItems $stockRequestItem): static
+    {
+        if (!$this->stockRequestItems->contains($stockRequestItem)) {
+            $this->stockRequestItems->add($stockRequestItem);
+            $stockRequestItem->setProductId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStockRequestItem(StockRequestItems $stockRequestItem): static
+    {
+        if ($this->stockRequestItems->removeElement($stockRequestItem)) {
+            // set the owning side to null (unless already changed)
+            if ($stockRequestItem->getProductId() === $this) {
+                $stockRequestItem->setProductId(null);
+            }
+        }
 
         return $this;
     }

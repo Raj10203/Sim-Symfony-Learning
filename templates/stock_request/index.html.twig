@@ -9,41 +9,58 @@
 {% endblock %}
 
 {% block body %}
-    <h1>StockRequest index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Status</th>
-                <th>From</th>
-                <th>To</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for stock_request in stock_requests %}
-            <tr>
-                <td>{{ stock_request.id }}</td>
-                <td>{{ stock_request.status.value }}</td>
-                <td>{{ stock_request.fromSite.name }}</td>
-                <td>{{ stock_request.toSite.name }}</td>
-                <td>{{ stock_request.createdAt ? stock_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ stock_request.updatedAt ? stock_request.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_stock_request_show', {'id': stock_request.id}) }}">show</a>
-                    <a href="{{ path('app_stock_request_edit', {'id': stock_request.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_stock_request_new') }}">Create new</a>
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Stock Request
+    </h3>
+    <!-- Category List Card -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Stock Request</h5>
+            <a href="{{ path('app_stock_request_new') }}" class="btn btn-primary">
+                <i class="bx bx-plus me-0 me-sm-1"></i>
+                <span class="d-none d-sm-inline-block">New Stock Request</span>
+            </a>
+        </div>
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Status</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>CreatedAt</th>
+                    <th>UpdatedAt</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for stock_request in stock_requests %}
+                    <tr>
+                        <td>{{ stock_request.id }}</td>
+                        <td>{{ stock_request.status.value }}</td>
+                        <td>{{ stock_request.fromSite.name }}</td>
+                        <td>{{ stock_request.toSite.name }}</td>
+                        <td>{{ stock_request.createdAt ? stock_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ stock_request.updatedAt ? stock_request.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_stock_request_show', {'id': stock_request.id}) }}"
+                               class="btn btn-primary">
+                                <i class='bx bx-show-alt'></i>
+                            </a>
+                            <a href="{{ path('app_stock_request_edit', {'id': stock_request.id}) }}"
+                               class="btn btn-success">
+                                <i class='bx bxs-edit'></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10" class="text-center">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

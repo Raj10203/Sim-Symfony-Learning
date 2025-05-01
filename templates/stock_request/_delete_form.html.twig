@@ -1,4 +1,7 @@
-<form method="post" action="{{ path('app_stock_request_delete', {'id': stock_request.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock_request.id) }}">
-    <button class="btn">Delete</button>
-</form>
+<div class="mx-1">
+    <form method="post" action="{{ path('app_stock_request_delete', {'id': stock_request.id}) }}" id="delete_site_form"
+          class="delete-form" data-product-name="{{ site.name|default('this item') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock_request.id) }}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
