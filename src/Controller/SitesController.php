@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/sites')]
+#[Route('/admin/sites')]
+#[IsGranted('ROLE_SITE_CRUD')]
 final class SitesController extends AbstractController
 {
     #[Route(name: 'app_sites_index', methods: ['GET'])]
@@ -25,6 +27,7 @@ final class SitesController extends AbstractController
     #[Route('/new', name: 'app_sites_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
         $site = new Sites();
         $form = $this->createForm(SitesType::class, $site);
         $form->handleRequest($request);
@@ -45,6 +48,7 @@ final class SitesController extends AbstractController
     #[Route('/{id}', name: 'app_sites_show', methods: ['GET'])]
     public function show(Sites $site): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
         return $this->render('sites/show.html.twig', [
             'site' => $site,
         ]);
@@ -53,6 +57,7 @@ final class SitesController extends AbstractController
     #[Route('/{id}/edit', name: 'app_sites_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Sites $site, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
         $form = $this->createForm(SitesType::class, $site);
         $form->handleRequest($request);
 
@@ -71,6 +76,7 @@ final class SitesController extends AbstractController
     #[Route('/{id}', name: 'app_sites_delete', methods: ['POST'])]
     public function delete(Request $request, Sites $site, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
         if ($this->isCsrfTokenValid('delete'.$site->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($site);
             $entityManager->flush();
