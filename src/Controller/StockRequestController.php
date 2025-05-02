@@ -87,6 +87,9 @@ final class StockRequestController extends AbstractController
             ->remove('quantity_approved')
             ->remove('status');
 
+        if (!$this->isGranted('ROLE_STOCK_REQUEST_REVIEWER')) {
+            $stockRequestForm->remove('status');
+        }
         //handle both form
         $stockRequestForm->handleRequest($request);
         $stockRequestItemForm->handleRequest($request);
@@ -101,6 +104,7 @@ final class StockRequestController extends AbstractController
         }
 
         if ($stockRequestForm->isSubmitted() && $stockRequestForm->isValid()) {
+
             $entityManager->flush();
 
             //redirect to index
@@ -118,6 +122,7 @@ final class StockRequestController extends AbstractController
     #[Route('/{id}', name: 'app_stock_request_delete', methods: ['POST'])]
     public function delete(Request $request, StockRequest $stockRequest, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('DELETE', $stockRequest);
         if ($this->isCsrfTokenValid('delete' . $stockRequest->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($stockRequest);
             $entityManager->flush();

@@ -7,14 +7,19 @@ security:
             ROLE_CATEGORY_CRUD,
             ROLE_PRODUCT_CRUD,
             ROLE_USER_CRUD,
-            ROLE_ALLOWED_TO_SWITCH
+            ROLE_ALLOWED_TO_SWITCH,
+            ROLE_STOCK_REQUEST_REVIEWER
         ]
         ROLE_HQ_MANAGER: [
             ROLE_CATEGORY_CRUD,
             ROLE_SITE_CRUD,
-            ROLE_PRODUCT_CRUD
+            ROLE_PRODUCT_CRUD,
+            ROLE_STOCK_REQUEST_REVIEWER,
+            ROLE_USER_CRUD
         ]
-        ROLE_HQ_EMPLOYEE: []
+        ROLE_HQ_EMPLOYEE: [
+            ROLE_STOCK_REQUEST_REVIEWER,
+        ]
         ROLE_SITE_MANAGER: []
         ROLE_SITE_EMPLOYEE: []
         ROLE_HUMAN_RESOURCES: [ROLE_USER_CRUD]
@@ -43,6 +48,8 @@ security:
                 target: app_auth_login
 
             switch_user: true
+
+            access_denied_url: /access-denied
 
             remember_me:
                 secret: '%kernel.secret%'

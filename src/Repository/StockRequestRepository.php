@@ -14,6 +14,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 class StockRequestRepository extends ServiceEntityRepository
 {
     private Security $security;
+
     public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, StockRequest::class);
@@ -45,8 +46,9 @@ class StockRequestRepository extends ServiceEntityRepository
     public function getActiveStockRequests(): array
     {
         $user = $this->security->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true) or
-            in_array('ROLE_STOCK_REQUEST_REVIEWER', $user->getRoles(), true)) {
+
+        if ($this->security->isGranted('ROLE_ADMIN')
+            || $this->security->isGranted('ROLE_STOCK_REQUEST_REVIEWER')) {
             return $this->createQueryBuilder('sr')
                 ->leftJoin('sr.fromSite', 'fs')
                 ->leftJoin('sr.toSite', 'ts')

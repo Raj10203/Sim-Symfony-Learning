@@ -29,6 +29,8 @@
                     <th>Status</th>
                     <th>From</th>
                     <th>To</th>
+                    <th>Requested By</th>
+                    <th>Approved By</th>
                     <th>CreatedAt</th>
                     <th>UpdatedAt</th>
                     <th>actions</th>
@@ -41,6 +43,8 @@
                         <td>{{ stock_request.status.value }}</td>
                         <td>{{ stock_request.fromSite.name }}</td>
                         <td>{{ stock_request.toSite.name }}</td>
+                        <td>{{ stock_request.requestedBy.email }}</td>
+                        <td>{{ stock_request.approvedBy ? stock_request.approvedBy.email :'Not approved yet' }}</td>
                         <td>{{ stock_request.createdAt ? stock_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                         <td>{{ stock_request.updatedAt ? stock_request.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                         <td>

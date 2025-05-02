@@ -44,6 +44,12 @@
                 $('#footer-year').text(new Date().getFullYear());
                 $('#{{ current_page ?? 'aside-menu-dashboard' }}').addClass('active');
             });
+            {% for message in app.flashes('notice') %}
+            Swal.fire({
+                text: `You do not have permission to access this page.`,
+                icon: 'error',
+            })
+            {% endfor %}
         </script>
     {% endblock %}
     {% block additional_js %}

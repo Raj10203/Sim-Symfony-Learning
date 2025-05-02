@@ -17,13 +17,14 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Request's Info</h5>
             <span>Request Id:- {{ stock_request.id }}</span>
+            <span>Requested By:- {{ stock_request.requestedBy.email }}</span>
             <a class="btn btn-secondary" href="{{ path('app_stock_request_index') }}">
                 <i class="bx bx-arrow-back me-0 me-sm-1"></i>
                 Back To List
             </a>
         </div>
         <div class="my-2">
-            {{ include('stock_request/_form.html.twig', {'button_label': 'Update'}) }}
+            {{ include('stock_request/_form.html.twig', {'button_label': 'Send Request'}) }}
         </div>
     </div>
 
