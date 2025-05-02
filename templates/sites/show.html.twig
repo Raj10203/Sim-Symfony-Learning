@@ -60,15 +60,10 @@
                 <th>UpdatedAt</th>
                 <td>{{ site.updatedAt ? site.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-            <tr>
-                <th>DeletedAt</th>
-                <td>{{ site.deletedAt ? site.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
             </tbody>
         </table>
         <div class="d-flex p-2">
             <a href="{{ path('app_sites_edit', {'id': site.id}) }}" class="btn btn-primary">Edit</a>
-            {{ include('sites/_delete_form.html.twig') }}
         </div>
     </div>
 {% endblock %}

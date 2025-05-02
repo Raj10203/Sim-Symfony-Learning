@@ -70,16 +70,4 @@ final class ProductsController extends AbstractController
             'form' => $form,
         ]);
     }
-
-    #[Route('/{id}', name: 'app_products_delete', methods: ['POST'])]
-    public function delete(Request $request, Products $product, EntityManagerInterface $entityManager, CacheInterface $cache): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->getPayload()->getString('_token'))) {
-            $product->setDeletedAt(new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata')));
-            $entityManager->flush();
-        }
-        $cache->delete('products');
-
-        return $this->redirectToRoute('app_products_index', [], Response::HTTP_SEE_OTHER);
-    }
 }

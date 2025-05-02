@@ -20,7 +20,7 @@ final class SitesController extends AbstractController
     public function index(SitesRepository $sitesRepository): Response
     {
         return $this->render('sites/index.html.twig', [
-            'sites' => $sitesRepository->findAll(),
+            'sites' => $sitesRepository->findAllFromCache(),
         ]);
     }
 
@@ -71,17 +71,5 @@ final class SitesController extends AbstractController
             'site' => $site,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/{id}', name: 'app_sites_delete', methods: ['POST'])]
-    public function delete(Request $request, Sites $site, EntityManagerInterface $entityManager): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
-        if ($this->isCsrfTokenValid('delete'.$site->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($site);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_sites_index', [], Response::HTTP_SEE_OTHER);
     }
 }

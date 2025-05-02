@@ -6,28 +6,32 @@ use App\Entity\StockRequest;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<StockRequest>
  */
 class StockRequestRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private Security $security;
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, StockRequest::class);
+        $this->security = $security;
     }
 
     /**
-     * @return boolean Returns an boolean that represent active draft or note
+     * @return int Returns int that represent active draft or note if note than return that request id
      */
-    public function getDraftStockRequestIdByUser(int $userId): int
+    public function getDraftStockRequestIdByUser(): int
     {
+        $user = $this->security->getUser();
         $result = $this->createQueryBuilder('sr')
             ->select('sr.id')
             ->andWhere('sr.status = :status')
             ->andWhere('sr.requestedBy = :userId')
             ->setParameter('status', 'draft')
-            ->setParameter('userId', $userId)
+            ->setParameter('userId', $user->getId())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
@@ -38,8 +42,9 @@ class StockRequestRepository extends ServiceEntityRepository
     /**
      * @return StockRequest Returns an boolean that represent active draft or note
      */
-    public function getActiveStockRequests(User $user): array
+    public function getActiveStockRequests(): array
     {
+        $user = $this->security->getUser();
         if (in_array('ROLE_ADMIN', $user->getRoles(), true) or
             in_array('ROLE_STOCK_REQUEST_REVIEWER', $user->getRoles(), true)) {
             return $this->createQueryBuilder('sr')

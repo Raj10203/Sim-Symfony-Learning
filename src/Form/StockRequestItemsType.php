@@ -62,6 +62,7 @@ class StockRequestItemsType extends AbstractType
                     $qb = $er->createQueryBuilder('p');
                     if ($usedProducts) {
                         $qb->where('p NOT IN (:used)')
+                            ->andWhere('p.active = TRUE')
                             ->setParameter('used', $usedProducts);
                     }
                     return $qb;
@@ -69,8 +70,7 @@ class StockRequestItemsType extends AbstractType
                 'attr' => [
                     'class' => 'select2-dropdown-single',
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -78,6 +78,7 @@ class StockRequestItemsType extends AbstractType
         $resolver->setDefaults([
             'data_class' => StockRequestItems::class,
             'stock_request' => null,
+            'csrf_token_id' => 'stock_request_items',
         ]);
     }
 }

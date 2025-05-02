@@ -17,48 +17,51 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/stock/request')]
+#[isGranted('IS_AUTHENTICATED_REMEMBERED')]
 final class StockRequestController extends AbstractController
 {
     #[Route(name: 'app_stock_request_index', methods: ['GET'])]
     public function index(StockRequestRepository $stockRequestRepository): Response
     {
         return $this->render('stock_request/index.html.twig', [
-            'stock_requests' => $stockRequestRepository->getActiveStockRequests($this->getUser())
+            'stock_requests' => $stockRequestRepository->getActiveStockRequests()
         ]);
     }
 
     #[Route('/new', name: 'app_stock_request_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, StockRequestRepository $stockRequestRepository): Response
     {
-        $draft = $stockRequestRepository->getDraftStockRequestIdByUser($this->getUser()->getId());
+        $draft = $stockRequestRepository->getDraftStockRequestIdByUser();
 
         if ($draft) {
             return $this->redirectToRoute('app_stock_request_edit', ['id' => $draft]);
         }
         $stockRequest = new StockRequest();
-        $product = new Products();
         $form = $this->createForm(StockRequestType::class, $stockRequest);
-        $productForm = $this->createForm(ProductsType::class, $product);
 
+        //set default values to stock request
+        $headquarterSite = $entityManager->getRepository(Sites::class)->findOneBy(['id' => 1]);
         $stockRequest->setRequestedBy($this->getUser());
         $stockRequest->setToSite($this->getUser()->getSite());
-        $headquarterSite = $entityManager->getRepository(Sites::class)->findOneBy(['id' => 1]);
         $stockRequest->setFromSite($headquarterSite);
         $stockRequest->setStatus(StockRequestStatus::Draft);
         $form->setData($stockRequest);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
         $entityManager->persist($stockRequest);
         $entityManager->flush();
 
+        // redirect to edit page
         return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
     }
 
     #[Route('/{id}', name: 'app_stock_request_show', methods: ['GET'])]
     public function show(StockRequest $stockRequest): Response
     {
+        //access control
         $this->denyAccessUnlessGranted('VIEW', $stockRequest);
         return $this->render('stock_request/show.html.twig', [
             'stock_request' => $stockRequest,
@@ -68,9 +71,13 @@ final class StockRequestController extends AbstractController
     #[Route('/{id}/edit', name: 'app_stock_request_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, StockRequest $stockRequest, EntityManagerInterface $entityManager, StockRequestItemsRepository $stockRequestItemsRepository): Response
     {
+        //access control
         $this->denyAccessUnlessGranted('EDIT', $stockRequest);
+
+        // stock request form
         $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest);
-        $stockRequestForm->handleRequest($request);
+
+        // stock request's form
         $stockRequestItem = new StockRequestItems();
         $stockRequestItemForm = $this->createForm(StockRequestItemsType::class, $stockRequestItem, [
             'stock_request' => $stockRequest
@@ -79,6 +86,9 @@ final class StockRequestController extends AbstractController
             ->remove('stockRequest')
             ->remove('quantity_approved')
             ->remove('status');
+
+        //handle both form
+        $stockRequestForm->handleRequest($request);
         $stockRequestItemForm->handleRequest($request);
 
         if ($stockRequestItemForm->isSubmitted() && $stockRequestItemForm->isValid()) {
@@ -86,14 +96,16 @@ final class StockRequestController extends AbstractController
             $entityManager->persist($stockRequestItem);
             $entityManager->flush();
 
+            //redirect self
             return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
         }
 
         if ($stockRequestForm->isSubmitted() && $stockRequestForm->isValid()) {
             $entityManager->flush();
+
+            //redirect to index
             return $this->redirectToRoute('app_stock_request_index', [], Response::HTTP_SEE_OTHER);
         }
-
 
         return $this->render('stock_request/edit.html.twig', [
             'stock_request' => $stockRequest,

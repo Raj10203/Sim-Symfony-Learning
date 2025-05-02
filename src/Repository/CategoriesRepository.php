@@ -28,10 +28,7 @@ class CategoriesRepository extends ServiceEntityRepository
     {
         return $this->cache->get('categories', function (CacheItemInterface $cacheItem) {
             $cacheItem->expiresAfter(10);
-            return $this->createQueryBuilder('c')
-                ->andWhere('c.deletedAt IS NULL')
-                ->getQuery()
-                ->getResult();
+            return $this->findAll();
         });
     }
     //    /**

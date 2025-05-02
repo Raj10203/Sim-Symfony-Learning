@@ -20,7 +20,7 @@ class StockRequest
     #[ORM\Column]
     private ?int $id = null;
 
-#[ORM\ManyToOne(inversedBy: 'stockRequestsFrom')]
+    #[ORM\ManyToOne(inversedBy: 'stockRequestsFrom')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Sites $fromSite = null;
 
@@ -127,7 +127,7 @@ class StockRequest
     {
         if (!$this->stockRequestItems->contains($stockRequestItem)) {
             $this->stockRequestItems->add($stockRequestItem);
-            $stockRequestItem->setRequest($this);
+            $stockRequestItem->setstockRequest($this);
         }
 
         return $this;
@@ -136,8 +136,8 @@ class StockRequest
     public function removeStockRequestItem(StockRequestItems $stockRequestItem): static
     {
         if ($this->stockRequestItems->removeElement($stockRequestItem)) {
-            if ($stockRequestItem->getRequest() === $this) {
-                $stockRequestItem->setRequest(null);
+            if ($stockRequestItem->getstockRequest() === $this) {
+                $stockRequestItem->setstockRequest(null);
             }
         }
         return $this;

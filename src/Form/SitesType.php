@@ -47,6 +47,7 @@ class SitesType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sites::class,
+            'csrf_token_id'   => 'site_token'
         ]);
     }
 }

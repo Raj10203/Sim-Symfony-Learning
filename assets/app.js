@@ -12,6 +12,7 @@ import $ from 'jquery';
 import Swal from 'sweetalert2';
 window.Swal = Swal;
 window.$ = $;
+import PerfectScrollbar from 'perfect-scrollbar';
 
 // js files
 import 'select2/dist/css/select2.min.css';
@@ -33,3 +34,11 @@ $('.select2-dropdown-single').select2({
     theme: "bootstrap-5",
     width: '100%'
 });
+
+var $container = $('.scrollable-container');
+if ($container.length) {
+    $container.each(function () {
+        new PerfectScrollbar(this);
+        $(this).removeClass('overflow-hidden'); // enable scrolling
+    });
+}

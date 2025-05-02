@@ -27,9 +27,6 @@ class Categories
     #[ORM\Column]
     private bool $active = true;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deletedAt = null;
-
     /**
      * @var Collection<int, Products>
      */
@@ -44,18 +41,6 @@ class Categories
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function softDelete(): static
-    {
-        $this->deletedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
-        return $this;
-    }
-
-    public function restore(): static
-    {
-        $this->deletedAt = null;
-        return $this;
     }
 
     public function getName(): ?string
@@ -78,18 +63,6 @@ class Categories
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?\DateTimeImmutable
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
-    {
-        $this->deletedAt = $deletedAt;
 
         return $this;
     }

@@ -9,49 +9,47 @@
 {% endblock %}
 
 {% block body %}
-    <div class="m-2">
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Stock Request
+    </h3>
 
-        <h3 class="fw-bold py-3 mb-4 ms-3">
-            Stock Request
-        </h3>
-        <div class="m-2">
-            <div class="card pb-5">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Request's Info</h5>
-                    <a class="btn btn-secondary" href="{{ path('app_stock_request_index') }}">
-                        <i class="bx bx-arrow-back me-0 me-sm-1"></i>
-                        Back To List
-                    </a>
-                </div>
-                <div class="my-2">
-                    {{ include('stock_request/_form.html.twig', {'button_label': 'Update'}) }}
-                </div>
-            </div>
+    <div class="card pb-5">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Request's Info</h5>
+            <span>Request Id:- {{ stock_request.id }}</span>
+            <a class="btn btn-secondary" href="{{ path('app_stock_request_index') }}">
+                <i class="bx bx-arrow-back me-0 me-sm-1"></i>
+                Back To List
+            </a>
         </div>
-        <div class="m-2">
-            <div class="card pb-5">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Product's Info</h5>
+        <div class="my-2">
+            {{ include('stock_request/_form.html.twig', {'button_label': 'Update'}) }}
+        </div>
+    </div>
 
-                </div>
-                <div class="container-fluid">
-                    {#                    stockRequestItems #}
-                    {{ form_start(stock_request_items_form) }}
-                    <div class="row">
-                        {% for field in stock_request_items_form %}
-                            {% if field.vars.name != '_token' %}
-                                <div class="form-group col-md-4 col-12 p-2">
-                                    {{ form_row(field) }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <div class="form-group col-md-3 col-12 d-flex align-items-end p-2">
-                            <input type="submit" value="Add Product" class="btn btn-primary"/>
-                        </div>
+    <div class="my-2">
+        <div class="card pb-5">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Product's Info</h5>
+            </div>
+            <div class="container-fluid">
+                {{ form_start(stock_request_items_form) }}
+                <div class="row">
+                    {% for field in stock_request_items_form %}
+                        {% if field.vars.name != '_token' %}
+                            <div class="form-group col-md-4 col-12 p-2">
+                                {{ form_row(field) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="form-group col-md-3 col-12 d-flex align-items-end p-2">
+                        <input type="submit" value="Add Product" class="btn btn-primary"/>
                     </div>
-                    {{ form_end(stock_request_items_form) }}
                 </div>
-                <div class="my-2">
+                {{ form_end(stock_request_items_form) }}
+            </div>
+            <div class="my-2">
+                <div class="table-responsive text-nowrap scrollable-container overflow-hidden">
                     <table class="table">
                         <thead>
                         <tr>
@@ -93,4 +91,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}

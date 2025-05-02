@@ -54,6 +54,7 @@ class ProductsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Products::class,
+            'csrf_token_id' => 'products_token',
         ]);
     }
 }

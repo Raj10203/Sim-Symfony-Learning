@@ -13,8 +13,7 @@ use Symfony\Contracts\Cache\CacheInterface;
  */
 class ProductsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry,
-    private CacheInterface $cache,  )
+    public function __construct(ManagerRegistry $registry, private CacheInterface $cache)
     {
         parent::__construct($registry, Products::class);
     }
@@ -26,14 +25,7 @@ class ProductsRepository extends ServiceEntityRepository
     {
         return $this->cache->get('products', function (CacheItemInterface $cacheItem) {
             $cacheItem->expiresAfter(10);
-            return $this->createQueryBuilder('pc')
-                ->select('p', 'c')
-                ->from(Products::class, 'p')
-                ->leftJoin('p.category', 'c')
-                ->where('p.deletedAt IS NULL')
-                ->orderBy('p.id', 'ASC')
-                ->getQuery()
-                ->getResult();
+            return $this->findAll();
         });
     }
     //    /**

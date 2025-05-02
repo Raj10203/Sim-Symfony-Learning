@@ -53,10 +53,6 @@
                 <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>DeletedAt</th>
-                <td>{{ product.deletedAt ? product.deletedAt|date('Y-m-d H:i:s') : 'NULL' }}</td>
-            </tr>
-            <tr>
                 <th>Active</th>
                 <td>{{ product.active ? 'Yes' : 'No' }}</td>
             </tr>
@@ -64,7 +60,6 @@
         </table>
         <div class="d-flex p-2">
             <a href="{{ path('app_products_edit', {'id': product.id}) }}" class="btn btn-primary">Edit</a>
-            {{ include('products/_delete_form.html.twig') }}
         </div>
     </div>
 

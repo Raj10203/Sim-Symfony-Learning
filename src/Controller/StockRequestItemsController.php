@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\StockRequestItems;
-use App\Form\StockRequestItems1Type;
 use App\Form\StockRequestItemsType;
 use App\Repository\StockRequestItemsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,7 +53,7 @@ final class StockRequestItemsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_stock_request_items_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, StockRequestItems $stockRequestItem, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(StockRequestItems1Type::class, $stockRequestItem);
+        $form = $this->createForm(StockRequestItemsType::class, $stockRequestItem);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

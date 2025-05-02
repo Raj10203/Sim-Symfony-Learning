@@ -25,10 +25,6 @@ class Products
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deletedAt = null;
-
     #[ORM\Column]
     private ?bool $active = null;
 
@@ -41,13 +37,6 @@ class Products
      */
     #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $stockRequestItems;
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
-        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata'));
-        $this->stockRequestItems = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -74,18 +63,6 @@ class Products
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?\DateTimeImmutable
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(\DateTimeImmutable $deletedAt): static
-    {
-        $this->deletedAt = $deletedAt;
 
         return $this;
     }
@@ -126,7 +103,7 @@ class Products
     {
         if (!$this->stockRequestItems->contains($stockRequestItem)) {
             $this->stockRequestItems->add($stockRequestItem);
-            $stockRequestItem->setProductId($this);
+            $stockRequestItem->setProduct($this);
         }
 
         return $this;
@@ -136,8 +113,8 @@ class Products
     {
         if ($this->stockRequestItems->removeElement($stockRequestItem)) {
             // set the owning side to null (unless already changed)
-            if ($stockRequestItem->getProductId() === $this) {
-                $stockRequestItem->setProductId(null);
+            if ($stockRequestItem->getProduct() === $this) {
+                $stockRequestItem->setProduct(null);
             }
         }
 

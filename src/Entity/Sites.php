@@ -36,10 +36,6 @@ class Sites
     #[Groups('site')]
     private ?bool $active = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Groups('site')]
-    private ?\DateTimeImmutable $deletedAt = null;
-
     /**
      * @var Collection<int, User>
      */
@@ -58,13 +54,6 @@ class Sites
      */
     #[ORM\OneToMany(targetEntity: StockRequest::class, mappedBy: 'toSite')]
     private Collection $stockRequestsTo;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-        $this->stockRequestsFrom = new ArrayCollection();
-        $this->stockRequestsTo = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -115,18 +104,6 @@ class Sites
     public function setActive(bool $active): static
     {
         $this->active = $active;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?\DateTimeImmutable
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(\DateTimeImmutable $deletedAt): static
-    {
-        $this->deletedAt = $deletedAt;
 
         return $this;
     }
