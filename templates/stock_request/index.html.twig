@@ -40,7 +40,7 @@
                 {% for stock_request in stock_requests %}
                     <tr>
                         <td>{{ stock_request.id }}</td>
-                        <td>{{ stock_request.status.value }}</td>
+                        <td>{{ stock_request.status }}</td>
                         <td>{{ stock_request.fromSite.name }}</td>
                         <td>{{ stock_request.toSite.name }}</td>
                         <td>{{ stock_request.requestedBy.email }}</td>

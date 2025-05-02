@@ -36,8 +36,8 @@ class StockRequest
     #[ORM\JoinColumn(nullable: true)]
     private ?User $approvedBy = null;
 
-    #[ORM\Column(type: 'string', enumType: StockRequestStatus::class)]
-    private StockRequestStatus $status;
+    #[ORM\Column(type: 'string', length: 50)]
+    private string $status = 'draft';
 
     /**
      * @var Collection<int, StockRequestItems>
@@ -103,15 +103,14 @@ class StockRequest
         return $this;
     }
 
-    public function getStatus(): StockRequestStatus
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    public function setStatus(StockRequestStatus $status): self
+    public function setStatus(string $status): self
     {
         $this->status = $status;
-
         return $this;
     }
 

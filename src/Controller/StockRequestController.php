@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Workflow\Registry;
 
 #[Route('/stock/request')]
 #[isGranted('IS_AUTHENTICATED_REMEMBERED')]
@@ -69,13 +70,17 @@ final class StockRequestController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_stock_request_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, StockRequest $stockRequest, EntityManagerInterface $entityManager, StockRequestItemsRepository $stockRequestItemsRepository): Response
+    public function edit(Request $request, StockRequest $stockRequest, EntityManagerInterface $entityManager,
+                         StockRequestItemsRepository $stockRequestItemsRepository, Registry $workflowRegistry): Response
     {
         //access control
         $this->denyAccessUnlessGranted('EDIT', $stockRequest);
 
         // stock request form
-        $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest);
+        $isStockRequestReviewer = $this->isGranted('ROLE_STOCK_REQUEST_REVIEWER');
+        $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest, [
+            'isStockRequestReviewer' => $isStockRequestReviewer,
+        ]);
 
         // stock request's form
         $stockRequestItem = new StockRequestItems();
@@ -94,6 +99,24 @@ final class StockRequestController extends AbstractController
         $stockRequestForm->handleRequest($request);
         $stockRequestItemForm->handleRequest($request);
 
+        if ($stockRequestForm->isSubmitted() && $stockRequestForm->isValid()) {
+            $workflow = $workflowRegistry->get($stockRequest, 'stock_request_approval');
+
+            if ($isStockRequestReviewer) {
+                $targetStatus = $stockRequestForm->get('status')->getData();
+                if ($workflow->can($stockRequest, $targetStatus)) {
+                    $workflow->apply($stockRequest, $targetStatus);
+                } else {
+                    $this->addFlash('error', "Invalid transition to $targetStatus.");
+                }
+            }
+
+            $entityManager->flush();
+
+            //redirect to index
+            return $this->redirectToRoute('app_stock_request_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         if ($stockRequestItemForm->isSubmitted() && $stockRequestItemForm->isValid()) {
             $stockRequestItem->setstockRequest($stockRequest);
             $entityManager->persist($stockRequestItem);
@@ -101,14 +124,6 @@ final class StockRequestController extends AbstractController
 
             //redirect self
             return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
-        }
-
-        if ($stockRequestForm->isSubmitted() && $stockRequestForm->isValid()) {
-
-            $entityManager->flush();
-
-            //redirect to index
-            return $this->redirectToRoute('app_stock_request_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('stock_request/edit.html.twig', [
