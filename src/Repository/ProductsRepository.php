@@ -21,13 +21,6 @@ class ProductsRepository extends ServiceEntityRepository
     /**
      * @return Products[] Returns an array of Products objects
      */
-    public function findAllActive(): array
-    {
-        return $this->cache->get('products', function (CacheItemInterface $cacheItem) {
-            $cacheItem->expiresAfter(10);
-            return $this->findAll();
-        });
-    }
     //    /**
     //     * @return Products[] Returns an array of Products objects
     //     */

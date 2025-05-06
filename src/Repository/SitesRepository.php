@@ -17,15 +17,6 @@ class SitesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sites::class);
     }
-
-
-    public function findAllFromCache(): array
-    {
-        return $this->cache->get('sites', function (CacheItemInterface $cacheItem) {
-            $cacheItem->expiresAfter(10);
-            return $this->findAll();
-        });
-    }
     //    /**
     //     * @return Sites[] Returns an array of Sites objects
     //     */

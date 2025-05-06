@@ -3,26 +3,27 @@ security:
 
     role_hierarchy:
         ROLE_ADMIN: [
-            ROLE_SITE_CRUD,
-            ROLE_CATEGORY_CRUD,
-            ROLE_PRODUCT_CRUD,
-            ROLE_USER_CRUD,
+            ROLE_HQ_MANAGER,
             ROLE_ALLOWED_TO_SWITCH,
-            ROLE_STOCK_REQUEST_REVIEWER
         ]
         ROLE_HQ_MANAGER: [
             ROLE_CATEGORY_CRUD,
             ROLE_SITE_CRUD,
             ROLE_PRODUCT_CRUD,
-            ROLE_STOCK_REQUEST_REVIEWER,
-            ROLE_USER_CRUD
+            ROLE_USER_CRUD,
+            ROLE_HQ_EMPLOYEE
         ]
         ROLE_HQ_EMPLOYEE: [
             ROLE_STOCK_REQUEST_REVIEWER,
+            ROLE_SITE_MANAGER
         ]
-        ROLE_SITE_MANAGER: []
+        ROLE_SITE_MANAGER: [
+            ROLE_SITE_EMPLOYEE
+        ]
         ROLE_SITE_EMPLOYEE: []
-        ROLE_HUMAN_RESOURCES: [ROLE_USER_CRUD]
+        ROLE_HUMAN_RESOURCES: [
+            ROLE_USER_CRUD
+        ]
 
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'

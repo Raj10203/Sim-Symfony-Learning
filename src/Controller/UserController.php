@@ -22,7 +22,7 @@ final class UserController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAllFromCache(),
+            'users' => $userRepository->findAll(),
         ]);
     }
 

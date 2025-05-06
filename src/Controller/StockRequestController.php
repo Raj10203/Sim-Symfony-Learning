@@ -48,7 +48,6 @@ final class StockRequestController extends AbstractController
         $stockRequest->setRequestedBy($this->getUser());
         $stockRequest->setToSite($this->getUser()->getSite());
         $stockRequest->setFromSite($headquarterSite);
-        $stockRequest->setStatus(StockRequestStatus::Draft);
         $form->setData($stockRequest);
 
         $form->handleRequest($request);
@@ -70,19 +69,19 @@ final class StockRequestController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_stock_request_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, StockRequest $stockRequest, EntityManagerInterface $entityManager,
+    public function edit(Request                     $request, StockRequest $stockRequest, EntityManagerInterface $entityManager,
                          StockRequestItemsRepository $stockRequestItemsRepository, Registry $workflowRegistry): Response
     {
-        //access control
+        // Access control
         $this->denyAccessUnlessGranted('EDIT', $stockRequest);
 
-        // stock request form
+        // Stock request form
         $isStockRequestReviewer = $this->isGranted('ROLE_STOCK_REQUEST_REVIEWER');
         $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest, [
             'isStockRequestReviewer' => $isStockRequestReviewer,
         ]);
 
-        // stock request's form
+        // Stock request item form
         $stockRequestItem = new StockRequestItems();
         $stockRequestItemForm = $this->createForm(StockRequestItemsType::class, $stockRequestItem, [
             'stock_request' => $stockRequest
@@ -92,45 +91,36 @@ final class StockRequestController extends AbstractController
             ->remove('quantity_approved')
             ->remove('status');
 
-        if (!$this->isGranted('ROLE_STOCK_REQUEST_REVIEWER')) {
-            $stockRequestForm->remove('status');
-        }
-        //handle both form
+        // Handle both forms
         $stockRequestForm->handleRequest($request);
         $stockRequestItemForm->handleRequest($request);
 
+        // Get available transitions
+        $workflow = $workflowRegistry->get($stockRequest, 'stock_request_approval');
+        $availableTransitions = $workflow->getEnabledTransitions($stockRequest);
+
         if ($stockRequestForm->isSubmitted() && $stockRequestForm->isValid()) {
-            $workflow = $workflowRegistry->get($stockRequest, 'stock_request_approval');
-
-            if ($isStockRequestReviewer) {
-                $targetStatus = $stockRequestForm->get('status')->getData();
-                if ($workflow->can($stockRequest, $targetStatus)) {
-                    $workflow->apply($stockRequest, $targetStatus);
-                } else {
-                    $this->addFlash('error', "Invalid transition to $targetStatus.");
-                }
-            }
-
             $entityManager->flush();
 
-            //redirect to index
+            // Redirect to index
             return $this->redirectToRoute('app_stock_request_index', [], Response::HTTP_SEE_OTHER);
         }
 
         if ($stockRequestItemForm->isSubmitted() && $stockRequestItemForm->isValid()) {
-            $stockRequestItem->setstockRequest($stockRequest);
+            $stockRequestItem->setStockRequest($stockRequest);
             $entityManager->persist($stockRequestItem);
             $entityManager->flush();
 
-            //redirect self
+            // Redirect to self
             return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
         }
 
         return $this->render('stock_request/edit.html.twig', [
             'stock_request' => $stockRequest,
-            'stock_request_form' => $stockRequestForm,
-            'stock_request_items_form' => $stockRequestItemForm,
+            'stock_request_form' => $stockRequestForm->createView(),
+            'stock_request_items_form' => $stockRequestItemForm->createView(),
             'stock_request_items' => $stockRequestItemsRepository->findBy(['stockRequest' => $stockRequest]),
+            'transitions' => $availableTransitions,
         ]);
     }
 
@@ -144,5 +134,45 @@ final class StockRequestController extends AbstractController
         }
 
         return $this->redirectToRoute('app_stock_request_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/transition/{transition}', name: 'app_stock_request_transition', methods: ['GET'])]
+    public function transition(
+        string $transition,
+        Request $request,
+        StockRequest $stockRequest,
+        Registry $workflowRegistry,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $this->denyAccessUnlessGranted('EDIT', $stockRequest);
+
+        $token = $request->query->get('_token');
+        if (!$this->isCsrfTokenValid('transition_' . $transition, $token)) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        $workflow = $workflowRegistry->get($stockRequest, 'stock_request_approval');
+
+        $canApply = $workflow->can($stockRequest, $transition);
+
+        if ($canApply) {
+            $workflow->apply($stockRequest, $transition);
+            $message = "Transition '$transition' applied successfully.";
+        } elseif ($this->isGranted('ROLE_ADMIN')) {
+            // Admin override: set the state directly
+            $reflection = new \ReflectionObject($stockRequest);
+            $property = $reflection->getProperty('status');
+            $property->setAccessible(true);
+            $property->setValue($stockRequest, $transition);
+            $message = "Admin override: moved directly to '$transition'.";
+        } else {
+            $this->addFlash('error', "Transition '$transition' is not allowed.");
+            return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
+        }
+
+        $entityManager->flush();
+        $this->addFlash('success', $message);
+
+        return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
     }
 }

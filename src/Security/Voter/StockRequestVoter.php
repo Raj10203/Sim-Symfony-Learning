@@ -45,7 +45,7 @@ final class StockRequestVoter extends Voter
 
         return match ($attribute) {
             self::DELETE, self::EDIT => ($subject->getToSite() === $user->getSite() &&
-                $subject->getStatus() == StockRequestStatus::Draft),
+                $subject->getStatus() == StockRequestStatus::Draft->value),
             self::VIEW => ($subject->getToSite() === $user->getSite() || $subject->getFromSite() === $user->getSite()),
             default => false,
         };

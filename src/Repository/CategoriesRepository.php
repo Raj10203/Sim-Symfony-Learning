@@ -24,13 +24,6 @@ class CategoriesRepository extends ServiceEntityRepository
     /**
      * @return Categories[] Returns an array of Products objects
      */
-    public function findAllActive(): array
-    {
-        return $this->cache->get('categories', function (CacheItemInterface $cacheItem) {
-            $cacheItem->expiresAfter(10);
-            return $this->findAll();
-        });
-    }
     //    /**
     //     * @return Categories[] Returns an array of Categories objects
     //     */

@@ -20,7 +20,7 @@ final class SitesController extends AbstractController
     public function index(SitesRepository $sitesRepository): Response
     {
         return $this->render('sites/index.html.twig', [
-            'sites' => $sitesRepository->findAllFromCache(),
+            'sites' => $sitesRepository->findAll(),
         ]);
     }
 

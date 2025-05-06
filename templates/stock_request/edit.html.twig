@@ -23,8 +23,9 @@
                 Back To List
             </a>
         </div>
-        <div class="my-2">
-            {{ include('stock_request/_form.html.twig', {'button_label': 'Send Request'}) }}
+        <div class="my-2 d-flex">
+            {{ include('stock_request/_form.html.twig') }}
+{#            {{ include('stock_request/_wf_transitions,html.twig') }}#}
         </div>
     </div>
 

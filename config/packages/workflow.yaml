@@ -18,19 +18,27 @@ framework:
                 submit:
                     from: draft
                     to: pending_hw_employee
-                    guard: "is_granted('ROLE_SITE_EMPLOYEE') or is_granted('ROLE_SITE_MANAGER')"
+                    guard: "is_granted('ROLE_SITE_EMPLOYEE') 
+                    or is_granted('ROLE_SITE_MANAGER')
+                    or is_granted('ROLE_HQ_EMPLOYEE')
+                    or is_granted('ROLE_HQ_MANAGER')
+                    or is_granted('ROLE_ADMIN')"
+
                 approve_by_employee:
                     from: pending_hw_employee
                     to: pending_manager
                     guard: "is_granted('ROLE_HQ_EMPLOYEE')"
+
                 approve_by_manager:
                     from: pending_manager
                     to: pending_admin
                     guard: "is_granted('ROLE_HQ_MANAGER')"
+
                 approve_by_admin:
                     from: pending_admin
                     to: approved
                     guard: "is_granted('ROLE_ADMIN')"
+
                 reject:
                     from:
                         - pending_hw_employee

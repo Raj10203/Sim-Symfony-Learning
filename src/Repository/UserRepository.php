@@ -38,13 +38,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * @return User[] Returns an array of User objects from cache
      */
-    public function findAllFromCache(): array
-    {
-        return $this->cache->get('users', function (CacheItemInterface $cacheItem) {
-            $cacheItem->expiresAfter(10);
-            return $this->findAll();
-        });
-    }
 
     //    /**
     //     * @return User[] Returns an array of User objects

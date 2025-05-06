@@ -20,7 +20,7 @@ final class CategoriesController extends AbstractController
     #[Route(name: 'app_categories_index', methods: ['GET'])]
     public function index(CategoriesRepository $categoriesRepository, CacheInterface $cache): Response
     {
-        $categories =  $categoriesRepository->findAllActive();
+        $categories =  $categoriesRepository->findAll();
 
         return $this->render('categories/index.html.twig', [
             'categories' => $categories,
