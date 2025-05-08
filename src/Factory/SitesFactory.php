@@ -32,7 +32,7 @@ final class SitesFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'active' => self::faker()->boolean(),
+            'active' => 1,
             'address' => self::faker()->address(),
             'createdAt' => self::faker()->dateTime(),
             'location' => self::faker()->text(255),

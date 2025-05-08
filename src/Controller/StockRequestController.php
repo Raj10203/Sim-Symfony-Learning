@@ -166,21 +166,20 @@ final class StockRequestController extends AbstractController
         $workflow = $workflowRegistry->get($stockRequest, 'stock_request_approval');
 
         $canApply = $workflow->can($stockRequest, $transition);
-
         if ($canApply) {
+
             $workflow->apply($stockRequest, $transition);
             $message = "Transition '$transition' applied successfully.";
         } elseif ($this->isGranted('ROLE_ADMIN')) {
-            // Admin override: set the state directly
-            $reflection = new \ReflectionObject($stockRequest);
-            $property = $reflection->getProperty('status');
-            $property->setValue($stockRequest, $transition);
-            $message = "Admin override: status of stock request id " . $stockRequest->getId() . " moved directly to '$transition'.";
+            $stockRequest->setStatus($transition);
+            $message = "Admin override: status of stock request ID " . $stockRequest->getId() . " moved directly to '$transition'.";
         } else {
             $this->addFlash('error', "Transition '$transition' is not allowed.");
             return $this->redirectToRoute('app_stock_request_index');
         }
-
+        if ($transition != 'draft') {
+            $stockRequest->setApprovedBy($this->getUser());
+        }
         $entityManager->flush();
         $this->addFlash('success', $message);
 
