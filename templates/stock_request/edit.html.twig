@@ -8,11 +8,44 @@
     {{ include('partials/active_menu_script.html.twig') }}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            $('.update-item').hide().click(function (e) {
+                $(this).hide();
+                const id = this.dataset.id;
+                let approvedQuantity =  $('#update-item-input-' + id).val();
+                $('#edit-item-' + this.dataset.id).show().data('approved', approvedQuantity);
+                console.log(approvedQuantity);
+                $('#td-' + this.dataset.id).html( approvedQuantity);
+
+                $.ajax({
+                    url: '{{ path('app_stock_request_item_update', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
+                    type: 'POST',
+                    data: {
+                        quantityApproved: approvedQuantity
+                    },
+                    success: function (response) {
+                        $('#td-' + id).html(approvedQuantity);
+                        Swal.fire('Success', response.message, 'success');
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire('Error', 'There was a problem updating the item. Please try again.', 'error');
+                    }
+                });
+            });
             $('.edit-item').click(function (e) {
-                const approved = $(this).data('approved');
-                const input = $('<input type="number" class="form-control" />').val(approved);
+                const quantityApproved = $(this).data('approved');
+                const input = $('<input type="number" class="form-control"/>')
+                    .attr('id', "update-item-input-" + this.dataset.id).val(quantityApproved);
                 $('#td-' + this.dataset.id).html(input);
-                $(this).html("<i class='bx bxs-check-circle'></i>");
+                $(this).hide();
+                $('#update-item-' + this.dataset.id).show();
+            })
+            $('.delete-item').click(function () {
+                const id = this.dataset.id;
+                $.ajax({
+                    url: '{{ path('app_stock_request_items_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
+                    type: 'POST',
+                });
+                location.reload();
             })
         });
     </script>
@@ -90,19 +123,30 @@
                                 <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td>{{ stock_request_item.updatedAt ? stock_request_item.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td>
-                                    <a href="{{ path('app_stock_request_items_show', {'id': stock_request_item.id}) }}"
-                                       class="btn btn-primary">
-                                        <i class="bx bx-show-alt"></i>
-                                    </a>
-                                    {% if is_granted('ROLE_STOCK_REQUEST_REVIEWER') %}
+                                    {% if is_granted('ROLE_ADMIN') %}
                                         <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item
-                                        .id}) }}" id="{{ stock_request_item.id }}" class="edit-item">edit</a>
+                                        .id}) }}" id="{{ stock_request_item.id }}" class="btn btn-warning">Advance
+                                            Edit</a>
+                                    {% else %}
+                                        <a href="{{ path('app_stock_request_items_show', {'id': stock_request_item.id}) }}"
+                                           class="btn btn-primary">
+                                            <i class="bx bx-show-alt"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_STOCK_REQUEST_REVIEWER') %}
                                         <button
                                                 id="edit-item-{{ stock_request_item.id }}"
                                                 class="edit-item btn btn-success"
-                                                data-id = "{{ stock_request_item.id }}"
+                                                data-id="{{ stock_request_item.id }}"
                                                 data-approved="{{ stock_request_item.quantityApproved }}">
                                             <i class="bx bxs-edit"></i>
+                                        </button>
+                                        <button
+                                                id="update-item-{{ stock_request_item.id }}"
+                                                class="update-item btn btn-success"
+                                                data-id="{{ stock_request_item.id }}"
+                                                data-approved="{{ stock_request_item.quantityApproved }}">
+                                            <i class='bx bxs-check-circle'></i>
                                         </button>
                                     {% endif %}
                                     <button

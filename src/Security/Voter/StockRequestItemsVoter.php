@@ -22,7 +22,7 @@ final class StockRequestItemsVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW])
+        return in_array($attribute, [self::EDIT, self::VIEW, self::DELETE])
             && $subject instanceof \App\Entity\StockRequestItems;
     }
 
@@ -43,13 +43,13 @@ final class StockRequestItemsVoter extends Voter
         ) {
             return true;
         }
-
         return match ($attribute) {
-            self::DELETE, self::EDIT => ($subject->getStockRequest()->getToSite() === $user->getSite() &&
-                $subject->getStockRequest()->getStatus() == 'draft'),
+            self::DELETE,
+            self::EDIT => (($subject->getStockRequest()->getToSite() === $user->getSite()
+                    || $subject->getStockRequest()->getRequestedBy() === $user)
+                && $subject->getStockRequest()->getStatus() == 'draft'),
             self::VIEW => ($subject->getStockRequest()->getToSite() === $user->getSite()
-                || $subject->getStockRequest()->getFromSite() === $user->getSite
-                ()),
+                || $subject->getStockRequest()->getFromSite() === $user->getSite()),
             default => false,
         };
     }

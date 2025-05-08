@@ -11,7 +11,7 @@
                 <p class="mb-6 mx-2 text-center">{{ error.message }}</p>
             {% endfor %}
             <div class="d-flex justify-content-center">
-                <a href="{{ path('app_home') }}" class="btn btn-primary">Back to home</a>
+                <a href="javascript:history.back()" class="btn btn-primary">Back</a>
             </div>
             <div class="mt-6">
                 <img src="{{ asset('bundles/sneat/assets/img/illustrations/page-misc-error-light.png') }}"
