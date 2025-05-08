@@ -65,8 +65,9 @@ class StockRequestRepository extends ServiceEntityRepository
             ->leftJoin('sr.toSite', 'ts')
             ->addSelect('fs', 'ts') // Eager load both sites
             ->andWhere('sr.status NOT IN (:statuses)')
-            ->andWhere('sr.fromSite = :site OR sr.toSite = :site')
+            ->andWhere('sr.fromSite = :site OR sr.toSite = :site OR sr.requestedBy = :user')
             ->setParameter('statuses', ['rejected', 'fulfilled'])
+            ->setParameter('user', $user->getId())
             ->setParameter('site', $user->getSite())
             ->orderBy('sr.id', 'DESC')
             ->getQuery()

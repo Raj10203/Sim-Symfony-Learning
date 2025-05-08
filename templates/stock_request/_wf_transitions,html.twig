@@ -1,4 +1,4 @@
-{% set all_places = ['draft', 'pending_hw_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected'] %}
+{% set all_places = ['draft', 'pending_hq_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected'] %}
 
 {% set is_admin = is_granted('ROLE_ADMIN') %}
 {% set transition_list = is_admin ? all_places : transitions|map(t => t.name) %}
@@ -6,13 +6,13 @@
 <div class="dropdown">
     <button class="btn btn-outline-primary dropdown-toggle" type="button" id="transitionDropdown"
             data-bs-toggle="dropdown" aria-expanded="false">
-        {{ is_admin ? 'Admin Override Action' : 'Workflow Actions' }}
+        <span>Actions</span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="transitionDropdown">
         {% if transition_list|length < 1 %}
-        <li class="dropdown-item">
-            No Transition allowed!
-        </li>
+            <li class="dropdown-item">
+                No Transition allowed!
+            </li>
         {% endif %}
         {% for name in transition_list %}
             <li>

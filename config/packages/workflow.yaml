@@ -9,7 +9,7 @@ framework:
                 property: 'status'
             places:
                 - draft
-                - pending_hw_employee
+                - pending_hq_employee
                 - pending_manager
                 - pending_admin
                 - approved
@@ -17,15 +17,11 @@ framework:
             transitions:
                 submit:
                     from: draft
-                    to: pending_hw_employee
-                    guard: "is_granted('ROLE_SITE_EMPLOYEE') 
-                    or is_granted('ROLE_SITE_MANAGER')
-                    or is_granted('ROLE_HQ_EMPLOYEE')
-                    or is_granted('ROLE_HQ_MANAGER')
-                    or is_granted('ROLE_ADMIN')"
+                    to: pending_hq_employee
+                    guard: "is_granted('ROLE_SITE_EMPLOYEE')"
 
                 approve_by_employee:
-                    from: pending_hw_employee
+                    from: pending_hq_employee
                     to: pending_manager
                     guard: "is_granted('ROLE_HQ_EMPLOYEE')"
 
@@ -41,7 +37,7 @@ framework:
 
                 reject:
                     from:
-                        - pending_hw_employee
+                        - pending_hq_employee
                         - pending_manager
                         - pending_admin
                     to: rejected

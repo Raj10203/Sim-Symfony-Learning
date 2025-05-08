@@ -3,13 +3,12 @@
 namespace App\Security\Voter;
 
 use App\Entity\User;
-use App\Enum\Stock\StockRequestItemsStatus;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class StockRequestVoter extends Voter
+final class StockRequestItemsVoter extends Voter
 {
     public const EDIT = 'EDIT';
     public const VIEW = 'VIEW';
@@ -21,8 +20,10 @@ final class StockRequestVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::EDIT, self::VIEW, self::DELETE])
-            && $subject instanceof \App\Entity\StockRequest;
+        // replace with your own logic
+        // https://symfony.com/doc/current/security/voters.html
+        return in_array($attribute, [self::EDIT, self::VIEW])
+            && $subject instanceof \App\Entity\StockRequestItems;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -34,7 +35,7 @@ final class StockRequestVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof \App\Entity\StockRequest) {
+        if (!$subject instanceof \App\Entity\StockRequestItems) {
             return false;
         }
         if ($this->security->isGranted('ROLE_ADMIN')
@@ -44,9 +45,11 @@ final class StockRequestVoter extends Voter
         }
 
         return match ($attribute) {
-            self::DELETE, self::EDIT => ($subject->getToSite() === $user->getSite() &&
-                $subject->getStatus() == StockRequestItemsStatus::Draft->value),
-            self::VIEW => ($subject->getToSite() === $user->getSite() || $subject->getFromSite() === $user->getSite()),
+            self::DELETE, self::EDIT => ($subject->getStockRequest()->getToSite() === $user->getSite() &&
+                $subject->getStockRequest()->getStatus() == 'draft'),
+            self::VIEW => ($subject->getStockRequest()->getToSite() === $user->getSite()
+                || $subject->getStockRequest()->getFromSite() === $user->getSite
+                ()),
             default => false,
         };
     }

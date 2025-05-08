@@ -2,7 +2,7 @@
 
 namespace App\Enum\Stock;
 
-enum StockRequestStatus: string
+enum StockRequestItemsStatus: string
 {
     case Draft = 'draft';
     case Pending = 'pending';

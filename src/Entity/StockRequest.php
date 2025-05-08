@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use App\Enum\Stock\StockRequestStatus;
 use App\Repository\StockRequestRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 #[ORM\Entity(repositoryClass: StockRequestRepository::class)]
 class StockRequest
@@ -126,7 +124,7 @@ class StockRequest
     {
         if (!$this->stockRequestItems->contains($stockRequestItem)) {
             $this->stockRequestItems->add($stockRequestItem);
-            $stockRequestItem->setstockRequest($this);
+            $stockRequestItem->setStockRequest($this);
         }
 
         return $this;
@@ -136,7 +134,7 @@ class StockRequest
     {
         if ($this->stockRequestItems->removeElement($stockRequestItem)) {
             if ($stockRequestItem->getstockRequest() === $this) {
-                $stockRequestItem->setstockRequest(null);
+                $stockRequestItem->setStockRequest(null);
             }
         }
         return $this;

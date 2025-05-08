@@ -1,12 +1,12 @@
 parameters:
-    cache_adepter: 'cache.adapter.filesystem'
+    cache_adepter: 'cache.adapter.redis'
 
 framework:
     cache:
         # Unique name of your app: used to compute stable namespaces for cache keys.
         #prefix_seed: your_vendor_name/app_name
 
-        # The "app" cache stores to the filesystem by default.
+        # The "app" cache stores to the redis by default.
         # The data in this cache should persist between deploys.
         # Other options include:
 
@@ -23,4 +23,4 @@ framework:
 
 when@dev:
     parameters:
-        cache_adepter: 'cache.adapter.filesystem'
+        cache_adepter: 'cache.adapter.redis'

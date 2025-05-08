@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Products;
 use App\Entity\StockRequest;
 use App\Entity\StockRequestItems;
-use App\Enum\Stock\StockRequestStatus;
+use App\Enum\Stock\StockRequestItemsStatus;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -42,7 +42,7 @@ class StockRequestItemsType extends AbstractType
                 ]
             ])
             ->add('status', EnumType::class, [
-                'class' => StockRequestStatus::class,
+                'class' => StockRequestItemsStatus::class,
                 'attr' => [
                     'class' => 'select2-dropdown-single',
                 ]

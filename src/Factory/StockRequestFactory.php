@@ -3,7 +3,6 @@
 namespace App\Factory;
 
 use App\Entity\StockRequest;
-use App\Enum\Stock\StockRequestStatus;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -36,7 +35,7 @@ final class StockRequestFactory extends PersistentProxyObjectFactory
             'createdAt' => self::faker()->dateTime(),
             'fromSite' => SitesFactory::random(),
             'requestedBy' => UserFactory::random(),
-            'status' => self::faker()->randomElement(['draft', 'pending_hw_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected']),
+            'status' => self::faker()->randomElement(['draft', 'pending_hq_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected']),
             'toSite' => SitesFactory::random(),
             'updatedAt' => self::faker()->dateTime(),
         ];

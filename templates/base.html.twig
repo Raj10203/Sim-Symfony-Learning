@@ -39,21 +39,24 @@
     <script src="{{ asset('bundles/sneat/assets/js/config.js') }}"></script>
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                $('#footer-year').text(new Date().getFullYear());
-                $('#{{ current_page ?? 'aside-menu-dashboard' }}').addClass('active');
-            });
-            {% for message in app.flashes('notice') %}
-            Swal.fire({
-                text: `You do not have permission to access this page.`,
-                icon: 'error',
-            })
-            {% endfor %}
-        </script>
+
     {% endblock %}
     {% block additional_js %}
     {% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#footer-year').text(new Date().getFullYear());
+            $('#{{ current_page ?? 'aside-menu-dashboard' }}').addClass('active');
+            {% for label, messages in app.flashes %}
+            {% for message in messages %}
+            Swal.fire({
+                text: {{ message|json_encode|raw }},
+                icon: {{ label|json_encode|raw }},
+            });
+            {% endfor %}
+            {% endfor %}
+        });
+    </script>
 </head>
 
 <body>

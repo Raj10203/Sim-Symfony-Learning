@@ -6,6 +6,16 @@
 
 {% block additional_js %}
     {{ include('partials/active_menu_script.html.twig') }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('.edit-item').click(function (e) {
+                const approved = $(this).data('approved');
+                const input = $('<input type="number" class="form-control" />').val(approved);
+                $('#td-' + this.dataset.id).html(input);
+                $(this).html("<i class='bx bxs-check-circle'></i>");
+            })
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -14,18 +24,22 @@
     </h3>
 
     <div class="card pb-5">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex">
             <h5 class="mb-0">Request's Info</h5>
-            <span>Request Id:- {{ stock_request.id }}</span>
-            <span>Requested By:- {{ stock_request.requestedBy.email }}</span>
-            <a class="btn btn-secondary" href="{{ path('app_stock_request_index') }}">
+            <a class="btn btn-secondary ms-auto" href="{{ path('app_stock_request_index') }}">
                 <i class="bx bx-arrow-back me-0 me-sm-1"></i>
-                Back To List
+                <span class="d-none d-sm-inline-block">Back To List</span>
             </a>
         </div>
-        <div class="my-2 d-flex">
-            {{ include('stock_request/_form.html.twig') }}
-{#            {{ include('stock_request/_wf_transitions,html.twig') }}#}
+        <div class="container-fluid">
+            <div class="my-2 d-flex flex-wrap justify-content-between align-items-center">
+                <span>Request Id:- {{ stock_request.id }}</span>
+                <span>Requested By:- {{ stock_request.requestedBy.email }}</span>
+                <span>Status:- {{ stock_request.status }}</span>
+            </div>
+            <div class="my-2 d-flex">
+                {{ include('stock_request/_form.html.twig') }}
+            </div>
         </div>
     </div>
 
@@ -56,7 +70,6 @@
                         <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Stock Request Id</th>
                             <th>Quantity Requested</th>
                             <th>Quantity Approved</th>
                             <th>Product</th>
@@ -70,16 +83,35 @@
                         {% for stock_request_item in stock_request_items %}
                             <tr>
                                 <td>{{ stock_request_item.id }}</td>
-                                <td>{{ stock_request_item.stockRequest.id }}</td>
                                 <td>{{ stock_request_item.quantityRequested }}</td>
-                                <td>{{ stock_request_item.quantityApproved }}</td>
+                                <td id="td-{{ stock_request_item.id }}">{{ stock_request_item.quantityApproved }}</td>
                                 <td>{{ stock_request_item.product.name }}</td>
                                 <td>{{ stock_request_item.status.value }}</td>
                                 <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td>{{ stock_request_item.updatedAt ? stock_request_item.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td>
-                                    <a href="{{ path('app_stock_request_items_show', {'id': stock_request_item.id}) }}">show</a>
-                                    <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item.id}) }}">edit</a>
+                                    <a href="{{ path('app_stock_request_items_show', {'id': stock_request_item.id}) }}"
+                                       class="btn btn-primary">
+                                        <i class="bx bx-show-alt"></i>
+                                    </a>
+                                    {% if is_granted('ROLE_STOCK_REQUEST_REVIEWER') %}
+                                        <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item
+                                        .id}) }}" id="{{ stock_request_item.id }}" class="edit-item">edit</a>
+                                        <button
+                                                id="edit-item-{{ stock_request_item.id }}"
+                                                class="edit-item btn btn-success"
+                                                data-id = "{{ stock_request_item.id }}"
+                                                data-approved="{{ stock_request_item.quantityApproved }}">
+                                            <i class="bx bxs-edit"></i>
+                                        </button>
+                                    {% endif %}
+                                    <button
+                                            id="delete-item-{{ stock_request_item.id }}"
+                                            data-id="{{ stock_request_item.id }}"
+                                            class="delete-item btn btn-danger"
+                                            data-approved="{{ stock_request_item.quantityApproved }}">
+                                        <i class="bx bxs-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                         {% else %}

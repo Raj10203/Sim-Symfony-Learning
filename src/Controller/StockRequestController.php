@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Products;
 use App\Entity\Sites;
 use App\Entity\StockRequest;
 use App\Entity\StockRequestItems;
-use App\Enum\Stock\StockRequestStatus;
-use App\Form\ProductsType;
 use App\Form\StockRequestItemsType;
 use App\Form\StockRequestType;
 use App\Repository\StockRequestItemsRepository;
@@ -33,18 +30,23 @@ final class StockRequestController extends AbstractController
     }
 
     #[Route('/new', name: 'app_stock_request_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, StockRequestRepository $stockRequestRepository): Response
+    public function new(
+        Request                $request,
+        EntityManagerInterface $entityManager,
+        StockRequestRepository $stockRequestRepository
+    ): Response
     {
         $draft = $stockRequestRepository->getDraftStockRequestIdByUser();
 
         if ($draft) {
             return $this->redirectToRoute('app_stock_request_edit', ['id' => $draft]);
         }
+
         $stockRequest = new StockRequest();
         $form = $this->createForm(StockRequestType::class, $stockRequest);
 
         //set default values to stock request
-        $headquarterSite = $entityManager->getRepository(Sites::class)->findOneBy(['id' => 1]);
+        $headquarterSite = $entityManager->getRepository(Sites::class)->findOneBy(['name' => 'Headquarters']);
         $stockRequest->setRequestedBy($this->getUser());
         $stockRequest->setToSite($this->getUser()->getSite());
         $stockRequest->setFromSite($headquarterSite);
@@ -69,16 +71,21 @@ final class StockRequestController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_stock_request_edit', methods: ['GET', 'POST'])]
-    public function edit(Request                     $request, StockRequest $stockRequest, EntityManagerInterface $entityManager,
-                         StockRequestItemsRepository $stockRequestItemsRepository, Registry $workflowRegistry): Response
+    public function edit(
+        Request                     $request,
+        StockRequest                $stockRequest,
+        EntityManagerInterface      $entityManager,
+        StockRequestItemsRepository $stockRequestItemsRepository,
+        Registry                    $workflowRegistry
+    ): Response
     {
         // Access control
         $this->denyAccessUnlessGranted('EDIT', $stockRequest);
 
         // Stock request form
-        $isStockRequestReviewer = $this->isGranted('ROLE_STOCK_REQUEST_REVIEWER');
+        $isStockRequestReviewer = $this->isGranted('EDIT', $stockRequest);
         $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest, [
-            'isStockRequestReviewer' => $isStockRequestReviewer,
+            'editable' => $isStockRequestReviewer,
         ]);
 
         // Stock request item form
@@ -114,9 +121,9 @@ final class StockRequestController extends AbstractController
             // Redirect to self
             return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
         }
-
         return $this->render('stock_request/edit.html.twig', [
             'stock_request' => $stockRequest,
+            'stock_request_item' => $stockRequestItem,
             'stock_request_form' => $stockRequestForm->createView(),
             'stock_request_items_form' => $stockRequestItemForm->createView(),
             'stock_request_items' => $stockRequestItemsRepository->findBy(['stockRequest' => $stockRequest]),
@@ -125,7 +132,11 @@ final class StockRequestController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_stock_request_delete', methods: ['POST'])]
-    public function delete(Request $request, StockRequest $stockRequest, EntityManagerInterface $entityManager): Response
+    public function delete(
+        Request                $request,
+        StockRequest           $stockRequest,
+        EntityManagerInterface $entityManager
+    ): Response
     {
         $this->denyAccessUnlessGranted('DELETE', $stockRequest);
         if ($this->isCsrfTokenValid('delete' . $stockRequest->getId(), $request->getPayload()->getString('_token'))) {
@@ -138,12 +149,13 @@ final class StockRequestController extends AbstractController
 
     #[Route('/{id}/transition/{transition}', name: 'app_stock_request_transition', methods: ['GET'])]
     public function transition(
-        string $transition,
-        Request $request,
-        StockRequest $stockRequest,
-        Registry $workflowRegistry,
+        string                 $transition,
+        Request                $request,
+        StockRequest           $stockRequest,
+        Registry               $workflowRegistry,
         EntityManagerInterface $entityManager
-    ): Response {
+    ): Response
+    {
         $this->denyAccessUnlessGranted('EDIT', $stockRequest);
 
         $token = $request->query->get('_token');
@@ -162,17 +174,16 @@ final class StockRequestController extends AbstractController
             // Admin override: set the state directly
             $reflection = new \ReflectionObject($stockRequest);
             $property = $reflection->getProperty('status');
-            $property->setAccessible(true);
             $property->setValue($stockRequest, $transition);
-            $message = "Admin override: moved directly to '$transition'.";
+            $message = "Admin override: status of stock request id " . $stockRequest->getId() . " moved directly to '$transition'.";
         } else {
             $this->addFlash('error', "Transition '$transition' is not allowed.");
-            return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
+            return $this->redirectToRoute('app_stock_request_index');
         }
 
         $entityManager->flush();
         $this->addFlash('success', $message);
 
-        return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequest->getId()]);
+        return $this->redirectToRoute('app_stock_request_index');
     }
 }
