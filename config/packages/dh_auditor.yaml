@@ -1,0 +1,24 @@
+# Full configuration reference available at:
+# https://damienharper.github.io/auditor-docs/docs/auditor-bundle/configuration/reference.html
+dh_auditor:
+    enabled: true
+    timezone: 'Asia/Kolkata'
+    providers:
+        doctrine:
+            table_prefix: null
+            table_suffix: '_audit'
+            entities:
+                App\Entity\Categories:
+                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                App\Entity\Products:
+                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                App\Entity\Sites:
+                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                App\Entity\StockRequest:
+                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                App\Entity\StockRequestItems:
+                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                App\Entity\User:
+                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+
+
