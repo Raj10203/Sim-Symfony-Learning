@@ -71,16 +71,22 @@ final class StockRequestItemsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_stock_request_items_delete', methods: ['POST'])]
-    public function delete(Request $request, StockRequestItems $stockRequestItem, EntityManagerInterface $entityManager): Response
+    public function delete(
+        Request                $request,
+        StockRequestItems           $stockRequestItems,
+        EntityManagerInterface $entityManager
+    ): Response
     {
-        if (!$this->isGranted('DELETE', $stockRequestItem)) {
-            $this->addFlash('error', 'Access denied.');
-            return new JsonResponse(['status' => 'error', 'message' => 'Access Denied.'], 403);
+        $stockRequest = $stockRequestItems->getStockRequest();
+        $this->denyAccessUnlessGranted('DELETE', $stockRequestItems);
+        if ($this->isCsrfTokenValid('delete' . $stockRequestItems->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($stockRequestItems);
+            $entityManager->flush();
         }
-        $entityManager->remove($stockRequestItem);
-        $entityManager->flush();
-        $this->addFlash('success', 'Stock request item deleted.');
-        return new JsonResponse(['status' => 'success', 'message' => 'Stock request item deleted successfully.']);
+
+        return $this->redirectToRoute('app_stock_request_edit', [
+            'id' => $stockRequest->getId(),
+        ], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/update', name: 'app_stock_request_item_update', methods: ['POST'])]

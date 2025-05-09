@@ -11,10 +11,10 @@
             $('.update-item').hide().click(function (e) {
                 $(this).hide();
                 const id = this.dataset.id;
-                let approvedQuantity =  $('#update-item-input-' + id).val();
+                let approvedQuantity = $('#update-item-input-' + id).val();
                 $('#edit-item-' + this.dataset.id).show().data('approved', approvedQuantity);
                 console.log(approvedQuantity);
-                $('#td-' + this.dataset.id).html( approvedQuantity);
+                $('#td-' + this.dataset.id).html(approvedQuantity);
 
                 $.ajax({
                     url: '{{ path('app_stock_request_item_update', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
@@ -38,14 +38,6 @@
                 $('#td-' + this.dataset.id).html(input);
                 $(this).hide();
                 $('#update-item-' + this.dataset.id).show();
-            })
-            $('.delete-item').click(function () {
-                const id = this.dataset.id;
-                $.ajax({
-                    url: '{{ path('app_stock_request_items_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
-                    type: 'POST',
-                });
-                location.reload();
             })
         });
     </script>
@@ -113,7 +105,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for stock_request_item in stock_request_items %}
+                        {% for stock_request_item in stock_request.stockRequestItems %}
                             <tr>
                                 <td>{{ stock_request_item.id }}</td>
                                 <td>{{ stock_request_item.quantityRequested }}</td>
@@ -122,40 +114,45 @@
                                 <td>{{ stock_request_item.status.value }}</td>
                                 <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td>{{ stock_request_item.updatedAt ? stock_request_item.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                                <td>
+                                <td class="d-flex">
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item
-                                        .id}) }}" id="{{ stock_request_item.id }}" class="btn btn-warning">Advance
-                                            Edit</a>
+                                        .id}) }}" id="{{ stock_request_item.id }}" class="btn btn-warning m-1">
+                                            <i class="bx bx-edit"></i>
+                                        </a>
                                     {% else %}
                                         <a href="{{ path('app_stock_request_items_show', {'id': stock_request_item.id}) }}"
-                                           class="btn btn-primary">
+                                           class="btn btn-primary m-1">
                                             <i class="bx bx-show-alt"></i>
                                         </a>
                                     {% endif %}
                                     {% if is_granted('ROLE_STOCK_REQUEST_REVIEWER') %}
                                         <button
                                                 id="edit-item-{{ stock_request_item.id }}"
-                                                class="edit-item btn btn-success"
+                                                class="edit-item btn btn-success m-1"
                                                 data-id="{{ stock_request_item.id }}"
                                                 data-approved="{{ stock_request_item.quantityApproved }}">
-                                            <i class="bx bxs-edit"></i>
+                                            <i class="bx bxs-pencil"></i>
                                         </button>
                                         <button
                                                 id="update-item-{{ stock_request_item.id }}"
-                                                class="update-item btn btn-success"
+                                                class="update-item btn btn-success m-1"
                                                 data-id="{{ stock_request_item.id }}"
                                                 data-approved="{{ stock_request_item.quantityApproved }}">
                                             <i class='bx bxs-check-circle'></i>
                                         </button>
                                     {% endif %}
-                                    <button
-                                            id="delete-item-{{ stock_request_item.id }}"
-                                            data-id="{{ stock_request_item.id }}"
-                                            class="delete-item btn btn-danger"
-                                            data-approved="{{ stock_request_item.quantityApproved }}">
-                                        <i class="bx bxs-trash"></i>
-                                    </button>
+                                    <form method="post" action="{{ path('app_stock_request_items_delete', {'id':
+                                        stock_request_item.id}) }}" id="delete_stock_request_item"
+                                          class="delete-form  p-1" data-product-name="{{ stock_request_item.product
+                                    .name|default
+                                        ('this item') }}">
+                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('delete' ~ stock_request_item.id) }}">
+                                        <button type="submit" class="btn btn-danger h-100"><i class="bx
+                                        bxs-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         {% else %}

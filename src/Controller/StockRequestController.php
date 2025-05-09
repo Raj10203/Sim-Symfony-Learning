@@ -7,7 +7,6 @@ use App\Entity\StockRequest;
 use App\Entity\StockRequestItems;
 use App\Form\StockRequestItemsType;
 use App\Form\StockRequestType;
-use App\Repository\StockRequestItemsRepository;
 use App\Repository\StockRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -72,11 +71,10 @@ final class StockRequestController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_stock_request_edit', methods: ['GET', 'POST'])]
     public function edit(
-        Request                     $request,
-        StockRequest                $stockRequest,
-        EntityManagerInterface      $entityManager,
-        StockRequestItemsRepository $stockRequestItemsRepository,
-        Registry                    $workflowRegistry
+        Request                $request,
+        StockRequest           $stockRequest,
+        EntityManagerInterface $entityManager,
+        Registry               $workflowRegistry
     ): Response
     {
         // Access control
@@ -123,10 +121,8 @@ final class StockRequestController extends AbstractController
         }
         return $this->render('stock_request/edit.html.twig', [
             'stock_request' => $stockRequest,
-            'stock_request_item' => $stockRequestItem,
             'stock_request_form' => $stockRequestForm->createView(),
             'stock_request_items_form' => $stockRequestItemForm->createView(),
-            'stock_request_items' => $stockRequestItemsRepository->findBy(['stockRequest' => $stockRequest]),
             'transitions' => $availableTransitions,
         ]);
     }
