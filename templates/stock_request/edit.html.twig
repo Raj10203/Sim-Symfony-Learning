@@ -100,7 +100,6 @@
                             <th>Product</th>
                             <th>Status</th>
                             <th>CreatedAt</th>
-                            <th>UpdatedAt</th>
                             <th>actions</th>
                         </tr>
                         </thead>
@@ -113,7 +112,6 @@
                                 <td>{{ stock_request_item.product.name }}</td>
                                 <td>{{ stock_request_item.status.value }}</td>
                                 <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                                <td>{{ stock_request_item.updatedAt ? stock_request_item.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td class="d-flex">
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item

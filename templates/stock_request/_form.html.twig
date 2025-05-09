@@ -1,17 +1,20 @@
 <div class="w-100">
     {{ form_start(stock_request_form) }}
     <div class="row">
-        {% for field in stock_request_form %}
-            {% if field.vars.name != '_token' %}
-                <div class="col-md-4 col-12 mb-3">
-                    <div class="form-group">
-                        {{ form_row(field) }}
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
-
-        <div class="d-flex flex-wrap col-md-4 col-12 mb-3 align-items-end">
+        <div class="col-md-5 col-12 mb-3 row">
+            <div class="col-12">
+                {{ form_row(stock_request_form.fromSite) }}
+            </div>
+            <div class="col-12">
+                {{ form_row(stock_request_form.toSite) }}
+            </div>
+        </div>
+        <div class="col-md-5 col-12 mb-3">
+            <div>
+                {{ form_row(stock_request_form.remarks) }}
+            </div>
+        </div>
+        <div class="d-flex flex-wrap col-md-2 col-12 mb-3 align-items-end">
             <div class="d-none">
                 {{ form_widget(stock_request_form._token) }}
             </div>
@@ -26,6 +29,15 @@
                 {{ include('stock_request/_wf_transitions,html.twig') }}
             </div>
         </div>
+{#        {% for field in stock_request_form %}#}
+{#            {% if field.vars.name != '_token' %}#}
+{#                <div class="col-md-4 col-12 mb-3">#}
+{#                    <div class="form-group">#}
+{#                        {{ form_row(field) }}#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
     </div>
 </div>
 

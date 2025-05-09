@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\StockRequestRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -42,6 +43,9 @@ class StockRequest
      */
     #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'stockRequest', orphanRemoval: true)]
     private Collection $stockRequestItems;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $remarks = null;
 
     public function __construct()
     {
@@ -137,6 +141,18 @@ class StockRequest
                 $stockRequestItem->setStockRequest(null);
             }
         }
+        return $this;
+    }
+
+    public function getRemarks(): ?string
+    {
+        return $this->remarks;
+    }
+
+    public function setRemarks(?string $remarks): static
+    {
+        $this->remarks = $remarks;
+
         return $this;
     }
 }

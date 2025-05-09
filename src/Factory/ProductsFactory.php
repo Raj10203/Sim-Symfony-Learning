@@ -35,7 +35,7 @@ final class ProductsFactory extends PersistentProxyObjectFactory
             'active' => self::faker()->boolean(),
             'category' => CategoriesFactory::random(),
             'createdAt' => self::faker()->dateTime(),
-            'description' => self::faker()->text(),
+            'description' => self::faker()->streetName(),
             'name' => self::faker()->firstName(),
             'updatedAt' => self::faker()->dateTime(),
         ];
