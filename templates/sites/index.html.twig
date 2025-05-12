@@ -28,7 +28,6 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Address</th>
-                    <th>Location</th>
                     <th>Active</th>
                     <th>CreatedAt</th>
                     <th>UpdatedAt</th>
@@ -39,14 +38,13 @@
                 {% for site in sites %}
                     <tr>
                         <td>{{ site.id }}</td>
-                        <td>{{ site.name }}</td>
-                        <td class="text-wrap"> {{ site.address|length > 50 ? site.address[:47] ~ "..." : site
-                            .address }}</td>
                         <td class="text-wrap">
                             <a href="{{ site.location }}" target="_blank">
                                 {{ site.name }}
                             </a>
                         </td>
+                        <td class="text-wrap"> {{ site.address|length > 50 ? site.address[:47] ~ "..." : site
+                            .address }}</td>
                         <td>{{ site.active ? 'Yes' : 'No' }}</td>
                         <td>{{ site.createdAt ? site.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                         <td>{{ site.updatedAt ? site.updatedAt|date('Y-m-d H:i:s') : '' }}</td>

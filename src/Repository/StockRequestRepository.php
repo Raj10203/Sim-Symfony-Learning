@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\StockRequest;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -41,9 +42,9 @@ class StockRequestRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return StockRequest Returns an boolean that represent active draft or note
+     * @return QueryBuilder Returns an boolean that represent active draft or note
      */
-    public function getActiveStockRequests(): array
+    public function createActiveStockRequestsQueryBuilder(): QueryBuilder
     {
         $user = $this->security->getUser();
 
@@ -55,9 +56,7 @@ class StockRequestRepository extends ServiceEntityRepository
                 ->addSelect('fs', 'ts') // Eager load both sites
                 ->andWhere('sr.status NOT IN (:statuses)')
                 ->setParameter('statuses', ['rejected', 'fulfilled'])
-                ->orderBy('sr.id', 'DESC')
-                ->getQuery()
-                ->getResult();
+                ->orderBy('sr.id', 'DESC');
         }
 
         return $this->createQueryBuilder('sr')
@@ -69,9 +68,7 @@ class StockRequestRepository extends ServiceEntityRepository
             ->setParameter('statuses', ['rejected', 'fulfilled'])
             ->setParameter('user', $user->getId())
             ->setParameter('site', $user->getSite())
-            ->orderBy('sr.id', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('sr.id', 'DESC');
     }
 
 //    public function findOneBySomeField($value): ?StockRequest

@@ -17,42 +17,48 @@ class AppFixtures extends Fixture
     {
         // $product = new Product();
         // $manager->persist($product);
-        $headquarters = SitesFactory::createOne(['name'=>'Headquarters']);
-        $adani = SitesFactory::createOne(['name'=>'Adani']);
-        UserFactory::createOne([
-            'email'=>'admin@example.com',
-            'password'=>'$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
-            'roles'=>['ROLE_ADMIN'],
-            'site'=>$headquarters
+        $headquarters = SitesFactory::createOne([
+            'name' => 'Headquarters',
+            'location' => 'https://maps.app.goo.gl/bttWR6EpBGvgccS89'
+        ]);
+        $adani = SitesFactory::createOne([
+            'name' => 'Adani',
+            'location' => 'https://maps.app.goo.gl/bttWR6EpBGvgccS89'
         ]);
         UserFactory::createOne([
-            'email'=>'hq_manager@example.com',
-            'password'=>'$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
-            'roles'=>['ROLE_HQ_MANAGER'],
+            'email' => 'admin@example.com',
+            'password' => '$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
+            'roles' => ['ROLE_ADMIN'],
             'site' => $headquarters
         ]);
         UserFactory::createOne([
-            'email'=>'hq_employee@example.com',
-            'password'=>'$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
-            'roles'=>['ROLE_HQ_EMPLOYEE'],
+            'email' => 'hq_manager@example.com',
+            'password' => '$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
+            'roles' => ['ROLE_HQ_MANAGER'],
             'site' => $headquarters
         ]);
         UserFactory::createOne([
-            'email'=>'site_manager@example.com',
-            'password'=>'$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
-            'roles'=>['ROLE_SITE_MANAGER'],
+            'email' => 'hq_employee@example.com',
+            'password' => '$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
+            'roles' => ['ROLE_HQ_EMPLOYEE'],
+            'site' => $headquarters
+        ]);
+        UserFactory::createOne([
+            'email' => 'site_manager@example.com',
+            'password' => '$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
+            'roles' => ['ROLE_SITE_MANAGER'],
             'site' => $adani
         ]);
         UserFactory::createOne([
-            'email'=>'site_employee@example.com',
-            'password'=>'$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
-            'roles'=>['ROLE_SITE_EMPLOYEE'],
+            'email' => 'site_employee@example.com',
+            'password' => '$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',
+            'roles' => ['ROLE_SITE_EMPLOYEE'],
             'site' => $adani
         ]);
         CategoriesFactory::createMany(10);
         ProductsFactory::createMany(20);
-        StockRequestFactory::createMany(5);
-        StockRequestItemsFactory::createMany(100);
+        StockRequestFactory::createMany(50);
+        StockRequestItemsFactory::createMany(500);
         $manager->flush();
     }
 }

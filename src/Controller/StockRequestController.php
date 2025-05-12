@@ -9,6 +9,8 @@ use App\Form\StockRequestItemsType;
 use App\Form\StockRequestType;
 use App\Repository\StockRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,10 +23,16 @@ use Symfony\Component\Workflow\Registry;
 final class StockRequestController extends AbstractController
 {
     #[Route(name: 'app_stock_request_index', methods: ['GET'])]
-    public function index(StockRequestRepository $stockRequestRepository): Response
+    public function index(StockRequestRepository $stockRequestRepository, Request $request): Response
     {
+        $queryBuilder = $stockRequestRepository->createActiveStockRequestsQueryBuilder();
+        $pagerfanta = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+        $pagerfanta->setMaxPerPage(5);
+        $pagerfanta->setCurrentPage($request->query->get('page', 1));
         return $this->render('stock_request/index.html.twig', [
-            'stock_requests' => $stockRequestRepository->getActiveStockRequests()
+            'stock_requests' => $pagerfanta
         ]);
     }
 

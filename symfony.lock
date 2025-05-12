@@ -1,4 +1,7 @@
 {
+    "babdev/pagerfanta-bundle": {
+        "version": "v4.5.0"
+    },
     "damienharper/auditor-bundle": {
         "version": "6.2",
         "recipe": {
