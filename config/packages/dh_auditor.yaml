@@ -9,16 +9,31 @@ dh_auditor:
             table_suffix: '_audit'
             entities:
                 App\Entity\Categories:
-                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
                 App\Entity\Products:
-                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
                 App\Entity\Sites:
-                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
                 App\Entity\StockRequest:
-                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
                 App\Entity\StockRequestItems:
-                    ignore_fields: [ 'updatedAt', 'createdAt' ]
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
                 App\Entity\User:
-                    ignore_fields: [ 'updatedAt', 'createdAt' ]
-
-
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt

@@ -31,7 +31,10 @@ final class StockRequestController extends AbstractController
         $paginator = $this->paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 10)
+            $request->query->getInt('limit', 10),
+            [
+                'pageRange' => 3
+            ]
         );
 
         return $this->render('stock_request/index.html.twig', [
