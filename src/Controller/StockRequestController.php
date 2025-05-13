@@ -9,8 +9,7 @@ use App\Form\StockRequestItemsType;
 use App\Form\StockRequestType;
 use App\Repository\StockRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Pagerfanta\Doctrine\ORM\QueryAdapter;
-use Pagerfanta\Pagerfanta;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,17 +21,21 @@ use Symfony\Component\Workflow\Registry;
 #[isGranted('IS_AUTHENTICATED_REMEMBERED')]
 final class StockRequestController extends AbstractController
 {
+    public function __construct(private PaginatorInterface $paginator ) {
+    }
     #[Route(name: 'app_stock_request_index', methods: ['GET'])]
     public function index(StockRequestRepository $stockRequestRepository, Request $request): Response
     {
         $queryBuilder = $stockRequestRepository->createActiveStockRequestsQueryBuilder();
-        $pagerfanta = new Pagerfanta(
-            new QueryAdapter($queryBuilder)
+
+        $paginator = $this->paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 10)
         );
-        $pagerfanta->setMaxPerPage(5);
-        $pagerfanta->setCurrentPage($request->query->get('page', 1));
+
         return $this->render('stock_request/index.html.twig', [
-            'stock_requests' => $pagerfanta
+            'stock_requests' => $paginator
         ]);
     }
 
@@ -120,7 +123,7 @@ final class StockRequestController extends AbstractController
         }
 
         if ($stockRequestItemForm->isSubmitted() && $stockRequestItemForm->isValid()) {
-            $stockRequestItem->setStockRequest($stockRequest);
+            $stockRequest->addStockRequestItem($stockRequestItem);
             $entityManager->persist($stockRequestItem);
             $entityManager->flush();
 

@@ -1,7 +1,4 @@
 {
-    "babdev/pagerfanta-bundle": {
-        "version": "v4.5.0"
-    },
     "damienharper/auditor-bundle": {
         "version": "6.2",
         "recipe": {
@@ -53,6 +50,9 @@
             "config/packages/doctrine_migrations.yaml",
             "migrations/.gitignore"
         ]
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v6.8.0"
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.13",

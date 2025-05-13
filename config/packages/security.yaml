@@ -20,7 +20,7 @@ security:
         ROLE_SITE_MANAGER: [
             ROLE_SITE_EMPLOYEE
         ]
-        ROLE_SITE_EMPLOYEE: []
+        ROLE_SITE_EMPLOYEE: [ ]
         ROLE_HUMAN_RESOURCES: [
             ROLE_USER_CRUD
         ]
@@ -47,6 +47,11 @@ security:
             logout:
                 path: app_auth_logout
                 target: app_auth_login
+
+            login_throttling:
+                max_attempts: 5
+                interval: '1 day'
+                lock_factory: null
 
             switch_user: true
 

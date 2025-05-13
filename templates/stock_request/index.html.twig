@@ -14,6 +14,9 @@
     </h3>
     <!-- Stock Request List Card -->
     <div class="card">
+        <div class="count">
+            {{ stock_requests.getTotalItemCount }}
+        </div>
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Stock Requests</h5>
             <a href="{{ path('app_stock_request_new') }}" class="btn btn-primary">
@@ -25,7 +28,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>{{ knp_pagination_sortable(stock_requests, 'Id', 'sr.id') }}</th>
                     <th>Status</th>
                     <th>From</th>
                     <th>To</th>
@@ -67,7 +70,9 @@
             </table>
         </div>
         <div class="mt-2 ms-2 pagination">
-            {{ pagerfanta(stock_requests) }}
+            <div class="navigation">
+                {{ knp_pagination_render(stock_requests) }}
+            </div>
         </div>
     </div>
 {% endblock %}
