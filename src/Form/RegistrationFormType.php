@@ -51,31 +51,6 @@ class RegistrationFormType extends AbstractType
                     'class' => 'select2-dropdown-single',
                 ],
             ])
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'Main Roles' => [
-                        'Admin' => 'ROLE_ADMIN',
-                        'HQ Manager' => 'ROLE_HQ_MANAGER',
-                        'HQ Employee' => 'ROLE_HQ_EMPLOYEE',
-                        'Site Manager' => 'ROLE_SITE_MANAGER',
-                        'Site Employee' => 'ROLE_SITE_EMPLOYEE',
-                        'Human Resources' => 'ROLE_HUMAN_RESOURCES',
-                    ],
-                    'Sub Roles' => [
-                        'Category' => 'ROLE_CATEGORY_CRUD',
-                        'Product' => 'ROLE_PRODUCT_CRUD',
-                        'User' => 'ROLE_USER_CRUD',
-                        'Site' => 'ROLE_SITE_CRUD',
-                    ]
-
-                ],
-                'multiple' => true,
-                'label' => 'Roles',
-                'placeholder' => 'Select a Site',
-                'attr' => [
-                    'class' => 'select2-dropdown-single',
-                ]
-            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller

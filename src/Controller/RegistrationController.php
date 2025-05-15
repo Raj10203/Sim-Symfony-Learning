@@ -7,6 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -16,11 +17,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_auth_register')]
-//    #[isGranted('ROLE_USER_CRUD')]
+    #[isGranted('ROLE_USER_CRUD')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType  ::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -32,7 +33,53 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            if(in_array('ROLE_ADMIN', $user->getRoles())){
+            if (in_array('ROLE_ADMIN', $user->getRoles())) {
+                return $this->redirectToRoute('app_user_index');
+            }
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form,
+        ]);
+    }
+
+    #[Route('/register-by-type/{type}', name: 'app_auth_register_type', requirements: ['type' => 'company|user'])]
+    public function registerByType(
+        string                      $type,
+        Request                     $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface      $entityManager
+    ): Response
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+
+        if($type === 'company') {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+            $user->setRoles(['ROLE_COMPANY', 'ROLE_USER']);
+            $form->add('CompanyName', TextType::class, [
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Company Name',
+                ]
+            ]);
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var string $plainPassword */
+            $plainPassword = $form->get('plainPassword')->getData();
+
+            // encode the plain password
+            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            if (in_array('ROLE_ADMIN', $user->getRoles())) {
                 return $this->redirectToRoute('app_user_index');
             }
             return $this->redirectToRoute('app_home');

@@ -67,6 +67,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $totpSecret = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $companyName = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -226,5 +229,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         $digits = 6;
         return null !== $this->totpSecret ? new TotpConfiguration($this->totpSecret,
             TotpConfiguration::ALGORITHM_SHA1, $period, $digits) : null;
+    }
+
+    public function getCompanyName(): ?string
+    {
+        return $this->companyName;
+    }
+
+    public function setCompanyName(?string $companyName): static
+    {
+        $this->companyName = $companyName;
+
+        return $this;
     }
 }

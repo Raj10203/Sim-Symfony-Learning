@@ -8,40 +8,12 @@
 
     {{ form_errors(registrationForm) }}
     {{ form_start(registrationForm) }}
-    <div class="form-group my-4">
-        {{ form_row(registrationForm.email) }}
-    </div>
 
-    <div class="form-group my-4">
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-    </div>
-
-    <div class="form-group my-4">
-        {{ form_row(registrationForm.firstName, {
-        }) }}
-    </div>
-
-    <div class="form-group my-4">
-        {{ form_row(registrationForm.lastName, {
-        }) }}
-    </div>
-
-    <div class="form-group my-4">
-        {{ form_label(registrationForm.site) }}
-        {{ form_widget(registrationForm.site) }}
-    </div>
-
-    <div class="form-group my-4">
-        {{ form_label(registrationForm.roles) }}
-        {{ form_widget(registrationForm.roles) }}
-    </div>
-
-    <div class="form-group my-4">
-        {{ form_label(registrationForm.active) }}
-        {{ form_widget(registrationForm.active) }}
-    </div>
+    {% for field in registrationForm %}
+        <div class="form-group my-4">
+            {{ form_row(field) }}
+        </div>
+    {% endfor %}
 
     <button class="btn btn-primary d-grid w-100">Sign up</button>
     {{ form_end(registrationForm) }}
