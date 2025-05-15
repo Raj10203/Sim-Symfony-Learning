@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_auth_register')]
-    #[isGranted('ROLE_USER_CRUD')]
+//    #[isGranted('ROLE_USER_CRUD')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -32,7 +32,10 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index');
+            if(in_array('ROLE_ADMIN', $user->getRoles())){
+                return $this->redirectToRoute('app_user_index');
+            }
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('registration/register.html.twig', [

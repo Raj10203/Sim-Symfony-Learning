@@ -44,6 +44,10 @@ security:
             custom_authenticator:
                 - App\Security\LoginAuthenticator
 
+            two_factor:
+                auth_form_path: 2fa_login
+                check_path: 2fa_login_check
+
             logout:
                 path: app_auth_logout
                 target: app_auth_login
