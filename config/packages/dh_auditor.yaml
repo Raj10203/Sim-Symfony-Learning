@@ -1,0 +1,39 @@
+# Full configuration reference available at:
+# https://damienharper.github.io/auditor-docs/docs/auditor-bundle/configuration/reference.html
+dh_auditor:
+    enabled: true
+    timezone: 'Asia/Kolkata'
+    providers:
+        doctrine:
+            table_prefix: null
+            table_suffix: '_audit'
+            entities:
+                App\Entity\Categories:
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\Products:
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\Sites:
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\StockRequest:
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\StockRequestItems:
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\User:
+                    ignored_columns: # properties ignored by the audit process
+                        - createdAt
+                        - updatedAt

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StockRequestItems index{% endblock %}
+
+{% block body %}
+    <h1>StockRequestItems index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantity_requested</th>
+                <th>Quantity_approved</th>
+                <th>Status</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock_request_item in stock_request_items %}
+            <tr>
+                <td>{{ stock_request_item.id }}</td>
+                <td>{{ stock_request_item.quantityRequested }}</td>
+                <td>{{ stock_request_item.quantityApproved }}</td>
+                <td>{{ stock_request_item.status }}</td>
+                <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ stock_request_item.updatedAt ? stock_request_item.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_stock_request_items_show', {'id': stock_request_item.id}) }}">show</a>
+                    <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stock_request_items_new') }}">Create new</a>
+{% endblock %}

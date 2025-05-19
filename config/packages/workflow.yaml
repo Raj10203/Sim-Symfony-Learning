@@ -1,0 +1,43 @@
+framework:
+    workflows:
+        stock_request_approval:
+            type: 'state_machine'
+            supports:
+                - App\Entity\StockRequest
+            marking_store:
+                type: 'method'
+                property: 'status'
+            places:
+                - draft
+                - pending_hq_employee
+                - pending_manager
+                - pending_admin
+                - approved
+                - rejected
+            transitions:
+                submit:
+                    from: draft
+                    to: pending_hq_employee
+                    guard: "is_granted('ROLE_SITE_EMPLOYEE')"
+
+                approve_by_employee:
+                    from: pending_hq_employee
+                    to: pending_manager
+                    guard: "is_granted('ROLE_HQ_EMPLOYEE')"
+
+                approve_by_manager:
+                    from: pending_manager
+                    to: pending_admin
+                    guard: "is_granted('ROLE_HQ_MANAGER')"
+
+                approve_by_admin:
+                    from: pending_admin
+                    to: approved
+                    guard: "is_granted('ROLE_ADMIN')"
+
+                reject:
+                    from:
+                        - pending_hq_employee
+                        - pending_manager
+                        - pending_admin
+                    to: rejected

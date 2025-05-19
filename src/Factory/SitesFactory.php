@@ -32,10 +32,11 @@ final class SitesFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'active' => self::faker()->boolean(),
+            'active' => 1,
             'address' => self::faker()->address(),
             'createdAt' => self::faker()->dateTime(),
-            'location' => self::faker()->text(255),
+            'location' => "https://www.google.com/maps?q=" . self::faker()->longitude(8,35) . ","
+                . self::faker()->latitude(68,93),
             'name' => self::faker()->word(),
             'updatedAt' => self::faker()->dateTime(),
         ];
@@ -46,8 +47,7 @@ final class SitesFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Sites $sites): void {})
-        ;
+        return $this// ->afterInstantiate(function(Sites $sites): void {})
+            ;
     }
 }

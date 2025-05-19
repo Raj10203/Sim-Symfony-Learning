@@ -1,0 +1,33 @@
+{% set all_places = ['draft', 'pending_hq_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected'] %}
+
+{% set is_admin = is_granted('ROLE_ADMIN') %}
+{% set transition_list = is_admin ? all_places : transitions|map(t => t.name) %}
+
+<div class="dropdown">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="transitionDropdown"
+            data-bs-toggle="dropdown" aria-expanded="false">
+        <span>Actions</span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="transitionDropdown">
+        {% if transition_list|length < 1 %}
+            <li class="dropdown-item">
+                No Transition allowed!
+            </li>
+        {% endif %}
+        {% for name in transition_list %}
+            <li>
+                <a class="dropdown-item"
+                   href="{{ path('app_stock_request_transition', {
+                       id: stock_request.id,
+                       transition: name,
+                       _token: csrf_token('transition_' ~ name)
+                   }) }}">
+                    {{ name|replace({'_': ' '})|title }}
+                    {% if is_admin and name not in transitions|map(t => t.name) %}
+                        <small class="text-muted">(override)</small>
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

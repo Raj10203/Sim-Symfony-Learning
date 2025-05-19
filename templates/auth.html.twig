@@ -44,6 +44,7 @@
 </head>
 
 <body>
+{% block body %}
 <!-- Content -->
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
@@ -57,6 +58,8 @@
 {#                            <img id="logo" src="{{ asset('bundles/sneat/assets/img/avatars/mitarsh-logo.png') }}"#}
 {#                                 alt="Logo"#}
 {#                                 class="img-fluid">#}
+                            <img src="{{ asset('bundles/sneat/assets/img/illustrations/man-with-laptop.png') }}" alt="logo"
+                                 class="img-fluid m-2" height="100" width="100">
                         </a>
                     </div>
                     <!-- Content block -->
@@ -67,5 +70,6 @@
         </div>
     </div>
 </div>
+{% endblock %}
 </body>
 </html>

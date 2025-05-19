@@ -21,7 +21,7 @@ final class ProductsController extends AbstractController
     public function index(ProductsRepository $productsRepository): Response
     {
         return $this->render('products/index.html.twig', [
-            'products' => $productsRepository->findAllActive(),
+            'products' => $productsRepository->findAll(),
         ]);
     }
 
@@ -69,17 +69,5 @@ final class ProductsController extends AbstractController
             'product' => $product,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/{id}', name: 'app_products_delete', methods: ['POST'])]
-    public function delete(Request $request, Products $product, EntityManagerInterface $entityManager, CacheInterface $cache): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->getPayload()->getString('_token'))) {
-            $product->setDeletedAt(new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata')));
-            $entityManager->flush();
-        }
-        $cache->delete('products');
-
-        return $this->redirectToRoute('app_products_index', [], Response::HTTP_SEE_OTHER);
     }
 }

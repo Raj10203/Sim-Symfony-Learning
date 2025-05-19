@@ -32,7 +32,7 @@ class ProductsType extends AbstractType
                 'label' => 'Category',
                 'placeholder' => 'Select category',
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'select2-dropdown-single',
                 ],
             ])
             ->add('active', ChoiceType::class, [
@@ -45,7 +45,7 @@ class ProductsType extends AbstractType
                 'label' => 'Status',
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-select',
+                    'class' => 'select2-dropdown-single',
                 ]
             ]);
     }
@@ -54,6 +54,7 @@ class ProductsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Products::class,
+            'csrf_token_id' => 'products_token',
         ]);
     }
 }

@@ -1,7 +1,0 @@
-<div class="mx-1">
-    <form method="post" action="{{ path('app_categories_delete', {'id': category.id}) }}" id="delete_categories_form"
-          class="delete-form" data-category-name="{{ category.name|default('this item') }}">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
-        <button type="submit" class="btn btn-danger">Delete</button>
-    </form>
-</div>

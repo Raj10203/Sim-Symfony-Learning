@@ -20,7 +20,7 @@ final class CategoriesController extends AbstractController
     #[Route(name: 'app_categories_index', methods: ['GET'])]
     public function index(CategoriesRepository $categoriesRepository, CacheInterface $cache): Response
     {
-        $categories =  $categoriesRepository->findAllActive();
+        $categories =  $categoriesRepository->findAll();
 
         return $this->render('categories/index.html.twig', [
             'categories' => $categories,
@@ -71,17 +71,5 @@ final class CategoriesController extends AbstractController
             'category' => $category,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/{id}', name: 'app_categories_delete', methods: ['POST'])]
-    public function delete(Request $request, Categories $category, EntityManagerInterface $entityManager, CacheInterface $cache): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->getPayload()->getString('_token'))) {
-            $category->setDeletedAt(new \DateTimeImmutable('now', new \DateTimeZone('Asia/Kolkata')));
-            $entityManager->flush();
-            $cache->delete('categories');
-        }
-
-        return $this->redirectToRoute('app_categories_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -38,16 +38,16 @@ class SitesType extends AbstractType
                 'label' => 'Status',
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-select',
+                    'class' => 'select2-dropdown-single',
                 ]
-            ]);
-        ;
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Sites::class,
+            'csrf_token_id'   => 'site_token'
         ]);
     }
 }

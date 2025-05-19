@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StockRequest index{% endblock %}
+
+{% set current_page = 'aside-menu-stock-requests' %}
+
+{% block additional_js %}
+    {{ include('partials/active_menu_script.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Stock Request
+    </h3>
+    <!-- Stock Request List Card -->
+    <div class="card">
+        <div class="count">
+            {{ stock_requests.getTotalItemCount }}
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Stock Requests</h5>
+            <a href="{{ path('app_stock_request_new') }}" class="btn btn-primary">
+                <i class="bx bx-plus me-0 me-sm-1"></i>
+                <span class="d-none d-sm-inline-block">New Stock Request</span>
+            </a>
+        </div>
+        <div class="table-responsive text-nowrap scrollable-container overflow-hidden">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{ knp_pagination_sortable(stock_requests, 'Id', 'sr.id') }}</th>
+                    <th>Status</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Requested By</th>
+                    <th>Approved By</th>
+                    <th>CreatedAt</th>
+                    <th>UpdatedAt</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for stock_request in stock_requests %}
+                    <tr>
+                        <td>{{ stock_request.id }}</td>
+                        <td>{{ stock_request.status }}</td>
+                        <td>{{ stock_request.fromSite.name }}</td>
+                        <td>{{ stock_request.toSite.name }}</td>
+                        <td>{{ stock_request.requestedBy.email }}</td>
+                        <td>{{ stock_request.approvedBy ? stock_request.approvedBy.email :'Not approved yet' }}</td>
+                        <td>{{ stock_request.createdAt ? stock_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ stock_request.updatedAt ? stock_request.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_stock_request_show', {'id': stock_request.id}) }}"
+                               class="btn btn-primary">
+                                <i class='bx bx-show-alt'></i>
+                            </a>
+                            <a href="{{ path('app_stock_request_edit', {'id': stock_request.id}) }}"
+                               class="btn btn-success">
+                                <i class='bx bxs-edit'></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10" class="text-center">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-2 ms-2 pagination">
+            <div class="navigation">
+                {{ knp_pagination_render(stock_requests) }}
+{#                {{ knp_pagination_render(stock_requests, '@KnpPaginator/Pagination/bootstrap_v4_pagination.html.twig') }}#}
+            </div>
+        </div>
+    </div>
+{% endblock %}
