@@ -1,5 +1,5 @@
 parameters:
-    cache_adepter: 'cache.adapter.redis'
+    cache_adepter: 'cache.adapter.filesystem'
 
 framework:
     cache:
@@ -23,4 +23,4 @@ framework:
 
 when@dev:
     parameters:
-        cache_adepter: 'cache.adapter.redis'
+        cache_adepter: 'cache.adapter.filesystem'
