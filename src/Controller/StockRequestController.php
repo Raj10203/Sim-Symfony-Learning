@@ -19,7 +19,7 @@ use Symfony\Component\Workflow\Registry;
 
 #[Route('/stock/request')]
 #[isGranted('IS_AUTHENTICATED_REMEMBERED')]
-final class StockRequestController extends AbstractController
+final class StockRequestController extends BaseController
 {
     public function __construct(private PaginatorInterface $paginator ) {
     }
