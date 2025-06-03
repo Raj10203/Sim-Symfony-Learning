@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Categories;
-use App\Entity\Products;
+use App\Entity\Category;
+use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,7 +26,7 @@ class ProductsType extends AbstractType
                 ]
             ])
             ->add('category', EntityType::class, [
-                'class' => Categories::class,
+                'class' => Category::class,
                 'choice_label' => 'name',
                 'required' => true,
                 'label' => 'Category',
@@ -53,7 +53,7 @@ class ProductsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Products::class,
+            'data_class' => Product::class,
             'csrf_token_id' => 'products_token',
         ]);
     }

@@ -2,11 +2,11 @@
 
 namespace App\Factory;
 
-use App\Entity\Categories;
+use App\Entity\Category;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Categories>
+ * @extends PersistentProxyObjectFactory<Category>
  */
 final class CategoriesFactory extends PersistentProxyObjectFactory
 {
@@ -21,7 +21,7 @@ final class CategoriesFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Categories::class;
+        return Category::class;
     }
 
     /**

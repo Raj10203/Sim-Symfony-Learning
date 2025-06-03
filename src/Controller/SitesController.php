@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Sites;
+use App\Entity\Site;
 use App\Form\SitesType;
-use App\Repository\SitesRepository;
+use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class SitesController extends AbstractController
 {
     #[Route(name: 'app_sites_index', methods: ['GET'])]
-    public function index(SitesRepository $sitesRepository): Response
+    public function index(SiteRepository $sitesRepository): Response
     {
         return $this->render('sites/index.html.twig', [
             'sites' => $sitesRepository->findAll(),
@@ -28,7 +28,7 @@ final class SitesController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
-        $site = new Sites();
+        $site = new Site();
         $form = $this->createForm(SitesType::class, $site);
         $form->handleRequest($request);
 
@@ -46,7 +46,7 @@ final class SitesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_sites_show', methods: ['GET'])]
-    public function show(Sites $site): Response
+    public function show(Site $site): Response
     {
         $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
         return $this->render('sites/show.html.twig', [
@@ -55,7 +55,7 @@ final class SitesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_sites_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Sites $site, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Site $site, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
         $form = $this->createForm(SitesType::class, $site);

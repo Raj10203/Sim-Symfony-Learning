@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Categories;
+use App\Entity\Category;
 use App\Form\CategoriesType;
-use App\Repository\CategoriesRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class CategoriesController extends AbstractController
 {
     #[Route(name: 'app_categories_index', methods: ['GET'])]
-    public function index(CategoriesRepository $categoriesRepository, CacheInterface $cache): Response
+    public function index(CategoryRepository $categoriesRepository, CacheInterface $cache): Response
     {
         $categories =  $categoriesRepository->findAll();
 
@@ -30,7 +30,7 @@ final class CategoriesController extends AbstractController
     #[Route('/new', name: 'app_categories_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
-        $category = new Categories();
+        $category = new Category();
         $form = $this->createForm(CategoriesType::class, $category);
         $form->handleRequest($request);
 
@@ -48,7 +48,7 @@ final class CategoriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_categories_show', methods: ['GET'])]
-    public function show(Categories $category): Response
+    public function show(Category $category): Response
     {
         return $this->render('categories/show.html.twig', [
             'category' => $category,
@@ -56,7 +56,7 @@ final class CategoriesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_categories_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Categories $category, EntityManagerInterface $entityManager, CacheInterface $cache): Response
+    public function edit(Request $request, Category $category, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
         $form = $this->createForm(CategoriesType::class, $category);
         $form->handleRequest($request);

@@ -2,12 +2,12 @@
 
 namespace App\Factory;
 
-use App\Entity\StockRequestItems;
+use App\Entity\StockRequestItem;
 use App\Enum\Stock\StockRequestItemsStatus  ;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<StockRequestItems>
+ * @extends PersistentProxyObjectFactory<StockRequestItem>
  */
 final class StockRequestItemsFactory extends PersistentProxyObjectFactory
 {
@@ -22,7 +22,7 @@ final class StockRequestItemsFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return StockRequestItems::class;
+        return StockRequestItem::class;
     }
 
     /**

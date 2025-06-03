@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Categories;
+use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 /**
- * @extends ServiceEntityRepository<Categories>
+ * @extends ServiceEntityRepository<Category>
  */
-class CategoriesRepository extends ServiceEntityRepository
+class CategoryRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
         private CacheInterface  $cache
     )
     {
-        parent::__construct($registry, Categories::class);
+        parent::__construct($registry, Category::class);
     }
 
     /**
-     * @return Categories[] Returns an array of Products objects
+     * @return Category[] Returns an array of Products objects
      */
     //    /**
     //     * @return Categories[] Returns an array of Categories objects

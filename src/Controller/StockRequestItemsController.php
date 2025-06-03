@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\StockRequestItems;
+use App\Entity\StockRequestItem;
 use App\Form\StockRequestItemsType;
-use App\Repository\StockRequestItemsRepository;
+use App\Repository\StockRequestItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class StockRequestItemsController extends AbstractController
 {
     #[Route(name: 'app_stock_request_items_index', methods: ['GET'])]
-    public function index(StockRequestItemsRepository $stockRequestItemsRepository): Response
+    public function index(StockRequestItemRepository $stockRequestItemsRepository): Response
     {
         return $this->render('stock_request_items/index.html.twig', [
             'stock_request_items' => $stockRequestItemsRepository->findAll(),
@@ -27,7 +27,7 @@ final class StockRequestItemsController extends AbstractController
     #[Route('/new', name: 'app_stock_request_items_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $stockRequestItem = new StockRequestItems();
+        $stockRequestItem = new StockRequestItem();
         $form = $this->createForm(StockRequestItemsType::class, $stockRequestItem);
         $form->handleRequest($request);
 
@@ -45,7 +45,7 @@ final class StockRequestItemsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_stock_request_items_show', methods: ['GET'])]
-    public function show(StockRequestItems $stockRequestItem): Response
+    public function show(StockRequestItem $stockRequestItem): Response
     {
         return $this->render('stock_request_items/show.html.twig', [
             'stock_request_item' => $stockRequestItem,
@@ -53,7 +53,7 @@ final class StockRequestItemsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_stock_request_items_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, StockRequestItems $stockRequestItem, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, StockRequestItem $stockRequestItem, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(StockRequestItemsType::class, $stockRequestItem);
         $form->handleRequest($request);
@@ -73,7 +73,7 @@ final class StockRequestItemsController extends AbstractController
     #[Route('/{id}', name: 'app_stock_request_items_delete', methods: ['POST'])]
     public function delete(
         Request                $request,
-        StockRequestItems           $stockRequestItems,
+        StockRequestItem       $stockRequestItems,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -93,7 +93,7 @@ final class StockRequestItemsController extends AbstractController
     public function updateStockRequestItem(
         Request                $request,
         EntityManagerInterface $em,
-        StockRequestItems      $stockRequestItem
+        StockRequestItem $stockRequestItem
     ): JsonResponse
     {
         $quantityApproved = $request->request->get('quantityApproved');

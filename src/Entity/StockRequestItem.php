@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Enum\Stock\StockRequestItemsStatus;
-use App\Repository\StockRequestItemsRepository;
+use App\Repository\StockRequestItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: StockRequestItemsRepository::class)]
-class StockRequestItems
+#[ORM\Entity(repositoryClass: StockRequestItemRepository::class)]
+class StockRequestItem
 {
     use TimestampableEntity;
 
@@ -23,7 +23,7 @@ class StockRequestItems
 
     #[ORM\ManyToOne(inversedBy: 'stockRequestItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Products $product = null;
+    private ?Product $product = null;
 
     #[ORM\Column]
     private ?int $quantityRequested = null;
@@ -51,12 +51,12 @@ class StockRequestItems
         return $this;
     }
 
-    public function getProduct(): ?Products
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(?Products $product): static
+    public function setProduct(?Product $product): static
     {
         $this->product = $product;
 

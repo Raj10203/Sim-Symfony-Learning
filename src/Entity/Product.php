@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductsRepository;
+use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: ProductsRepository::class)]
-class Products
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
+class Product
 {
     use TimestampableEntity;
 
@@ -30,12 +30,12 @@ class Products
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Categories $category = null;
+    private ?Category $category = null;
 
     /**
-     * @var Collection<int, StockRequestItems>
+     * @var Collection<int, StockRequestItem>
      */
-    #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'product', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: StockRequestItem::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $stockRequestItems;
 
     public function getId(): ?int
@@ -79,12 +79,12 @@ class Products
         return $this;
     }
 
-    public function getCategory(): ?Categories
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(?Categories $category): static
+    public function setCategory(?Category $category): static
     {
         $this->category = $category;
 
@@ -92,14 +92,14 @@ class Products
     }
 
     /**
-     * @return Collection<int, StockRequestItems>
+     * @return Collection<int, StockRequestItem>
      */
     public function getStockRequestItems(): Collection
     {
         return $this->stockRequestItems;
     }
 
-    public function addStockRequestItem(StockRequestItems $stockRequestItem): static
+    public function addStockRequestItem(StockRequestItem $stockRequestItem): static
     {
         if (!$this->stockRequestItems->contains($stockRequestItem)) {
             $this->stockRequestItems->add($stockRequestItem);
@@ -109,7 +109,7 @@ class Products
         return $this;
     }
 
-    public function removeStockRequestItem(StockRequestItems $stockRequestItem): static
+    public function removeStockRequestItem(StockRequestItem $stockRequestItem): static
     {
         if ($this->stockRequestItems->removeElement($stockRequestItem)) {
             // set the owning side to null (unless already changed)

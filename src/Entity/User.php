@@ -55,7 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups('user:read')]
-    private ?Sites $site = null;
+    private ?Site $site = null;
 
     #[ORM\Column]
     #[Groups('user')]
@@ -169,12 +169,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this;
     }
 
-    public function getSite(): ?Sites
+    public function getSite(): ?Site
     {
         return $this->site;
     }
 
-    public function setSite(?Sites $site): static
+    public function setSite(?Site $site): static
     {
         $this->site = $site;
 

@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Categories;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,7 +41,7 @@ class CategoriesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Categories::class,
+            'data_class' => Category::class,
             'csrf_token_id' => 'categories_token',
         ]);
     }

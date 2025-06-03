@@ -2,24 +2,24 @@
 
 namespace App\Repository;
 
-use App\Entity\Products;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 /**
- * @extends ServiceEntityRepository<Products>
+ * @extends ServiceEntityRepository<Product>
  */
-class ProductsRepository extends ServiceEntityRepository
+class ProductRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry, private CacheInterface $cache)
     {
-        parent::__construct($registry, Products::class);
+        parent::__construct($registry, Product::class);
     }
 
     /**
-     * @return Products[] Returns an array of Products objects
+     * @return Product[] Returns an array of Products objects
      */
     //    /**
     //     * @return Products[] Returns an array of Products objects

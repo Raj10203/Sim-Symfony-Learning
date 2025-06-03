@@ -8,17 +8,17 @@ dh_auditor:
             table_prefix: null
             table_suffix: '_audit'
             entities:
-                App\Entity\Categories:
+                App\Entity\Category:
                     ignored_columns: # properties ignored by the audit process
                         - createdAt
                         - updatedAt
 
-                App\Entity\Products:
+                App\Entity\Product:
                     ignored_columns: # properties ignored by the audit process
                         - createdAt
                         - updatedAt
 
-                App\Entity\Sites:
+                App\Entity\Site:
                     ignored_columns: # properties ignored by the audit process
                         - createdAt
                         - updatedAt
@@ -28,7 +28,7 @@ dh_auditor:
                         - createdAt
                         - updatedAt
 
-                App\Entity\StockRequestItems:
+                App\Entity\StockRequestItem:
                     ignored_columns: # properties ignored by the audit process
                         - createdAt
                         - updatedAt
