@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RetiredInventory{% endblock %}
+
+{% block body %}
+    <h1>RetiredInventory</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ retired_inventory.id }}</td>
+            </tr>
+            <tr>
+                <th>RetiredAt</th>
+                <td>{{ retired_inventory.retiredAt ? retired_inventory.retiredAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ retired_inventory.status }}</td>
+            </tr>
+            <tr>
+                <th>RetirementReason</th>
+                <td>{{ retired_inventory.retirementReason }}</td>
+            </tr>
+            <tr>
+                <th>SerialNo</th>
+                <td>{{ retired_inventory.serialNo }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ retired_inventory.createdAt ? retired_inventory.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ retired_inventory.updatedAt ? retired_inventory.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_retired_inventory_index') }}">back to list</a>
+
+    <a href="{{ path('app_retired_inventory_edit', {'id': retired_inventory.id}) }}">edit</a>
+
+    {{ include('retired_inventory/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ActiveInventory{% endblock %}
+
+{% block body %}
+    <h1>ActiveInventory</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ active_inventory.id }}</td>
+            </tr>
+            <tr>
+                <th>SerialNo</th>
+                <td>{{ active_inventory.serialNo }}</td>
+            </tr>
+            <tr>
+                <th>ReceivedAt</th>
+                <td>{{ active_inventory.receivedAt ? active_inventory.receivedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Remarks</th>
+                <td>{{ active_inventory.remarks }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ active_inventory.createdAt ? active_inventory.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ active_inventory.updatedAt ? active_inventory.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_active_inventory_index') }}">back to list</a>
+
+    <a href="{{ path('app_active_inventory_edit', {'id': active_inventory.id}) }}">edit</a>
+
+    {{ include('active_inventory/_delete_form.html.twig') }}
+{% endblock %}

@@ -11,7 +11,8 @@ security:
             ROLE_SITE_CRUD,
             ROLE_PRODUCT_CRUD,
             ROLE_USER_CRUD,
-            ROLE_HQ_EMPLOYEE
+            ROLE_HQ_EMPLOYEE,
+            ROLE_INVENTORY_CRUD
         ]
         ROLE_HQ_EMPLOYEE: [
             ROLE_STOCK_REQUEST_REVIEWER,

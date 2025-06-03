@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ActiveInventory{% endblock %}
+
+{% block body %}
+    <h1>Edit ActiveInventory</h1>
+
+    {{ include('active_inventory/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_active_inventory_index') }}">back to list</a>
+
+    {{ include('active_inventory/_delete_form.html.twig') }}
+{% endblock %}

@@ -67,8 +67,8 @@
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
             <div class="app-brand demo my-6">
 
-{#                                <img id="logo" src="{{ asset('bundles/sneat/assets/img/avatars/mitarsh-logo.png') }}" alt="Logo"#}
-{#                                     class="img-fluid">#}
+                {#                                <img id="logo" src="{{ asset('bundles/sneat/assets/img/avatars/mitarsh-logo.png') }}" alt="Logo" #}
+                {#                                     class="img-fluid"> #}
 
                 <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
                     <i class="align-middle bx bx-chevron-left bx-sm"></i>
@@ -140,7 +140,7 @@
 
                 <!-- Stock -->
                 <li class="menu-item" id="aside-menu-stock">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <a href="#" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
                         <div class="text-truncate" data-i18n="Layouts">Stock</div>
                     </a>
@@ -160,6 +160,41 @@
                             <a href="{{ path('app_stock_request_index') }}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-arrow-from-left"></i>
                                 <div data-i18n="Categories">Movements</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Inventory -->
+                <li class="menu-item" id="aside-menu-inventory">
+                    <a href="#" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons bx bx-objects-vertical-center"></i>
+                        <div class="text-truncate" data-i18n="Layouts">Inventory</div>
+                    </a>
+
+                    <ul class="menu-sub">
+
+                        <!-- Active Inventory -->
+                        <li class="menu-item" id="aside-menu-inventory">
+                            <a href="{{ path('app_inventory_index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-objects-horizontal-center "></i>
+                                <div data-i18n="Categories">Inventory</div>
+                            </a>
+                        </li>
+
+                        <!-- Active Inventory -->
+                        <li class="menu-item" id="aside-menu-inventory-active">
+                            <a href="{{ path('app_inventory_active_index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons fas fa-battery-half"></i>
+                                <div data-i18n="Categories">Active Inventory</div>
+                            </a>
+                        </li>
+
+                        <!-- Retired Inventory -->
+                        <li class="menu-item" id="aside-menu-inventory-retired">
+                            <a href="{{ path('app_inventory_retired_index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons fas fa-battery-empty"></i>
+                                <div data-i18n="Categories">Retired Inventory</div>
                             </a>
                         </li>
                     </ul>

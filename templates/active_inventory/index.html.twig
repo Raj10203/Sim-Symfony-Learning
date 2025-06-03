@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% set current_page = 'aside-menu-inventory-active' %}
+
+{% block title %}Sites index{% endblock %}
+
+{% block additional_js %}
+    {{ include('partials/active_menu_script.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Active Inventory
+    </h3>
+    <!-- Sites List Card -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Inventories</h5>
+            <div>
+                {% if is_granted('ROLE_INVENTORY_CRUD') %}
+                    <a href="{{ path('app_inventory_new') }}" class="btn btn-primary">
+                        <i class="bx bx-plus me-0 me-sm-1"></i>
+                        <span class="d-none d-sm-inline-block">Add Stock</span>
+                    </a>
+                {% endif %}
+                <a href="{{ path('app_stock_request_new') }}" class="btn btn-primary">
+                    <i class="bx bx-plus me-0 me-sm-1"></i>
+                    <span class="d-none d-sm-inline-block">New Stock Request</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive text-nowrap scrollable-container overflow-hidden">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>SerialNo</th>
+                    <th>ReceivedAt</th>
+                    <th>Remarks</th>
+                    <th>CreatedAt</th>
+                    <th>UpdatedAt</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for active_inventory in active_inventories %}
+                    <tr>
+                        <td>{{ active_inventory.id }}</td>
+                        <td>{{ active_inventory.serialNo }}</td>
+                        <td>{{ active_inventory.receivedAt ? active_inventory.receivedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ active_inventory.remarks }}</td>
+                        <td>{{ active_inventory.createdAt ? active_inventory.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ active_inventory.updatedAt ? active_inventory.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_inventory_active_show', {'id': active_inventory.id}) }}">show</a>
+                            <a href="{{ path('app_inventory_active_edit', {'id': active_inventory.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10" class="text-center">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

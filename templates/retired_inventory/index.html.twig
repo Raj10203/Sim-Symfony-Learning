@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RetiredInventory index{% endblock %}
+
+{% block body %}
+    <h1>RetiredInventory index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>RetiredAt</th>
+                <th>Status</th>
+                <th>RetirementReason</th>
+                <th>SerialNo</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for retired_inventory in retired_inventories %}
+            <tr>
+                <td>{{ retired_inventory.id }}</td>
+                <td>{{ retired_inventory.retiredAt ? retired_inventory.retiredAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ retired_inventory.status }}</td>
+                <td>{{ retired_inventory.retirementReason }}</td>
+                <td>{{ retired_inventory.serialNo }}</td>
+                <td>{{ retired_inventory.createdAt ? retired_inventory.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ retired_inventory.updatedAt ? retired_inventory.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_retired_inventory_show', {'id': retired_inventory.id}) }}">show</a>
+                    <a href="{{ path('app_retired_inventory_edit', {'id': retired_inventory.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_retired_inventory_new') }}">Create new</a>
+{% endblock %}

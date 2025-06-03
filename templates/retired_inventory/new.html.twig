@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New RetiredInventory{% endblock %}
+
+{% block body %}
+    <h1>Create new RetiredInventory</h1>
+
+    {{ include('retired_inventory/_form.html.twig') }}
+
+    <a href="{{ path('app_retired_inventory_index') }}">back to list</a>
+{% endblock %}
