@@ -6,7 +6,6 @@ use App\Entity\Site;
 use App\Form\SitesType;
 use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/sites')]
 #[IsGranted('ROLE_SITE_CRUD')]
-final class SitesController extends AbstractController
+final class SiteController extends BaseController
 {
     #[Route(name: 'app_sites_index', methods: ['GET'])]
     public function index(SiteRepository $sitesRepository): Response

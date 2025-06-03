@@ -15,7 +15,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 #[Route('/admin/products')]
 #[IsGranted('ROLE_PRODUCT_CRUD')]
-final class ProductsController extends AbstractController
+final class ProductController extends BaseController
 {
     #[Route(name: 'app_products_index', methods: ['GET'])]
     public function index(ProductRepository $productsRepository): Response

@@ -47,12 +47,6 @@ class StockRequest
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $remarks = null;
 
-    /**
-     * @var Collection<int, StockMovement>
-     */
-    #[ORM\OneToMany(targetEntity: StockMovement::class, mappedBy: 'stockRequest')]
-    private Collection $stockMovements;
-
     public function __construct()
     {
         $this->stockRequestItems = new ArrayCollection();
@@ -159,36 +153,6 @@ class StockRequest
     public function setRemarks(?string $remarks): static
     {
         $this->remarks = $remarks;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, StockMovement>
-     */
-    public function getStockMovements(): Collection
-    {
-        return $this->stockMovements;
-    }
-
-    public function addStockMovement(StockMovement $stockMovement): static
-    {
-        if (!$this->stockMovements->contains($stockMovement)) {
-            $this->stockMovements->add($stockMovement);
-            $stockMovement->setStockRequest($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStockMovement(StockMovement $stockMovement): static
-    {
-        if ($this->stockMovements->removeElement($stockMovement)) {
-            // set the owning side to null (unless already changed)
-            if ($stockMovement->getStockRequest() === $this) {
-                $stockMovement->setStockRequest(null);
-            }
-        }
 
         return $this;
     }

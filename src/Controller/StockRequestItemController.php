@@ -6,15 +6,13 @@ use App\Entity\StockRequestItem;
 use App\Form\StockRequestItemsType;
 use App\Repository\StockRequestItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/stock-request/items')]
-final class StockRequestItemsController extends AbstractController
+final class StockRequestItemController extends BaseController
 {
     #[Route(name: 'app_stock_request_items_index', methods: ['GET'])]
     public function index(StockRequestItemRepository $stockRequestItemsRepository): Response

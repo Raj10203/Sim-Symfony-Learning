@@ -15,7 +15,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 #[Route('/admin/categories')]
 #[IsGranted('ROLE_CATEGORY_CRUD')]
-final class CategoriesController extends AbstractController
+final class CategoryController extends BaseController
 {
     #[Route(name: 'app_categories_index', methods: ['GET'])]
     public function index(CategoryRepository $categoriesRepository, CacheInterface $cache): Response
