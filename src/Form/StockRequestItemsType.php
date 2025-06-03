@@ -2,9 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Products;
+use App\Entity\Product;
 use App\Entity\StockRequest;
-use App\Entity\StockRequestItems;
+use App\Entity\StockRequestItem;
 use App\Enum\Stock\StockRequestItemsStatus;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -55,7 +55,7 @@ class StockRequestItemsType extends AbstractType
                 ]
             ])
             ->add('product', EntityType::class, [
-                'class' => Products::class,
+                'class' => Product::class,
                 'choice_label' => 'name',
                 'placeholder' => 'Select a product',
                 'query_builder' => function (EntityRepository $er) use ($usedProducts) {
@@ -76,7 +76,7 @@ class StockRequestItemsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => StockRequestItems::class,
+            'data_class' => StockRequestItem::class,
             'stock_request' => null,
             'csrf_token_id' => 'stock_request_items',
         ]);

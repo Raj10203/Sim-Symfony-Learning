@@ -21,11 +21,11 @@ class StockRequest
 
     #[ORM\ManyToOne(inversedBy: 'stockRequestsFrom')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Sites $fromSite = null;
+    private ?Site $fromSite = null;
 
     #[ORM\ManyToOne(inversedBy: 'stockRequestsTo')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Sites $toSite = null;
+    private ?Site $toSite = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -39,9 +39,9 @@ class StockRequest
     private string $status = 'draft';
 
     /**
-     * @var Collection<int, StockRequestItems>
+     * @var Collection<int, StockRequestItem>
      */
-    #[ORM\OneToMany(targetEntity: StockRequestItems::class, mappedBy: 'stockRequest', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: StockRequestItem::class, mappedBy: 'stockRequest', orphanRemoval: true)]
     private Collection $stockRequestItems;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -57,24 +57,24 @@ class StockRequest
         return $this->id;
     }
 
-    public function getFromSite(): ?Sites
+    public function getFromSite(): ?Site
     {
         return $this->fromSite;
     }
 
-    public function setFromSite(?Sites $fromSite): static
+    public function setFromSite(?Site $fromSite): static
     {
         $this->fromSite = $fromSite;
 
         return $this;
     }
 
-    public function getToSite(): ?Sites
+    public function getToSite(): ?Site
     {
         return $this->toSite;
     }
 
-    public function setToSite(?Sites $toSite): static
+    public function setToSite(?Site $toSite): static
     {
         $this->toSite = $toSite;
 
@@ -117,14 +117,14 @@ class StockRequest
     }
 
     /**
-     * @return Collection<int, StockRequestItems>
+     * @return Collection<int, StockRequestItem>
      */
     public function getStockRequestItems(): Collection
     {
         return $this->stockRequestItems;
     }
 
-    public function addStockRequestItem(StockRequestItems $stockRequestItem): static
+    public function addStockRequestItem(StockRequestItem $stockRequestItem): static
     {
         if (!$this->stockRequestItems->contains($stockRequestItem)) {
             $this->stockRequestItems->add($stockRequestItem);
@@ -134,7 +134,7 @@ class StockRequest
         return $this;
     }
 
-    public function removeStockRequestItem(StockRequestItems $stockRequestItem): static
+    public function removeStockRequestItem(StockRequestItem $stockRequestItem): static
     {
         if ($this->stockRequestItems->removeElement($stockRequestItem)) {
             if ($stockRequestItem->getstockRequest() === $this) {

@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Sites;
+use App\Entity\Site;
 use App\Entity\StockRequest;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,7 +17,7 @@ class StockRequestType extends AbstractType
     {
         $builder
             ->add('fromSite', EntityType::class, [
-                'class' => Sites::class,
+                'class' => Site::class,
                 'choice_label' => 'name',
                 'disabled' => !$options['editable'],
                 'attr' => [
@@ -25,7 +25,7 @@ class StockRequestType extends AbstractType
                 ]
             ])
             ->add('toSite', EntityType::class, [
-                'class' => Sites::class,
+                'class' => Site::class,
                 'choice_label' => 'name',
                 'disabled' => !$options['editable'],
                 'attr' => [

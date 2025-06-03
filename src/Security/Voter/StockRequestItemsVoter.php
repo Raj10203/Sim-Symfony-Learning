@@ -23,7 +23,7 @@ final class StockRequestItemsVoter extends Voter
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [self::EDIT, self::VIEW, self::DELETE])
-            && $subject instanceof \App\Entity\StockRequestItems;
+            && $subject instanceof \App\Entity\StockRequestItem;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -35,7 +35,7 @@ final class StockRequestItemsVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof \App\Entity\StockRequestItems) {
+        if (!$subject instanceof \App\Entity\StockRequestItem) {
             return false;
         }
         if ($this->security->isGranted('ROLE_ADMIN')

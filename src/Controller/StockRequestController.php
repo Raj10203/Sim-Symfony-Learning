@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Sites;
+use App\Entity\Site;
 use App\Entity\StockRequest;
-use App\Entity\StockRequestItems;
+use App\Entity\StockRequestItem;
 use App\Form\StockRequestItemsType;
 use App\Form\StockRequestType;
 use App\Repository\StockRequestRepository;
@@ -59,7 +59,7 @@ final class StockRequestController extends AbstractController
         $form = $this->createForm(StockRequestType::class, $stockRequest);
 
         //set default values to stock request
-        $headquarterSite = $entityManager->getRepository(Sites::class)->findOneBy(['name' => 'Headquarters']);
+        $headquarterSite = $entityManager->getRepository(Site::class)->findOneBy(['name' => 'Headquarters']);
         $stockRequest->setRequestedBy($this->getUser());
         $stockRequest->setToSite($this->getUser()->getSite());
         $stockRequest->setFromSite($headquarterSite);
@@ -101,7 +101,7 @@ final class StockRequestController extends AbstractController
         ]);
 
         // Stock request item form
-        $stockRequestItem = new StockRequestItems();
+        $stockRequestItem = new StockRequestItem();
         $stockRequestItemForm = $this->createForm(StockRequestItemsType::class, $stockRequestItem, [
             'stock_request' => $stockRequest
         ]);

@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Sites;
+use App\Entity\Site;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -46,7 +46,7 @@ class SitesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Sites::class,
+            'data_class' => Site::class,
             'csrf_token_id'   => 'site_token'
         ]);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Sites;
+use App\Entity\Site;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -42,7 +42,7 @@ class UserType extends AbstractType
                 ]
             ])
             ->add('site', EntityType::class, [
-                'class' => Sites::class,
+                'class' => Site::class,
                 'choice_label' => 'name',
                 'placeholder' => 'Select a Site',
                 'attr' => [

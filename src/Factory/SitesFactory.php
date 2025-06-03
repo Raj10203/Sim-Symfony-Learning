@@ -2,11 +2,11 @@
 
 namespace App\Factory;
 
-use App\Entity\Sites;
+use App\Entity\Site;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Sites>
+ * @extends PersistentProxyObjectFactory<Site>
  */
 final class SitesFactory extends PersistentProxyObjectFactory
 {
@@ -21,7 +21,7 @@ final class SitesFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Sites::class;
+        return Site::class;
     }
 
     /**

@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Products;
+use App\Entity\Product;
 use App\Form\ProductsType;
-use App\Repository\ProductsRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class ProductsController extends AbstractController
 {
     #[Route(name: 'app_products_index', methods: ['GET'])]
-    public function index(ProductsRepository $productsRepository): Response
+    public function index(ProductRepository $productsRepository): Response
     {
         return $this->render('products/index.html.twig', [
             'products' => $productsRepository->findAll(),
@@ -28,7 +28,7 @@ final class ProductsController extends AbstractController
     #[Route('/new', name: 'app_products_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
-        $product = new Products();
+        $product = new Product();
         $form = $this->createForm(ProductsType::class, $product);
         $form->handleRequest($request);
 
@@ -46,7 +46,7 @@ final class ProductsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_products_show', methods: ['GET'])]
-    public function show(Products $product): Response
+    public function show(Product $product): Response
     {
         return $this->render('products/show.html.twig', [
             'product' => $product,
@@ -54,7 +54,7 @@ final class ProductsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_products_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Products $product, EntityManagerInterface $entityManager, CacheInterface $cache): Response
+    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
         $form = $this->createForm(ProductsType::class, $product);
         $form->handleRequest($request);
