@@ -2,13 +2,13 @@
 
 namespace App\Factory;
 
-use App\Entity\StockRequest;
+use App\Entity\Product;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<StockRequest>
+ * @extends PersistentProxyObjectFactory<Product>
  */
-final class StockRequestFactory extends PersistentProxyObjectFactory
+final class ProductFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -21,7 +21,7 @@ final class StockRequestFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return StockRequest::class;
+        return Product::class;
     }
 
     /**
@@ -32,11 +32,12 @@ final class StockRequestFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
+            'active' => self::faker()->boolean(),
+            'category' => CategoryFactory::random(),
             'createdAt' => self::faker()->dateTime(),
-            'fromSite' => SiteFactory::random(),
-            'requestedBy' => UserFactory::random(),
-            'status' => self::faker()->randomElement(['draft', 'pending_hq_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected']),
-            'toSite' => SiteFactory::random(),
+            'description' => self::faker()->streetName(),
+            'name' => self::faker()->firstName(),
+            'unit' => 'Unit',
             'updatedAt' => self::faker()->dateTime(),
         ];
     }
@@ -47,7 +48,7 @@ final class StockRequestFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(StockRequest $stockRequest): void {})
+            // ->afterInstantiate(function(Products $products): void {})
         ;
     }
 }

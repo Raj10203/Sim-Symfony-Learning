@@ -61,9 +61,16 @@ class Site
     #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'site')]
     private Collection $inventories;
 
+    /**
+     * @var Collection<int, ActiveInventory>
+     */
+    #[ORM\OneToMany(targetEntity: ActiveInventory::class, mappedBy: 'site')]
+    private Collection $activeInventories;
+
     public function __construct()
     {
         $this->inventories = new ArrayCollection();
+        $this->activeInventories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -233,6 +240,36 @@ class Site
             // set the owning side to null (unless already changed)
             if ($inventory->getSite() === $this) {
                 $inventory->setSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ActiveInventory>
+     */
+    public function getActiveInventories(): Collection
+    {
+        return $this->activeInventories;
+    }
+
+    public function addActiveInventory(ActiveInventory $activeInventory): static
+    {
+        if (!$this->activeInventories->contains($activeInventory)) {
+            $this->activeInventories->add($activeInventory);
+            $activeInventory->setSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActiveInventory(ActiveInventory $activeInventory): static
+    {
+        if ($this->activeInventories->removeElement($activeInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($activeInventory->getSite() === $this) {
+                $activeInventory->setSite(null);
             }
         }
 

@@ -41,6 +41,17 @@ class Product
     #[ORM\Column(length: 20)]
     private ?string $unit = null;
 
+    /**
+     * @var Collection<int, ActiveInventory>
+     */
+    #[ORM\OneToMany(targetEntity: ActiveInventory::class, mappedBy: 'product')]
+    private Collection $activeInventories;
+
+    public function __construct()
+    {
+        $this->activeInventories = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -132,6 +143,36 @@ class Product
     public function setUnit(string $unit): static
     {
         $this->unit = $unit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ActiveInventory>
+     */
+    public function getActiveInventories(): Collection
+    {
+        return $this->activeInventories;
+    }
+
+    public function addActiveInventory(ActiveInventory $activeInventory): static
+    {
+        if (!$this->activeInventories->contains($activeInventory)) {
+            $this->activeInventories->add($activeInventory);
+            $activeInventory->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActiveInventory(ActiveInventory $activeInventory): static
+    {
+        if ($this->activeInventories->removeElement($activeInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($activeInventory->getProduct() === $this) {
+                $activeInventory->setProduct(null);
+            }
+        }
 
         return $this;
     }

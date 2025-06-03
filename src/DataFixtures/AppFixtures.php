@@ -2,11 +2,11 @@
 
 namespace App\DataFixtures;
 
-use App\Factory\CategoriesFactory;
-use App\Factory\ProductsFactory;
-use App\Factory\SitesFactory;
+use App\Factory\CategoryFactory;
+use App\Factory\ProductFactory;
+use App\Factory\SiteFactory;
 use App\Factory\StockRequestFactory;
-use App\Factory\StockRequestItemsFactory;
+use App\Factory\StockRequestItemFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -17,11 +17,11 @@ class AppFixtures extends Fixture
     {
         // $product = new Product();
         // $manager->persist($product);
-        $headquarters = SitesFactory::createOne([
+        $headquarters = SiteFactory::createOne([
             'name' => 'Headquarters',
             'location' => 'https://maps.app.goo.gl/bttWR6EpBGvgccS89'
         ]);
-        $adani = SitesFactory::createOne([
+        $adani = SiteFactory::createOne([
             'name' => 'Adani',
             'location' => 'https://maps.app.goo.gl/bttWR6EpBGvgccS89'
         ]);
@@ -55,10 +55,10 @@ class AppFixtures extends Fixture
             'roles' => ['ROLE_SITE_EMPLOYEE'],
             'site' => $adani
         ]);
-        CategoriesFactory::createMany(10);
-        ProductsFactory::createMany(20);
+        CategoryFactory::createMany(10);
+        ProductFactory::createMany(20);
         StockRequestFactory::createMany(50);
-        StockRequestItemsFactory::createMany(500);
+        StockRequestItemFactory::createMany(500);
         $manager->flush();
     }
 }

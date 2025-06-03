@@ -2,14 +2,13 @@
 
 namespace App\Factory;
 
-use App\Entity\StockRequestItem;
-use App\Enum\Stock\StockRequestItemsStatus  ;
+use App\Entity\Site;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<StockRequestItem>
+ * @extends PersistentProxyObjectFactory<Site>
  */
-final class StockRequestItemsFactory extends PersistentProxyObjectFactory
+final class SiteFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -22,7 +21,7 @@ final class StockRequestItemsFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return StockRequestItem::class;
+        return Site::class;
     }
 
     /**
@@ -33,12 +32,12 @@ final class StockRequestItemsFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
+            'active' => 1,
+            'address' => self::faker()->address(),
             'createdAt' => self::faker()->dateTime(),
-            'product' => ProductsFactory::new(),
-            'quantityApproved' => self::faker()->randomNumber(),
-            'quantityRequested' => self::faker()->randomNumber(),
-            'status' => self::faker()->randomElement(StockRequestItemsStatus::cases()),
-            'stockRequest' => StockRequestFactory::random(),
+            'location' => "https://www.google.com/maps?q=" . self::faker()->longitude(8,35) . ","
+                . self::faker()->latitude(68,93),
+            'name' => self::faker()->word(),
             'updatedAt' => self::faker()->dateTime(),
         ];
     }
@@ -48,7 +47,7 @@ final class StockRequestItemsFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this// ->afterInstantiate(function(StockRequestItems $stockRequestItems): void {})
+        return $this// ->afterInstantiate(function(Sites $sites): void {})
             ;
     }
 }

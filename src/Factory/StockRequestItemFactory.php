@@ -2,13 +2,14 @@
 
 namespace App\Factory;
 
-use App\Entity\Site;
+use App\Entity\StockRequestItem;
+use App\Enum\Stock\StockRequestItemsStatus  ;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Site>
+ * @extends PersistentProxyObjectFactory<StockRequestItem>
  */
-final class SitesFactory extends PersistentProxyObjectFactory
+final class StockRequestItemFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -21,7 +22,7 @@ final class SitesFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Site::class;
+        return StockRequestItem::class;
     }
 
     /**
@@ -32,12 +33,12 @@ final class SitesFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'active' => 1,
-            'address' => self::faker()->address(),
             'createdAt' => self::faker()->dateTime(),
-            'location' => "https://www.google.com/maps?q=" . self::faker()->longitude(8,35) . ","
-                . self::faker()->latitude(68,93),
-            'name' => self::faker()->word(),
+            'product' => ProductFactory::new(),
+            'quantityApproved' => self::faker()->randomNumber(),
+            'quantityRequested' => self::faker()->randomNumber(),
+            'status' => self::faker()->randomElement(StockRequestItemsStatus::cases()),
+            'stockRequest' => StockRequestFactory::random(),
             'updatedAt' => self::faker()->dateTime(),
         ];
     }
@@ -47,7 +48,7 @@ final class SitesFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this// ->afterInstantiate(function(Sites $sites): void {})
+        return $this// ->afterInstantiate(function(StockRequestItems $stockRequestItems): void {})
             ;
     }
 }

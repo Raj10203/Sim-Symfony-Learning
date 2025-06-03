@@ -30,7 +30,7 @@ final class Version20250603062456 extends AbstractMigration
             ALTER TABLE inventory ADD CONSTRAINT FK_B12D4A36F6BD1646 FOREIGN KEY (site_id) REFERENCES site (id)
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE product ADD unit VARCHAR(20) DEFAULT NOT NULL
+            ALTER TABLE product ADD unit  VARCHAR(20) NOT NULL AFTER description
         SQL);
     }
 

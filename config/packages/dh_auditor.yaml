@@ -9,31 +9,55 @@ dh_auditor:
             table_suffix: '_audit'
             entities:
                 App\Entity\Category:
-                    ignored_columns: # properties ignored by the audit process
+                    ignored_columns:
                         - createdAt
                         - updatedAt
 
                 App\Entity\Product:
-                    ignored_columns: # properties ignored by the audit process
+                    ignored_columns:
                         - createdAt
                         - updatedAt
 
                 App\Entity\Site:
-                    ignored_columns: # properties ignored by the audit process
+                    ignored_columns:
                         - createdAt
                         - updatedAt
 
                 App\Entity\StockRequest:
-                    ignored_columns: # properties ignored by the audit process
+                    ignored_columns:
                         - createdAt
                         - updatedAt
 
                 App\Entity\StockRequestItem:
-                    ignored_columns: # properties ignored by the audit process
+                    ignored_columns:
                         - createdAt
                         - updatedAt
 
                 App\Entity\User:
-                    ignored_columns: # properties ignored by the audit process
+                    ignored_columns:
                         - createdAt
                         - updatedAt
+
+                App\Entity\Inventory:
+                    ignored_columns:
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\StockMovement:
+                    ignored_columns:
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\StockMovementItem:
+                    ignored_columns:
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\ActiveInventory:
+                    ignored_columns:
+                        - createdAt
+                        - updatedAt
+
+                App\Entity\RetiredInventory:
+                    ignored_columns:
+                        - createdAt
