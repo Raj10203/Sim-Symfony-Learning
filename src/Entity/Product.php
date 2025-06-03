@@ -38,6 +38,9 @@ class Product
     #[ORM\OneToMany(targetEntity: StockRequestItem::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $stockRequestItems;
 
+    #[ORM\Column(length: 20)]
+    private ?string $unit = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -117,6 +120,18 @@ class Product
                 $stockRequestItem->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUnit(): ?string
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(string $unit): static
+    {
+        $this->unit = $unit;
 
         return $this;
     }

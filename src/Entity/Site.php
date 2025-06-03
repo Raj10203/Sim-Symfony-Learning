@@ -55,6 +55,17 @@ class Site
     #[ORM\OneToMany(targetEntity: StockRequest::class, mappedBy: 'toSite')]
     private Collection $stockRequestsTo;
 
+    /**
+     * @var Collection<int, Inventory>
+     */
+    #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'site')]
+    private Collection $inventories;
+
+    public function __construct()
+    {
+        $this->inventories = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -192,6 +203,36 @@ class Site
             // set the owning side to null (unless already changed)
             if ($stockRequestsTo->getToSite() === $this) {
                 $stockRequestsTo->setToSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inventory>
+     */
+    public function getInventories(): Collection
+    {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory): static
+    {
+        if (!$this->inventories->contains($inventory)) {
+            $this->inventories->add($inventory);
+            $inventory->setSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory): static
+    {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getSite() === $this) {
+                $inventory->setSite(null);
             }
         }
 

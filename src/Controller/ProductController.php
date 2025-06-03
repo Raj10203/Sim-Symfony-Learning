@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Form\ProductsType;
+use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +29,7 @@ final class ProductController extends BaseController
     public function new(Request $request, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
         $product = new Product();
-        $form = $this->createForm(ProductsType::class, $product);
+        $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -56,7 +56,7 @@ final class ProductController extends BaseController
     #[Route('/{id}/edit', name: 'app_products_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
-        $form = $this->createForm(ProductsType::class, $product);
+        $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         $cache->delete('products');
 

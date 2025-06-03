@@ -2,13 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
+use App\Entity\Site;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategoriesType extends AbstractType
+class SiteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -18,7 +18,12 @@ class CategoriesType extends AbstractType
                     'class' => 'form-control',
                 ]
             ])
-            ->add('description', null, [
+            ->add('address', null, [
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
+            ->add('location', null, [
                 'attr' => [
                     'class' => 'form-control',
                 ]
@@ -35,14 +40,14 @@ class CategoriesType extends AbstractType
                 'attr' => [
                     'class' => 'select2-dropdown-single',
                 ]
-            ]);
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Category::class,
-            'csrf_token_id' => 'categories_token',
+            'data_class' => Site::class,
+            'csrf_token_id'   => 'site_token'
         ]);
     }
 }

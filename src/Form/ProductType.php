@@ -2,13 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\Site;
+use App\Entity\Category;
+use App\Entity\Product;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SitesType extends AbstractType
+class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -18,15 +20,20 @@ class SitesType extends AbstractType
                     'class' => 'form-control',
                 ]
             ])
-            ->add('address', null, [
+            ->add('description', null, [
                 'attr' => [
                     'class' => 'form-control',
                 ]
             ])
-            ->add('location', null, [
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'required' => true,
+                'label' => 'Category',
+                'placeholder' => 'Select category',
                 'attr' => [
-                    'class' => 'form-control',
-                ]
+                    'class' => 'select2-dropdown-single',
+                ],
             ])
             ->add('active', ChoiceType::class, [
                 'choices' => [
@@ -40,14 +47,29 @@ class SitesType extends AbstractType
                 'attr' => [
                     'class' => 'select2-dropdown-single',
                 ]
-            ]);;
+            ])
+            ->add('unit', ChoiceType::class, [
+                'choices' => [
+                    'Unit' => 'Unit',
+                    'Liters' => 'Liters',
+                    'Kg' => 'Kg',
+                    'Meters' => 'Meters',
+                ],
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Status',
+                'required' => true,
+                'attr' => [
+                    'class' => 'select2-dropdown-single',
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Site::class,
-            'csrf_token_id'   => 'site_token'
+            'data_class' => Product::class,
+            'csrf_token_id' => 'products_token',
         ]);
     }
 }

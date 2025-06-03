@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\StockRequestItem;
-use App\Form\StockRequestItemsType;
+use App\Form\StockRequestItemType;
 use App\Repository\StockRequestItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +26,7 @@ final class StockRequestItemController extends BaseController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $stockRequestItem = new StockRequestItem();
-        $form = $this->createForm(StockRequestItemsType::class, $stockRequestItem);
+        $form = $this->createForm(StockRequestItemType::class, $stockRequestItem);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +53,7 @@ final class StockRequestItemController extends BaseController
     #[Route('/{id}/edit', name: 'app_stock_request_items_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, StockRequestItem $stockRequestItem, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(StockRequestItemsType::class, $stockRequestItem);
+        $form = $this->createForm(StockRequestItemType::class, $stockRequestItem);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

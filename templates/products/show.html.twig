@@ -45,16 +45,20 @@
                 <td>{{ product.category.name }}</td>
             </tr>
             <tr>
+                <th>Unit</th>
+                <td>{{ product.unit }}</td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td>{{ product.active ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
                 <th>CreatedAt</th>
                 <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>UpdatedAt</th>
                 <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Active</th>
-                <td>{{ product.active ? 'Yes' : 'No' }}</td>
             </tr>
             </tbody>
         </table>

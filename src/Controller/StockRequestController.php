@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Site;
 use App\Entity\StockRequest;
 use App\Entity\StockRequestItem;
-use App\Form\StockRequestItemsType;
+use App\Form\StockRequestItemType;
 use App\Form\StockRequestType;
 use App\Repository\StockRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -101,7 +101,7 @@ final class StockRequestController extends BaseController
 
         // Stock request item form
         $stockRequestItem = new StockRequestItem();
-        $stockRequestItemForm = $this->createForm(StockRequestItemsType::class, $stockRequestItem, [
+        $stockRequestItemForm = $this->createForm(StockRequestItemType::class, $stockRequestItem, [
             'stock_request' => $stockRequest
         ]);
         $stockRequestItemForm

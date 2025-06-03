@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Site;
-use App\Form\SitesType;
+use App\Form\SiteType;
 use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ final class SiteController extends BaseController
     {
         $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
         $site = new Site();
-        $form = $this->createForm(SitesType::class, $site);
+        $form = $this->createForm(SiteType::class, $site);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,7 +57,7 @@ final class SiteController extends BaseController
     public function edit(Request $request, Site $site, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_SITE_CRUD');
-        $form = $this->createForm(SitesType::class, $site);
+        $form = $this->createForm(SiteType::class, $site);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
