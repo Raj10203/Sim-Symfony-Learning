@@ -15,8 +15,6 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
         $headquarters = SiteFactory::createOne([
             'name' => 'Headquarters',
             'location' => 'https://maps.app.goo.gl/bttWR6EpBGvgccS89'
@@ -61,8 +59,8 @@ class AppFixtures extends Fixture
         ]);
         CategoryFactory::createMany(10);
         ProductFactory::createMany(20);
-        StockRequestFactory::createMany(50);
-        StockRequestItemFactory::createMany(500);
+        StockRequestFactory::createMany(5);
+        StockRequestItemFactory::createMany(50);
         $manager->flush();
     }
 }

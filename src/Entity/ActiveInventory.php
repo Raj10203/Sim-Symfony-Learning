@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ActiveInventoryRepository::class)]
+#[ORM\UniqueConstraint(name: 'uniq_product_site', columns: ['product_id', 'site_id'])]
 class ActiveInventory
 {
     use TimestampableEntity;
@@ -24,7 +25,7 @@ class ActiveInventory
     #[ORM\JoinColumn(nullable: false)]
     private ?Site $site = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     private ?string $serialNo = null;
 
     #[ORM\Column(nullable: true)]

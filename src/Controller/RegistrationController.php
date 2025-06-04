@@ -11,10 +11,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[isGranted('ROLE_USER_CRUD')]
 class RegistrationController extends BaseController
 {
     #[Route('/register', name: 'app_auth_register')]
-    #[isGranted('ROLE_USER_CRUD')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();

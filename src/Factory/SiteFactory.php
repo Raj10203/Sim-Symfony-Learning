@@ -3,6 +3,8 @@
 namespace App\Factory;
 
 use App\Entity\Site;
+use App\Messenger\Message\AddSiteMessage;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -15,8 +17,11 @@ final class SiteFactory extends PersistentProxyObjectFactory
      *
      * @todo inject services if required
      */
-    public function __construct()
+    public function __construct(
+        private MessageBusInterface $messageBus,
+    )
     {
+        parent::__construct();
     }
 
     public static function class(): string
@@ -47,7 +52,15 @@ final class SiteFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this// ->afterInstantiate(function(Sites $sites): void {})
+        return $this
+            ->afterPersist(function (Site $site)  {
+                $this->messageBus->dispatch(new AddSiteMessage($site->getId()));
+            }) // default event for this factory
             ;
     }
+//    protected function initialize(): static
+//    {
+//        return $this// ->afterInstantiate(function(Sites $sites): void {})
+//            ;
+//    }
 }

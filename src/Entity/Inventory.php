@@ -5,25 +5,29 @@ namespace App\Entity;
 use App\Repository\InventoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InventoryRepository::class)]
+#[ORM\UniqueConstraint(name: 'uniq_product_site', columns: ['product_id', 'site_id'])]
 class Inventory
 {
     use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
-    #[ORM\ManyToOne(inversedBy: 'inventories')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'inventories')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Site $site = null;
 
     #[ORM\Column]
+    #[Assert\Positive(message: 'This value should be positive.')]
     private ?int $quantity = null;
 
     public function getId(): ?int

@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Messenger\Message\AddProductMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -25,8 +28,15 @@ final class ProductController extends BaseController
         ]);
     }
 
+    /**
+     * @throws ExceptionInterface
+     */
     #[Route('/new', name: 'app_products_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, CacheInterface $cache): Response
+    public function new(
+        Request                $request,
+        EntityManagerInterface $entityManager,
+        MessageBusInterface $messageBus,
+    ): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
@@ -35,7 +45,9 @@ final class ProductController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($product);
             $entityManager->flush();
-            $cache->delete('products');
+
+            $messageBus->dispatch(new AddProductMessage($product->getId()));
+
             return $this->redirectToRoute('app_products_index', [], Response::HTTP_SEE_OTHER);
         }
 

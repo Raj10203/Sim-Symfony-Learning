@@ -34,7 +34,7 @@ final class StockRequestItemFactory extends PersistentProxyObjectFactory
     {
         return [
             'createdAt' => self::faker()->dateTime(),
-            'product' => ProductFactory::new(),
+            'product' => ProductFactory::random(),
             'quantityApproved' => self::faker()->randomNumber(),
             'quantityRequested' => self::faker()->randomNumber(),
             'status' => self::faker()->randomElement(StockRequestItemsStatus::cases()),
