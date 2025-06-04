@@ -15,6 +15,14 @@
                 <th>Quantity</th>
                 <td>{{ inventory.quantity }}</td>
             </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ inventory.createdAt ? inventory.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ inventory.updatedAt ? inventory.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
         </tbody>
     </table>
 

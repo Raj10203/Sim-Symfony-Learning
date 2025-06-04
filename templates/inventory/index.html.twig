@@ -1,35 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inventory index{% endblock %}
+{% set current_page = 'aside-menu-inventory-inventory' %}
+
+{% block title %}Sites index{% endblock %}
+
+{% block additional_js %}
+    {{ include('partials/active_menu_script.html.twig') }}
+{% endblock %}
 
 {% block body %}
-    <h1>Inventory index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Quantity</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for inventory in inventories %}
-            <tr>
-                <td>{{ inventory.id }}</td>
-                <td>{{ inventory.quantity }}</td>
-                <td>
-                    <a href="{{ path('app_inventory_show', {'id': inventory.id}) }}">show</a>
-                    <a href="{{ path('app_inventory_edit', {'id': inventory.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_inventory_new') }}">Create new</a>
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Inventory
+    </h3>
+    <!-- Sites List Card -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Inventories</h5>
+            <div>
+                {% if is_granted('ROLE_INVENTORY_CRUD') %}
+                    <a href="{{ path('app_inventory_new') }}" class="btn btn-primary">
+                        <i class="bx bx-plus me-0 me-sm-1"></i>
+                        <span class="d-none d-sm-inline-block">Add Stock</span>
+                    </a>
+                {% endif %}
+                <a href="{{ path('app_stock_request_new') }}" class="btn btn-primary">
+                    <i class="bx bx-plus me-0 me-sm-1"></i>
+                    <span class="d-none d-sm-inline-block">New Stock Request</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive text-nowrap scrollable-container overflow-hidden">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Product</th>
+                    <th>Site</th>
+                    <th>Quantity</th>
+                    <th>CreatedAt</th>
+                    <th>UpdatedAt</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for inventory in inventories %}
+                    <tr>
+                        <td>{{ inventory.id }}</td>
+                        <td>{{ inventory.product.name }}</td>
+                        <td>{{ inventory.site.name }}</td>
+                        <td>{{ inventory.quantity }}</td>
+                        <td>{{ inventory.createdAt ? inventory.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ inventory.updatedAt ? inventory.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_inventory_show', {'id': inventory.id}) }}">show</a>
+                            <a href="{{ path('app_inventory_edit', {'id': inventory.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
+

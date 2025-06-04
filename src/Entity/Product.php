@@ -47,6 +47,9 @@ class Product
     #[ORM\OneToMany(targetEntity: ActiveInventory::class, mappedBy: 'product')]
     private Collection $activeInventories;
 
+    #[ORM\Column(length: 50)]
+    private ?string $serialNoPrefix = null;
+
     public function __construct()
     {
         $this->activeInventories = new ArrayCollection();
@@ -173,6 +176,18 @@ class Product
                 $activeInventory->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSerialNoPrefix(): ?string
+    {
+        return $this->serialNoPrefix;
+    }
+
+    public function setSerialNoPrefix(string $serialNoPrefix): static
+    {
+        $this->serialNoPrefix = $serialNoPrefix;
 
         return $this;
     }

@@ -31,12 +31,18 @@ final class StockRequestFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
+        $fromSite = SiteFactory::random();
+        $toSite = SiteFactory::random();
+
+        while ($toSite->getId() === $fromSite->getId()) {
+            $toSite = SiteFactory::random();
+        }
         return [
             'createdAt' => self::faker()->dateTime(),
-            'fromSite' => SiteFactory::random(),
+            'fromSite' => $fromSite,
             'requestedBy' => UserFactory::random(),
             'status' => self::faker()->randomElement(['draft', 'pending_hq_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected']),
-            'toSite' => SiteFactory::random(),
+            'toSite' => $toSite,
             'updatedAt' => self::faker()->dateTime(),
         ];
     }

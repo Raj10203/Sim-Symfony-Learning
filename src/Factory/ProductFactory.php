@@ -31,12 +31,16 @@ final class ProductFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
+        $name = self::faker()->firstName();
+        $prefix = strtoupper(substr($name, 0, 3));
+
         return [
             'active' => self::faker()->boolean(),
+            'name' => $name,
+            'serialNoPrefix' => $prefix,
             'category' => CategoryFactory::random(),
             'createdAt' => self::faker()->dateTime(),
             'description' => self::faker()->streetName(),
-            'name' => self::faker()->firstName(),
             'unit' => 'Unit',
             'updatedAt' => self::faker()->dateTime(),
         ];
@@ -47,8 +51,7 @@ final class ProductFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Products $products): void {})
-        ;
+        return $this// ->afterInstantiate(function(Products $products): void {})
+            ;
     }
 }

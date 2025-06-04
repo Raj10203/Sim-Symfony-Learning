@@ -30,6 +30,7 @@
                     <th>Description</th>
                     <th>Category</th>
                     <th>Unit</th>
+                    <th>Pre-fix</th>
                     <th>Active</th>
                     <th>CreatedAt</th>
                     <th>UpdatedAt</th>
@@ -44,6 +45,7 @@
                         <td>{{ product.description }}</td>
                         <td>{{ product.category.name }}</td>
                         <td>{{ product.unit }}</td>
+                        <td>{{ product.serialNoPrefix }}</td>
                         <td>{{ product.active ? 'Yes' : 'No' }}</td>
                         <td>{{ product.createdAt ? product.createdAt|date('d-m-Y H:i:s') : '' }}</td>
                         <td>{{ product.updatedAt ? product.updatedAt|date('d-m-Y H:i:s') : '' }}</td>

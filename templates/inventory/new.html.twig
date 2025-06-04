@@ -1,11 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Inventory{% endblock %}
+{% set current_page = 'aside-menu-inventory-inventory' %}
+
+{% block title %}New Sites{% endblock %}
+
+{% block additional_js %}
+    {{ include('partials/active_menu_script.html.twig') }}
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Inventory</h1>
-
-    {{ include('inventory/_form.html.twig') }}
-
-    <a href="{{ path('app_inventory_index') }}">back to list</a>
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Sites
+    </h3>
+    <div class="card pb-5">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">New Site</h5>
+            <a href="{{ path('app_inventory_index') }}" class="btn btn-secondary">
+                <i class="bx bx-arrow-back me-0 me-sm-1"></i>
+                <span class="d-none d-sm-inline-block">Back to List</span>
+            </a>
+        </div>
+        {{ include('inventory/_form.html.twig') }}
+    </div>
 {% endblock %}

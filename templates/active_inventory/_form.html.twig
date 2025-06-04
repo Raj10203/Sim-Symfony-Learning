@@ -1,4 +1,51 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="container-fluid">
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 col-12 mb-3">
+            <div class="form-group">
+                {{ form_label(form.product) }}
+                {{ form_widget(form.product) }}
+            </div>
+        </div>
+        <div class="col-md-6 col-12 mb-3">
+            <div class="form-group">
+                {{ form_label(form.site) }}
+                {{ form_widget(form.site) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-12 mb-3">
+            <div class="form-group">
+                {{ form_label(form.serialNo) }}
+                {{ form_widget(form.serialNo) }}
+            </div>
+        </div>
+        <div class="col-md-6 col-12 mb-3">
+            <div class="form-group">
+                {{ form_label(form.lastStockMovement) }}
+                {{ form_widget(form.lastStockMovement) }}
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="form-group">
+            {{ form_label(form.remarks) }}
+            {{ form_widget(form.remarks) }}
+        </div>
+    </div>
+    <div class="d-flex flex-wrap col-md-2 col-12 mb-3 align-items-end">
+        <div class="d-none">
+            {{ form_widget(form._token) }}
+        </div>
+        <div class="m-1">
+            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        </div>
+        {{ form_end(form) }}
+        {% if button_label is defined %}
+            <div class="m-1">
+                {{ include('inventory/_delete_form.html.twig') }}
+            </div>
+        {% endif %}
+    </div>
+</div>

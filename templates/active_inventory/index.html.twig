@@ -18,7 +18,7 @@
             <h5 class="mb-0">Inventories</h5>
             <div>
                 {% if is_granted('ROLE_INVENTORY_CRUD') %}
-                    <a href="{{ path('app_inventory_new') }}" class="btn btn-primary">
+                    <a href="{{ path('app_inventory_active_new') }}" class="btn btn-primary">
                         <i class="bx bx-plus me-0 me-sm-1"></i>
                         <span class="d-none d-sm-inline-block">Add Stock</span>
                     </a>
@@ -35,6 +35,8 @@
                 <tr>
                     <th>Id</th>
                     <th>SerialNo</th>
+                    <th>Product</th>
+                    <th>Site</th>
                     <th>ReceivedAt</th>
                     <th>Remarks</th>
                     <th>CreatedAt</th>
@@ -47,6 +49,8 @@
                     <tr>
                         <td>{{ active_inventory.id }}</td>
                         <td>{{ active_inventory.serialNo }}</td>
+                        <td>{{ active_inventory.product.name }}</td>
+                        <td>{{ active_inventory.site.name }}</td>
                         <td>{{ active_inventory.receivedAt ? active_inventory.receivedAt|date('Y-m-d H:i:s') : '' }}</td>
                         <td>{{ active_inventory.remarks }}</td>
                         <td>{{ active_inventory.createdAt ? active_inventory.createdAt|date('Y-m-d H:i:s') : '' }}</td>

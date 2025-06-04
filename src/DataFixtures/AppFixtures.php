@@ -25,6 +25,10 @@ class AppFixtures extends Fixture
             'name' => 'Adani',
             'location' => 'https://maps.app.goo.gl/bttWR6EpBGvgccS89'
         ]);
+        $inTransit = SiteFactory::createOne([
+            'name' => 'In Transit',
+            'location' => 'NA'
+        ]);
         UserFactory::createOne([
             'email' => 'admin@example.com',
             'password' => '$2y$13$X7NAK5yb3QLcf9z2oalmwutggedQJwdvnyJUcodinQrYVsglPdvCi',

@@ -25,6 +25,11 @@ class ProductType extends AbstractType
                     'class' => 'form-control',
                 ]
             ])
+            ->add('serialNoPrefix', null, [
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
