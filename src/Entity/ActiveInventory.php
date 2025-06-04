@@ -37,6 +37,9 @@ class ActiveInventory
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $remarks = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $status = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,6 +113,18 @@ class ActiveInventory
     public function setRemarks(?string $remarks): static
     {
         $this->remarks = $remarks;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

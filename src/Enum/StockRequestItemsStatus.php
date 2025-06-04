@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enum\Stock;
+namespace App\Enum;
 
 enum StockRequestItemsStatus: string
 {

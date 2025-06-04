@@ -41,7 +41,8 @@ final class StockRequestFactory extends PersistentProxyObjectFactory
             'createdAt' => self::faker()->dateTime(),
             'fromSite' => $fromSite,
             'requestedBy' => UserFactory::random(),
-            'status' => self::faker()->randomElement(['draft', 'pending_hq_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected']),
+            'status' => self::faker()->randomElement(['draft', 'submitted', 'approved_by_employee',
+                'approved_by_manager', 'approved', 'rejected']),
             'toSite' => $toSite,
             'updatedAt' => self::faker()->dateTime(),
         ];

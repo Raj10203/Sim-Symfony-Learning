@@ -4,40 +4,41 @@ framework:
             type: 'state_machine'
             supports:
                 - App\Entity\StockRequest
+            initial_marking: draft
             marking_store:
                 type: 'method'
                 property: 'status'
             places:
                 - draft
-                - pending_hq_employee
-                - pending_manager
-                - pending_admin
+                - submitted
+                - approved_by_employee
+                - approved_by_manager
                 - approved
                 - rejected
             transitions:
                 submit:
                     from: draft
-                    to: pending_hq_employee
+                    to: submitted
                     guard: "is_granted('ROLE_SITE_EMPLOYEE')"
 
                 approve_by_employee:
-                    from: pending_hq_employee
-                    to: pending_manager
+                    from: submitted
+                    to: approved_by_employee
                     guard: "is_granted('ROLE_HQ_EMPLOYEE')"
 
                 approve_by_manager:
-                    from: pending_manager
-                    to: pending_admin
+                    from: approved_by_employee
+                    to: approved_by_manager
                     guard: "is_granted('ROLE_HQ_MANAGER')"
 
                 approve_by_admin:
-                    from: pending_admin
+                    from: approved_by_manager
                     to: approved
                     guard: "is_granted('ROLE_ADMIN')"
 
                 reject:
                     from:
-                        - pending_hq_employee
-                        - pending_manager
-                        - pending_admin
+                        - submitted
+                        - approved_by_employee
+                        - approved_by_manager
                     to: rejected

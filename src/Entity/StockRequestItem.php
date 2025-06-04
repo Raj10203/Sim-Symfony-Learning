@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\Stock\StockRequestItemsStatus;
+use App\Enum\ActiveInventoryStatus;
 use App\Repository\StockRequestItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -30,8 +30,8 @@ class StockRequestItem
     #[ORM\Column]
     private ?int $quantityApproved = 0;
 
-    #[ORM\Column(name: 'status', type: 'string', enumType: StockRequestItemsStatus::class)]
-    private StockRequestItemsStatus $status = StockRequestItemsStatus::Pending;
+    #[ORM\Column(name: 'status', type: 'string', enumType: ActiveInventoryStatus::class)]
+    private ActiveInventoryStatus $status = ActiveInventoryStatus::Pending;
 
     public function getId(): ?int
     {
@@ -86,12 +86,12 @@ class StockRequestItem
         return $this;
     }
 
-    public function getStatus(): StockRequestItemsStatus
+    public function getStatus(): ActiveInventoryStatus
     {
         return $this->status;
     }
 
-    public function setStatus(StockRequestItemsStatus $status): self
+    public function setStatus(ActiveInventoryStatus $status): self
     {
         $this->status = $status;
 

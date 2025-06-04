@@ -176,7 +176,6 @@ final class StockRequestController extends BaseController
 
         $canApply = $workflow->can($stockRequest, $transition);
         if ($canApply) {
-
             $workflow->apply($stockRequest, $transition);
             $message = "Transition '$transition' applied successfully.";
         } elseif ($this->isGranted('ROLE_ADMIN')) {

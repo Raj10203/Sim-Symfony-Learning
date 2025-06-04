@@ -3,7 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\User;
-use App\Enum\Stock\StockRequestItemsStatus;
+use App\Enum\ActiveInventoryStatus;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -46,7 +46,7 @@ final class StockRequestVoter extends Voter
         return match ($attribute) {
             self::DELETE, self::EDIT => (($subject->getToSite() === $user->getSite()
                     || $subject->getRequestedBy() == $user)
-                && $subject->getStatus() == StockRequestItemsStatus::Draft->value),
+                && $subject->getStatus() == ActiveInventoryStatus::Draft->value),
             self::VIEW => ($subject->getToSite() === $user->getSite() || $subject->getFromSite() === $user->getSite()),
             default => false,
         };

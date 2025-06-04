@@ -1,4 +1,4 @@
-{% set all_places = ['draft', 'pending_hq_employee', 'pending_manager', 'pending_admin', 'approved', 'rejected'] %}
+{% set all_places = ['draft', 'submitted', 'approved_by_employee', 'approved_by_manager', 'approved', 'rejected'] %}
 
 {% set is_admin = is_granted('ROLE_ADMIN') %}
 {% set transition_list = is_admin ? all_places : transitions|map(t => t.name) %}

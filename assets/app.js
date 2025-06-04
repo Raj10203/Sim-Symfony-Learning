@@ -10,9 +10,17 @@ import './bootstrap.js';
 import './styles/app.css';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
-window.Swal = Swal;
-window.$ = $;
+global.Swal = Swal;
+global.$ = global.jQuery = $;
 import PerfectScrollbar from 'perfect-scrollbar';
+
+import 'datatables.net-bs5';
+import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+
+import 'datatables.net-responsive-bs5';
+import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css';
+
+// Expose jQuery globally if needed
 
 // js files
 import 'select2/dist/css/select2.min.css';
