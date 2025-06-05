@@ -3,6 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Inventory;
+use App\Messenger\Message\AddProductMessage;
+use App\Messenger\Message\AddStockToSiteMessage;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -15,7 +18,9 @@ final class InventoryFactory extends PersistentProxyObjectFactory
      *
      * @todo inject services if required
      */
-    public function __construct()
+    public function __construct(
+        private readonly MessageBusInterface $messageBus,
+    )
     {
     }
 
@@ -33,7 +38,7 @@ final class InventoryFactory extends PersistentProxyObjectFactory
     {
         return [
             'product' => ProductFactory::new(),
-            'quantity' => self::faker()->randomNumber(),
+            'quantity' => rand(1, 20),
             'site' => SiteFactory::new(),
         ];
     }
@@ -44,7 +49,9 @@ final class InventoryFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Inventory $inventory): void {})
+             ->afterPersist(function(Inventory $inventory): void {
+                 $this->messageBus->dispatch(new AddStockToSiteMessage($inventory->getId(),$inventory->getQuantity()));
+             })
         ;
     }
 }

@@ -61,7 +61,12 @@
                     {data: 'quantity'},
                     {data: 'updatedAt'},
                     {data: 'createdAt'}
-                ]
+                ],
+                initComplete: function () {
+                    $('#dt-length-0').select2({
+                        minimumResultsForSearch: Infinity
+                    })
+                }
             });
         });
     </script>

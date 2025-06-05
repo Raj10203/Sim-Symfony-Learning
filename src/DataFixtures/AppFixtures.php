@@ -8,11 +8,25 @@ use App\Factory\SiteFactory;
 use App\Factory\StockRequestFactory;
 use App\Factory\StockRequestItemFactory;
 use App\Factory\UserFactory;
+use App\Messenger\Message\AddStockToSiteMessage;
+use App\Repository\InventoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(
+        private readonly InventoryRepository $inventoryRepository,
+        private readonly MessageBusInterface $messageBus,
+    )
+    {
+    }
+
+    /**
+     * @throws ExceptionInterface
+     */
     public function load(ObjectManager $manager): void
     {
         $headquarters = SiteFactory::createOne([
@@ -58,9 +72,12 @@ class AppFixtures extends Fixture
             'site' => $adani
         ]);
         CategoryFactory::createMany(10);
-        ProductFactory::createMany(20);
-        StockRequestFactory::createMany(5);
-        StockRequestItemFactory::createMany(50);
-        $manager->flush();
+        ProductFactory::createOne();
+//        StockRequestFactory::createMany(5);
+//        StockRequestItemFactory::createMany(50);
+//        for ($i = 0; $i < 10; $i++) {
+//            $this->messageBus->dispatch(new AddStockToSiteMessage($i, rand(1, 20)));
+//        }
+//        $manager->flush();
     }
 }

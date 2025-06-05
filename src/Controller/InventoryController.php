@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Inventory;
 use App\Form\InventoryForm;
+use App\Messenger\Message\AddStockToSiteMessage;
 use App\Repository\InventoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -44,8 +47,15 @@ final class InventoryController extends BaseController
 //        ]);
 //    }
 
+    /**
+     * @throws ExceptionInterface
+     */
     #[Route('/add-stock', name: 'app_inventory_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        MessageBusInterface $messageBus,
+    ): Response
     {
         $inventory = new Inventory();
         $form = $this->createForm(InventoryForm::class, $inventory);
@@ -58,8 +68,7 @@ final class InventoryController extends BaseController
                 'product' => $inventory->getProduct(),
             ]);
 
-            $existingInventory->setQuantity($existingInventory->getQuantity() + $inventory->getQuantity());
-            $entityManager->flush();
+            $messageBus->dispatch(new AddStockToSiteMessage($existingInventory->getId(), $inventory->getQuantity()));
 
             return $this->redirectToRoute('app_inventory_index', [], Response::HTTP_SEE_OTHER);
         }

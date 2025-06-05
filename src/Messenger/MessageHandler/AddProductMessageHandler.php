@@ -22,18 +22,19 @@ class AddProductMessageHandler
 
     public function __invoke(AddProductMessage $message)
     {
-        $productId = $message->getProductId();
-        $product = $this->productRepository->find($productId);
+        $product = $this->productRepository->find($message->getProductId());
 
         $sites = $this->siteRepository->findAll();
-
+        $i = 0;
         foreach ($sites as $site) {
+            $i++;
+            dump($i);
             $inventory = new Inventory();
             $inventory->setProduct($product);
             $inventory->setSite($site);
             $inventory->setQuantity(0);
             $this->entityManager->persist($inventory);
-            $this->entityManager->flush();
         }
+        $this->entityManager->flush();
     }
 }

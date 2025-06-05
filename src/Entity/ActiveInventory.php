@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Enum\ActiveInventoryStatus;
+use App\Enum\StockRequestItemsStatus;
 use App\Repository\ActiveInventoryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ActiveInventoryRepository::class)]
-#[ORM\UniqueConstraint(name: 'uniq_product_site', columns: ['product_id', 'site_id'])]
 class ActiveInventory
 {
     use TimestampableEntity;
@@ -25,9 +26,6 @@ class ActiveInventory
     #[ORM\JoinColumn(nullable: false)]
     private ?Site $site = null;
 
-    #[ORM\Column(length: 50, unique: true)]
-    private ?string $serialNo = null;
-
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $receivedAt = null;
 
@@ -37,8 +35,8 @@ class ActiveInventory
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $remarks = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $status = null;
+    #[ORM\Column(length: 50, enumType: ActiveInventoryStatus::class)]
+    private ActiveInventoryStatus $status = ActiveInventoryStatus::Pending;
 
     public function getId(): ?int
     {
@@ -65,18 +63,6 @@ class ActiveInventory
     public function setSite(?Site $site): static
     {
         $this->site = $site;
-
-        return $this;
-    }
-
-    public function getSerialNo(): ?string
-    {
-        return $this->serialNo;
-    }
-
-    public function setSerialNo(string $serialNo): static
-    {
-        $this->serialNo = $serialNo;
 
         return $this;
     }
@@ -117,12 +103,12 @@ class ActiveInventory
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?ActiveInventoryStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(ActiveInventoryStatus $status): static
     {
         $this->status = $status;
 
