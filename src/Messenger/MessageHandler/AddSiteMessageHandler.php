@@ -23,7 +23,7 @@ class AddSiteMessageHandler
 
     public function __invoke(AddSiteMessage $message)
     {
-        $site = $this->siteRepository->find( $message->getSiteId());
+        $site = $this->siteRepository->find($message->getSiteId());
 
         $products = $this->productRepository->findAll();
 
@@ -32,8 +32,7 @@ class AddSiteMessageHandler
             $inventory->setProduct($product);
             $inventory->setSite($site);
             $inventory->setQuantity(0);
-            $this->entityManager->persist($inventory);
-            $this->entityManager->flush();
         }
+        $this->entityManager->flush();
     }
 }
