@@ -13,9 +13,7 @@ framework:
             # sync: 'sync://'
 
         routing:
-            'App\Messenger\Message\AddProductMessage': async
-            'App\Messenger\Message\AddSiteMessage': async
-            'App\Messenger\Message\AddStockToSiteMessage': async
+#            'App\Messenger\Message\AddProductMessage': async
 
 # when@test:
 #    framework:

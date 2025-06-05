@@ -56,12 +56,12 @@ final class ProductFactory extends PersistentProxyObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function initialize(): static
-    {
-        return $this
-            ->afterPersist(function (Product $product)  {
-                $this->messageBus->dispatch(new AddProductMessage($product->getId()));
-            }) // default event for this factory
-            ;
-    }
+//    protected function initialize(): static
+//    {
+//        return $this
+//            ->afterPersist(function (Product $product)  {
+//                $this->messageBus->dispatch(new AddProductMessage($product->getId()));
+//            }) // default event for this factory
+//            ;
+//    }
 }

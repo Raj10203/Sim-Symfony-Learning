@@ -68,7 +68,12 @@ final class InventoryController extends BaseController
                 'product' => $inventory->getProduct(),
             ]);
 
-            $messageBus->dispatch(new AddStockToSiteMessage($existingInventory->getId(), $inventory->getQuantity()));
+            if ($existingInventory) {
+                $existingInventory->setQuantity($existingInventory->getQuantity() + $inventory->getQuantity());
+            } else {
+                $entityManager->persist($inventory);
+            }
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_inventory_index', [], Response::HTTP_SEE_OTHER);
         }

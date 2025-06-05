@@ -46,12 +46,12 @@ final class InventoryFactory extends PersistentProxyObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function initialize(): static
-    {
-        return $this
-             ->afterPersist(function(Inventory $inventory): void {
-                 $this->messageBus->dispatch(new AddStockToSiteMessage($inventory->getId(),$inventory->getQuantity()));
-             })
-        ;
-    }
+//    protected function initialize(): static
+//    {
+//        return $this
+//             ->afterPersist(function(Inventory $inventory): void {
+//                 $this->messageBus->dispatch(new AddStockToSiteMessage($inventory->getId(),$inventory->getQuantity()));
+//             })
+//        ;
+//    }
 }

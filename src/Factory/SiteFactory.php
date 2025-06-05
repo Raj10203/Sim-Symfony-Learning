@@ -50,14 +50,6 @@ final class SiteFactory extends PersistentProxyObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function initialize(): static
-    {
-        return $this
-            ->afterPersist(function (Site $site)  {
-                $this->messageBus->dispatch(new AddSiteMessage($site->getId()));
-            }) // default event for this factory
-            ;
-    }
 //    protected function initialize(): static
 //    {
 //        return $this// ->afterInstantiate(function(Sites $sites): void {})

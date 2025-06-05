@@ -21,7 +21,7 @@ final class Version20250604060726 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            CREATE UNIQUE INDEX uniq_product_site ON retired_inventory (product_id, site_id)
+            CREATE UNIQUE INDEX uniq_product_site ON inventory (product_id, site_id)
         SQL);
     }
 
@@ -29,7 +29,7 @@ final class Version20250604060726 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            DROP INDEX uniq_product_site ON retired_inventory
+            DROP INDEX uniq_product_site ON inventory
         SQL);
     }
 }
