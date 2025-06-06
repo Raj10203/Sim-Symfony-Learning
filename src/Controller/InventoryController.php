@@ -4,13 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Inventory;
 use App\Form\InventoryForm;
-use App\Messenger\Message\AddStockToSiteMessage;
 use App\Repository\InventoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -27,29 +24,6 @@ final class InventoryController extends BaseController
         ]);
     }
 
-//    #[Route('/new', name: 'app_inventory_new', methods: ['GET', 'POST'])]
-//    public function new(Request $request, EntityManagerInterface $entityManager): Response
-//    {
-//        $inventory = new Inventory();
-//        $form = $this->createForm(InventoryForm::class, $inventory);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager->persist($inventory);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('app_inventory_index', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->render('inventory/new.html.twig', [
-//            'inventory' => $inventory,
-//            'form' => $form,
-//        ]);
-//    }
-
-    /**
-     * @throws ExceptionInterface
-     */
     #[Route('/add-stock', name: 'app_inventory_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,

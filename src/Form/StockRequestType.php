@@ -19,7 +19,6 @@ class StockRequestType extends AbstractType
             ->add('fromSite', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'name',
-                'disabled' => !$options['editable'],
                 'attr' => [
                     'class' => 'select2-dropdown-single',
                 ]
@@ -27,7 +26,6 @@ class StockRequestType extends AbstractType
             ->add('toSite', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'name',
-                'disabled' => !$options['editable'],
                 'attr' => [
                     'class' => 'select2-dropdown-single',
                 ]
@@ -48,7 +46,6 @@ class StockRequestType extends AbstractType
         $resolver->setDefaults([
             'data_class' => StockRequest::class,
             'csrf_token_id' => 'stock_request_items_token',
-            'editable' => false
-        ]);
+            ]);
     }
 }

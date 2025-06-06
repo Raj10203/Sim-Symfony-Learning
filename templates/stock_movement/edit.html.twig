@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit StockMovement{% endblock %}
+
+{% block body %}
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Stock Request
+    </h3>
+
+    <div class="card pb-5">
+        <div class="card-header d-flex">
+            <h5 class="mb-0">Request's Info</h5>
+            <a class="btn btn-secondary ms-auto" href="{{ path('app_stock_request_index') }}">
+                <i class="bx bx-arrow-back me-0 me-sm-1"></i>
+                <span class="d-none d-sm-inline-block">Back To List</span>
+            </a>
+        </div>
+        <div class="container-fluid">
+            <div class="my-2 d-flex flex-wrap justify-content-around align-items-center">
+                <a href="{{ path('app_stock_request_show', {'id': stock_movement.stockRequest.id}) }}">Request
+                    Id:- {{ stock_movement.stockRequest
+                    .id }}</a>
+                <span>Movement Id:- {{ stock_movement.id }}</span>
+                <span>Status:- {{ stock_movement.status|raw }}</span>
+            </div>
+            <div class="my-2 d-flex">
+                {{ include('stock_movement/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="my-2">
+        <div class="card pb-5">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Approved Items From Request No :- {{ stock_movement.stockRequest.id }}</h5>
+            </div>
+            <div class="my-2">
+                <div class="table-responsive text-nowrap scrollable-container overflow-hidden">
+                    <table class="table-sm table">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Approved Quantity</th>
+                            <th>Remaining Quantity</th>
+                            <th>Product</th>
+                            <th>actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for stock_request_item in stock_movement.stockRequest.approvedStockRequestItems %}
+                            <tr>
+                                <td>{{ stock_request_item.id }}</td>
+                                <td>{{ stock_request_item.quantityApproved }}</td>
+                                <td>{{ stock_request_item.remainingQuantity }}</td>
+                                <td>{{ stock_request_item.product.name }}</td>
+                                <td class="d-flex">
+                                    <a href="{{ path('app_stock_movement_item_edit', {'id': stock_request_item.id}) }}"
+                                       id="{{ stock_request_item.id }}" class="btn btn-sm btn-success">
+                                        <i class="bx bx-plus"></i>
+                                        Add Product
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="10" class="text-center">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-2">
+        <div class="card pb-5">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Product's Info</h5>
+            </div>
+            <div class="container-fluid">
+                {{ form_start(stock_movement_item_form) }}
+                <div class="row">
+                    {% for field in stock_movement_item_form %}
+                        {% if field.vars.name != '_token' %}
+                            <div class="form-group col-md-4 col-12 p-2">
+                                {{ form_row(field) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="form-group col-md-3 col-12 d-flex align-items-end p-2">
+                        <input type="submit" value="Add Product" class="btn btn-primary"/>
+                    </div>
+                </div>
+                {{ form_end(stock_movement_item_form) }}
+            </div>
+            <div class="my-2">
+                <div class="table-responsive text-nowrap scrollable-container overflow-hidden">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Quantity Requested</th>
+                            <th>Quantity Approved</th>
+                            <th>Product</th>
+                            <th>Status</th>
+                            <th>CreatedAt</th>
+                            <th>actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for stock_movement_item in stock_movement.stockMovementItems %}
+                            <tr>
+                                <td>{{ stock_movement_item.id }}</td>
+                                <td>{{ stock_movement_item.quantity }}</td>
+                                <td>{{ stock_movement_item.remarks }}</td>
+                                <td>{{ stock_movement_item.product.name }}</td>
+                                <td>{{ stock_movement_item.createdAt ? stock_movement_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>{{ stock_movement_item.updatedAt ? stock_movement_item.updatedAt|date('Y-m-d H:i:s') :
+                                    '' }}</td>
+                                <td class="d-flex">
+                                    <a href="{{ path('app_stock_movement_item_edit', {'id': stock_movement_item
+                                    .id}) }}" id="{{ stock_movement_item.id }}" class="btn btn-warning m-1">
+                                        <i class="bx bx-edit"></i>
+                                    </a>
+                                    <form method="post" action="{{ path('app_stock_movement_item_delete', {'id':
+                                        stock_movement_item.id}) }}" id="delete_stock_movement_item"
+                                          class="delete-form  p-1" data-product-name="{{ stock_movement_item.product
+                                    .name|default
+                                        ('this item') }}">
+                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('delete' ~ stock_movement_item.id) }}">
+                                        <button type="submit" class="btn btn-danger h-100"><i class="bx
+                                        bxs-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="10" class="text-center">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -3,7 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\StockRequestItem;
-use App\Enum\ActiveInventoryStatus;
+use App\Enum\StockRequestItemsStatus;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -37,7 +37,7 @@ final class StockRequestItemFactory extends PersistentProxyObjectFactory
             'product' => ProductFactory::random(),
             'quantityApproved' => self::faker()->randomNumber(),
             'quantityRequested' => self::faker()->randomNumber(),
-            'status' => self::faker()->randomElement(ActiveInventoryStatus::cases()),
+            'status' => self::faker()->randomElement(StockRequestItemsStatus::cases()),
             'stockRequest' => StockRequestFactory::random(),
             'updatedAt' => self::faker()->dateTime(),
         ];

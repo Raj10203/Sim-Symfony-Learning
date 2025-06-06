@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
-use App\Enum\ActiveInventoryStatus;
+use App\Enum\StockRequestItemsStatus;
 use App\Repository\StockRequestItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use phpDocumentor\Reflection\Types\This;
 
 #[ORM\Entity(repositoryClass: StockRequestItemRepository::class)]
 class StockRequestItem
 {
     use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,8 +32,8 @@ class StockRequestItem
     #[ORM\Column]
     private ?int $quantityApproved = 0;
 
-    #[ORM\Column(name: 'status', type: 'string', enumType: ActiveInventoryStatus::class)]
-    private ActiveInventoryStatus $status = ActiveInventoryStatus::Pending;
+    #[ORM\Column(name: 'status', type: 'string', enumType: StockRequestItemsStatus::class)]
+    private StockRequestItemsStatus $status = StockRequestItemsStatus::Pending;
 
     public function getId(): ?int
     {
@@ -43,7 +45,7 @@ class StockRequestItem
         return $this->stockRequest;
     }
 
-        public function setStockRequest(?StockRequest $stockRequest): static
+    public function setStockRequest(?StockRequest $stockRequest): static
     {
         $this->stockRequest = $stockRequest;
 
@@ -86,15 +88,30 @@ class StockRequestItem
         return $this;
     }
 
-    public function getStatus(): ActiveInventoryStatus
+    public function getStatus(): StockRequestItemsStatus
     {
         return $this->status;
     }
 
-    public function setStatus(ActiveInventoryStatus $status): self
+    public function setStatus(StockRequestItemsStatus $status): self
     {
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getRemainingQuantity(): ?int
+    {
+        $stockMovements = $this->stockRequest->getStockMovements();
+        $addedQuantity = 0;
+        foreach ($stockMovements as $stockMovement) {
+            $stockMovementItems = $stockMovement->getStockMovementItems();
+            foreach ($stockMovementItems as $stockMovementItem) {
+                if ($stockMovementItem->getProduct() === $this->product) {
+                    $addedQuantity += $stockMovementItem->getQuantity();
+                }
+            }
+        }
+        return $this->quantityApproved - $addedQuantity;
     }
 }

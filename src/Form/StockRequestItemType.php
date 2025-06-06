@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Entity\StockRequest;
 use App\Entity\StockRequestItem;
 use App\Enum\ActiveInventoryStatus;
+use App\Enum\StockRequestItemsStatus;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -42,14 +43,7 @@ class StockRequestItemType extends AbstractType
                 ]
             ])
             ->add('status', EnumType::class, [
-                'class' => ActiveInventoryStatus::class,
-                'attr' => [
-                    'class' => 'select2-dropdown-single',
-                ]
-            ])
-            ->add('stockRequest', EntityType::class, [
-                'class' => StockRequest::class,
-                'choice_label' => 'id',
+                'class' => StockRequestItemsStatus::class,
                 'attr' => [
                     'class' => 'select2-dropdown-single',
                 ]

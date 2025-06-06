@@ -6,41 +6,6 @@
 
 {% block additional_js %}
     {{ include('partials/active_menu_script.html.twig') }}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            $('.update-item').hide().click(function (e) {
-                $(this).hide();
-                const id = this.dataset.id;
-                let approvedQuantity = $('#update-item-input-' + id).val();
-                $('#edit-item-' + this.dataset.id).show().data('approved', approvedQuantity);
-                console.log(approvedQuantity);
-                $('#td-' + this.dataset.id).html(approvedQuantity);
-
-                $.ajax({
-                    url: '{{ path('app_stock_request_item_update', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
-                    type: 'POST',
-                    data: {
-                        quantityApproved: approvedQuantity
-                    },
-                    success: function (response) {
-                        $('#td-' + id).html(approvedQuantity);
-                        Swal.fire('Success', response.message, 'success');
-                    },
-                    error: function (xhr, status, error) {
-                        Swal.fire('Error', 'There was a problem updating the item. Please try again.', 'error');
-                    }
-                });
-            });
-            $('.edit-item').click(function (e) {
-                const quantityApproved = $(this).data('approved');
-                const input = $('<input type="number" class="form-control"/>')
-                    .attr('id', "update-item-input-" + this.dataset.id).val(quantityApproved);
-                $('#td-' + this.dataset.id).html(input);
-                $(this).hide();
-                $('#update-item-' + this.dataset.id).show();
-            })
-        });
-    </script>
 {% endblock %}
 
 {% block body %}
@@ -60,7 +25,7 @@
             <div class="my-2 d-flex flex-wrap justify-content-between align-items-center">
                 <span>Request Id:- {{ stock_request.id }}</span>
                 <span>Requested By:- {{ stock_request.requestedBy.email }}</span>
-                <span>Status:- {{ stock_request.status }}</span>
+                <span>Status:- {{ stock_request.status|raw }}</span>
             </div>
             <div class="my-2 d-flex">
                 {{ include('stock_request/_form.html.twig') }}
@@ -110,36 +75,13 @@
                                 <td>{{ stock_request_item.quantityRequested }}</td>
                                 <td id="td-{{ stock_request_item.id }}">{{ stock_request_item.quantityApproved }}</td>
                                 <td>{{ stock_request_item.product.name }}</td>
-                                <td>{{ stock_request_item.status.value }}</td>
+                                <td>{{ stock_request_item.status.value|raw }}</td>
                                 <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td class="d-flex">
-                                    {% if is_granted('ROLE_ADMIN') %}
                                         <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item
                                         .id}) }}" id="{{ stock_request_item.id }}" class="btn btn-warning m-1">
                                             <i class="bx bx-edit"></i>
                                         </a>
-                                    {% else %}
-                                        <a href="{{ path('app_stock_request_items_show', {'id': stock_request_item.id}) }}"
-                                           class="btn btn-primary m-1">
-                                            <i class="bx bx-show-alt"></i>
-                                        </a>
-                                    {% endif %}
-                                    {% if is_granted('ROLE_STOCK_REQUEST_REVIEWER') %}
-                                        <button
-                                                id="edit-item-{{ stock_request_item.id }}"
-                                                class="edit-item btn btn-success m-1"
-                                                data-id="{{ stock_request_item.id }}"
-                                                data-approved="{{ stock_request_item.quantityApproved }}">
-                                            <i class="bx bxs-pencil"></i>
-                                        </button>
-                                        <button
-                                                id="update-item-{{ stock_request_item.id }}"
-                                                class="update-item btn btn-success m-1"
-                                                data-id="{{ stock_request_item.id }}"
-                                                data-approved="{{ stock_request_item.quantityApproved }}">
-                                            <i class='bx bxs-check-circle'></i>
-                                        </button>
-                                    {% endif %}
                                     <form method="post" action="{{ path('app_stock_request_items_delete', {'id':
                                         stock_request_item.id}) }}" id="delete_stock_request_item"
                                           class="delete-form  p-1" data-product-name="{{ stock_request_item.product

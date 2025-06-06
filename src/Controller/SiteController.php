@@ -45,8 +45,6 @@ final class SiteController extends BaseController
             $entityManager->persist($site);
             $entityManager->flush();
 
-            $messageBus->dispatch(new AddSiteMessage($site->getId()));
-
             return $this->redirectToRoute('app_sites_index', [], Response::HTTP_SEE_OTHER);
         }
 

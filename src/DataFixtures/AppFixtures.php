@@ -72,12 +72,8 @@ class AppFixtures extends Fixture
             'site' => $adani
         ]);
         CategoryFactory::createMany(10);
-        ProductFactory::createOne();
-//        StockRequestFactory::createMany(5);
-//        StockRequestItemFactory::createMany(50);
-//        for ($i = 0; $i < 10; $i++) {
-//            $this->messageBus->dispatch(new AddStockToSiteMessage($i, rand(1, 20)));
-//        }
-//        $manager->flush();
+        ProductFactory::createMany(20);
+        StockRequestFactory::createMany(5);
+        StockRequestItemFactory::createMany(50);
     }
 }

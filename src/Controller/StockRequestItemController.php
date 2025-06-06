@@ -53,13 +53,27 @@ final class StockRequestItemController extends BaseController
     #[Route('/{id}/edit', name: 'app_stock_request_items_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, StockRequestItem $stockRequestItem, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $stockRequestItem->getStockRequest());
+
         $form = $this->createForm(StockRequestItemType::class, $stockRequestItem);
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $form
+                ->remove('product');
+        }
+        if (!$this->isGranted('ROLE_STOCK_REQUEST_REVIEWER')) {
+            $form
+                ->remove('quantity_approved')
+                ->remove('status');
+        }
+
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_stock_request_items_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_stock_request_edit', ['id' => $stockRequestItem->getStockRequest()
+                ->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('stock_request_items/edit.html.twig', [
@@ -91,7 +105,7 @@ final class StockRequestItemController extends BaseController
     public function updateStockRequestItem(
         Request                $request,
         EntityManagerInterface $em,
-        StockRequestItem $stockRequestItem
+        StockRequestItem       $stockRequestItem
     ): JsonResponse
     {
         $quantityApproved = $request->request->get('quantityApproved');

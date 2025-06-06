@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Site;
 use App\Entity\StockRequest;
 use App\Entity\StockRequestItem;
+use App\Enum\StockRequestItemsStatus;
 use App\Form\StockRequestItemType;
 use App\Form\StockRequestType;
 use App\Repository\StockRequestRepository;
@@ -16,12 +17,14 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Workflow\Registry;
 
-#[Route('/stock/request')]
+#[Route('/stock-request')]
 #[isGranted('IS_AUTHENTICATED_REMEMBERED')]
 final class StockRequestController extends BaseController
 {
-    public function __construct(private PaginatorInterface $paginator ) {
+    public function __construct(private PaginatorInterface $paginator)
+    {
     }
+
     #[Route(name: 'app_stock_request_index', methods: ['GET'])]
     public function index(StockRequestRepository $stockRequestRepository, Request $request): Response
     {
@@ -94,10 +97,7 @@ final class StockRequestController extends BaseController
         $this->denyAccessUnlessGranted('EDIT', $stockRequest);
 
         // Stock request form
-        $isStockRequestReviewer = $this->isGranted('EDIT', $stockRequest);
-        $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest, [
-            'editable' => $isStockRequestReviewer,
-        ]);
+        $stockRequestForm = $this->createForm(StockRequestType::class, $stockRequest);
 
         // Stock request item form
         $stockRequestItem = new StockRequestItem();
@@ -121,7 +121,9 @@ final class StockRequestController extends BaseController
             $entityManager->flush();
 
             // Redirect to index
-            return $this->redirectToRoute('app_stock_request_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_stock_request_edit', [
+                'id' => $stockRequest->getId()
+            ], Response::HTTP_SEE_OTHER);
         }
 
         if ($stockRequestItemForm->isSubmitted() && $stockRequestItemForm->isValid()) {

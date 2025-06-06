@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StockMovement{% endblock %}
+
+{% block body %}
+    <h1>StockMovement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ stock_movement.id }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ stock_movement.status }}</td>
+            </tr>
+            <tr>
+                <th>Remarks</th>
+                <td>{{ stock_movement.remarks }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ stock_movement.createdAt ? stock_movement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ stock_movement.updatedAt ? stock_movement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stock_movement_index') }}">back to list</a>
+
+    <a href="{{ path('app_stock_movement_edit', {'id': stock_movement.id}) }}">edit</a>
+
+    {{ include('stock_movement/_delete_form.html.twig') }}
+{% endblock %}

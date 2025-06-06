@@ -1,48 +1,189 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}StockRequest{% endblock %}
-
 {% set current_page = 'aside-menu-stock-requests' %}
+
+{% block title %}Sites{% endblock %}
 
 {% block additional_js %}
     {{ include('partials/active_menu_script.html.twig') }}
 {% endblock %}
 
 {% block body %}
-    <h1>StockRequest</h1>
+    <h3 class="fw-bold py-3 mb-4 ms-3">
+        Stock Request
+    </h3>
+    <div class="card pb-2">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Stock Request</h5>
+            <div>
+                <a href="{{ path('app_stock_request_index') }}" class="btn btn-secondary">
+                    <i class="bx bx-arrow-back me-0 me-sm-1"></i>
+                    <span class="d-none d-sm-inline-block">Back to List</span>
+                </a>
+                <a href="{{ path('app_stock_request_new') }}" class="btn btn-primary">
+                    <i class="bx bx-plus me-0 me-sm-1"></i>
+                    <span class="d-none d-sm-inline-block">New Request</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive text-nowrap overflow-hidden m-5">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ stock_request.id }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ stock_request.status }}</td>
+                </tr>
+                <tr>
+                    <th>From</th>
+                    <td>{{ stock_request.fromSite.name }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ stock_request.toSite.name }}</td>
+                </tr>
+                <tr>
+                    <th>CreatedAt</th>
+                    <td>{{ stock_request.createdAt ? stock_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>UpdatedAt</th>
+                    <td>{{ stock_request.updatedAt ? stock_request.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex p-2">
+            <a href="{{ path('app_stock_request_edit', {'id': stock_request.id}) }}" class="btn btn-primary">Edit</a>
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ stock_request.id }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ stock_request.status }}</td>
-            </tr>
-            <tr>
-                <th>From</th>
-                <td>{{ stock_request.fromSite.name }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ stock_request.toSite.name }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ stock_request.createdAt ? stock_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ stock_request.updatedAt ? stock_request.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card mt-2">
+        <div class="accordion-item active">
+            <div class="card-body  d-flex justify-content-between align-items-center">
+                <h2 class="accordion-header">
+                    <button
+                            type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionTwo"
+                            aria-expanded="true"
+                            style="font-size: 18px; padding-bottom: 0"
+                            aria-controls="accordionOne">
+                        Stock Request Items
+                    </button>
+                </h2>
+            </div>
 
-    <a href="{{ path('app_stock_request_index') }}">back to list</a>
+            <div id="accordionTwo"
+                 class="accordion-collapse collapse "
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="table-responsive text-nowrap scrollable-container overflow-hidden m-5 mt-1">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Quantity Requested</th>
+                                <th>Quantity Approved</th>
+                                <th>Product</th>
+                                <th>Status</th>
+                                <th>CreatedAt</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for stock_request_item in stock_request.stockRequestItems %}
+                                <tr>
+                                    <td>{{ stock_request_item.id }}</td>
+                                    <td>{{ stock_request_item.quantityRequested }}</td>
+                                    <td id="td-{{ stock_request_item.id }}">{{ stock_request_item.quantityApproved }}</td>
+                                    <td>{{ stock_request_item.product.name }}</td>
+                                    <td>{{ stock_request_item.status.value|raw }}</td>
+                                    <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="10" class="text-center">no records found</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('app_stock_request_edit', {'id': stock_request.id}) }}">edit</a>
+    <div class="card mt-2">
+        <div class="accordion-item active">
+            <div class="card-body  d-flex justify-content-between align-items-center">
+                <h2 class="accordion-header w-50">
+                    <button
+                            type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionOne"
+                            aria-expanded="true"
+                            style="font-size: 18px; padding-bottom: 0;"
+                            aria-controls="accordionOne">
+                        Stock Movements
+                    </button>
+                </h2>
+                <div>
+                    {% if stock_request.status == 'approved' %}
+                    <a href="{{ path('app_stock_movement_initiate', {'id': stock_request.id}) }}" class="btn
+                    btn-primary">
+                        <i class="bx bx-plus me-0 me-sm-1"></i>
+                        <span class="d-none d-sm-inline-block">Initiate Stock Movement</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
 
-    {{ include('stock_request/_delete_form.html.twig') }}
+            <div id="accordionOne" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="table-responsive text-nowrap scrollable-container overflow-hidden m-5 mt-1">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                                <th>CreatedAt</th>
+                                <th>UpdatedAt</th>
+                                <th>actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for stock_movement in stock_request.stockMovements %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path('app_stock_movement_show', {'id':stock_movement.id}) }}">
+                                        {{ stock_movement.id }}
+                                        </a>
+                                    </td>
+                                    <td>{{ stock_movement.status }}</td>
+                                    <td>{{ stock_movement.remarks }}</td>
+                                    <td>{{ stock_movement.createdAt ? stock_movement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                                    <td>{{ stock_movement.updatedAt ? stock_movement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                                    <td>
+                                        <a href="{{ path('app_stock_movement_show', {'id': stock_movement.id}) }}">show</a>
+                                        <a href="{{ path('app_stock_movement_edit', {'id': stock_movement.id}) }}">edit</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="8" class="text-center">no records found</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

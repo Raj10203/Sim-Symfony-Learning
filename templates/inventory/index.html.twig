@@ -25,12 +25,13 @@
                 </a>
             </div>
         </div>
-        <div class="table-responsive text-nowrap scrollable-container overflow-hidden p-2">
-            <table class="datatables-basic table table-bordered table-responsive dataTable dtr-column collapsed" id="inventoryTable">
+        <div class="table-responsive text-nowrap overflow-hidden p-2">
+            <table class=" table table-bordered table-responsive  " id="inventoryTable">
                 <thead>
                 <tr>
                     <th>Id</th>
                     <th>Product</th>
+                    <th>Category</th>
                     <th>Site</th>
                     <th>Quantity</th>
                     <th>CreatedAt</th>
@@ -48,6 +49,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             $('#inventoryTable').DataTable({
                 processing: true,
+                scrollX: true,
                 serverSide: true,
                 ordering: true,
                 ajax: {
@@ -57,15 +59,18 @@
                 columns: [
                     {data: 'id'},
                     {data: 'product'},
+                    {data: 'category'},
                     {data: 'site'},
                     {data: 'quantity'},
+                    {data: 'createdAt'},
                     {data: 'updatedAt'},
-                    {data: 'createdAt'}
                 ],
                 initComplete: function () {
                     $('#dt-length-0').select2({
                         minimumResultsForSearch: Infinity
                     })
+                    const container = document.querySelector('.dt-scroll-body');
+                    const dps = new PerfectScrollbar(container);
                 }
             });
         });

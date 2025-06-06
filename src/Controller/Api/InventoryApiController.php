@@ -29,11 +29,12 @@ final class InventoryApiController extends DefaultApiController
         $qb = $this->repo->createQueryBuilder('i')
             ->leftJoin('i.product', 'p')
             ->leftJoin('i.site', 's')
-            ->addSelect('p', 's');
+            ->leftJoin('p.category', 'c')
+            ->addSelect('p', 's', 'c');
 
         // Apply search
         if (!empty($search)) {
-            $qb->andWhere('p.name LIKE :search OR s.name LIKE :search')
+            $qb->andWhere('p.name LIKE :search OR s.name LIKE :search OR c.name LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
@@ -45,6 +46,7 @@ final class InventoryApiController extends DefaultApiController
             $columnMap = [
                 'id' => 'i.id',
                 'product' => 'p.name',
+                'category' => 'c.name',
                 'site' => 's.name',
                 'quantity' => 'i.quantity',
                 'createdAt' => 'i.createdAt',
@@ -67,6 +69,7 @@ final class InventoryApiController extends DefaultApiController
             return [
                 'id' => $i->getId(),
                 'product' => $i->getProduct()?->getName(),
+                'category' => $i->getProduct()?->getCategory()?->getName(),
                 'site' => $i->getSite()?->getName(),
                 'quantity' => $i->getQuantity(),
                 'createdAt' => $i->getCreatedAt()->format('Y-m-d H:i:s'),

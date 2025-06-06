@@ -1,0 +1,28 @@
+<div class="w-100">
+    {{ form_start(form) }}
+    <div class="row">
+        {{ form_start(form) }}
+        {% for field in form %}
+            {%  if field != form._token %}
+                <div class="col-md-6 col-12 mb-3">
+                    <div class="form-group">
+                        {{ form_row(field) }}
+                    </div>
+                </div>
+            {%  endif %}
+        {% endfor %}
+        <div class="d-flex flex-wrap col-md-6 col-12 mb-2 align-items-end">
+            <div class="d-none">
+                {{ form_widget(form._token) }}
+            </div>
+            <div class="m-1">
+                <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+            </div>
+            {{ form_end(form) }}
+            <div class="m-1">
+                {{ include('stock_movement/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+</div>
+
