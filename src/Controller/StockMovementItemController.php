@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/stock/movement/item')]
+#[Route('/stock-movement/item')]
 final class StockMovementItemController extends AbstractController
 {
     #[Route(name: 'app_stock_movement_item_index', methods: ['GET'])]
@@ -71,7 +71,7 @@ final class StockMovementItemController extends AbstractController
     #[Route('/{id}', name: 'app_stock_movement_item_delete', methods: ['POST'])]
     public function delete(Request $request, StockMovementItem $stockMovementItem, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$stockMovementItem->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $stockMovementItem->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($stockMovementItem);
             $entityManager->flush();
         }

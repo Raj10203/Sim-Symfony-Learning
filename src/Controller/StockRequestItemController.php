@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\StockMovementItem;
 use App\Entity\StockRequestItem;
 use App\Form\StockRequestItemType;
 use App\Repository\StockRequestItemRepository;
