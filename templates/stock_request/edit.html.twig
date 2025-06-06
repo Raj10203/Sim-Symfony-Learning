@@ -75,7 +75,7 @@
                                 <td>{{ stock_request_item.quantityRequested }}</td>
                                 <td id="td-{{ stock_request_item.id }}">{{ stock_request_item.quantityApproved }}</td>
                                 <td>{{ stock_request_item.product.name }}</td>
-                                <td>{{ stock_request_item.status.value|raw }}</td>
+                                <td>{{ stock_request_item.status.badge|raw }}</td>
                                 <td>{{ stock_request_item.createdAt ? stock_request_item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                                 <td class="d-flex">
                                         <a href="{{ path('app_stock_request_items_edit', {'id': stock_request_item

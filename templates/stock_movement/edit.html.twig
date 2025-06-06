@@ -2,6 +2,12 @@
 
 {% block title %}Edit StockMovement{% endblock %}
 
+{% set current_page = 'aside-menu-stock-movements' %}
+
+{% block additional_js %}
+    {{ include('partials/active_menu_script.html.twig') }}
+{% endblock %}
+
 {% block body %}
     <h3 class="fw-bold py-3 mb-4 ms-3">
         Stock Request
@@ -10,7 +16,7 @@
     <div class="card pb-5">
         <div class="card-header d-flex">
             <h5 class="mb-0">Request's Info</h5>
-            <a class="btn btn-secondary ms-auto" href="{{ path('app_stock_request_index') }}">
+            <a class="btn btn-secondary ms-auto" href="{{ path('app_stock_movement_index') }}">
                 <i class="bx bx-arrow-back me-0 me-sm-1"></i>
                 <span class="d-none d-sm-inline-block">Back To List</span>
             </a>
@@ -41,24 +47,33 @@
                         <tr>
                             <th>Id</th>
                             <th>Approved Quantity</th>
+                            <th>Moved Quantity</th>
                             <th>Remaining Quantity</th>
                             <th>Product</th>
+                            <th>Category</th>
                             <th>actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for stock_request_item in stock_movement.stockRequest.approvedStockRequestItems %}
+                        {% for array in approved_stock_request_items %}
+                            {% set stock_request_item = array[0] %}
                             <tr>
                                 <td>{{ stock_request_item.id }}</td>
                                 <td>{{ stock_request_item.quantityApproved }}</td>
-                                <td>{{ stock_request_item.remainingQuantity }}</td>
+                                <td>{{ array['movedQuantity'] }}</td>
+                                <td>{{ array['remainingQuantity'] }}</td>
                                 <td>{{ stock_request_item.product.name }}</td>
+                                <td>{{ stock_request_item.product.category.name }}</td>
                                 <td class="d-flex">
-                                    <a href="{{ path('app_stock_movement_item_edit', {'id': stock_request_item.id}) }}"
-                                       id="{{ stock_request_item.id }}" class="btn btn-sm btn-success">
-                                        <i class="bx bx-plus"></i>
-                                        Add Product
-                                    </a>
+                                    {% if array['remainingQuantity'] > 0 %}
+                                        <a href="{{ path('app_stock_movement_item_edit', {'id': stock_request_item.id}) }}"
+                                           id="{{ stock_request_item.id }}" class="btn btn-sm btn-success">
+                                            <i class="bx bx-plus"></i>
+                                            Add Product
+                                        </a>
+                                    {% else %}
+                                        <span class="badge text-bg-info rounded-pill">Moved All</span>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% else %}
@@ -100,8 +115,8 @@
                         <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Quantity Requested</th>
-                            <th>Quantity Approved</th>
+                            <th>Quantity</th>
+                            <th>Remarks</th>
                             <th>Product</th>
                             <th>Status</th>
                             <th>CreatedAt</th>

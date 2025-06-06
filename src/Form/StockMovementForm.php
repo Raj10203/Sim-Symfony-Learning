@@ -21,6 +21,7 @@ class StockMovementForm extends AbstractType
                 ]
             ])
             ->add('remarks', TextareaType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ]

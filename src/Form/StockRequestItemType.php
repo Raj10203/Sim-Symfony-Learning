@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Product;
 use App\Entity\StockRequest;
 use App\Entity\StockRequestItem;
-use App\Enum\ActiveInventoryStatus;
 use App\Enum\StockRequestItemsStatus;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

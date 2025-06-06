@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Enum\StockRequestItemsStatus;
 use App\Repository\StockRequestRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -192,12 +191,5 @@ class StockRequest
         }
 
         return $this;
-    }
-
-    public function getApprovedStockRequestItems(): Collection
-    {
-        return $this->stockRequestItems->filter(function ($item) {
-            return $item->getStatus() === StockRequestItemsStatus::Approved;
-        });
     }
 }

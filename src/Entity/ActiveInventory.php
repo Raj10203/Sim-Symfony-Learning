@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Enum\ActiveInventoryStatus;
-use App\Enum\StockRequestItemsStatus;
 use App\Repository\ActiveInventoryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

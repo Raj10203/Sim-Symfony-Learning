@@ -6,7 +6,6 @@ use App\Enum\StockRequestItemsStatus;
 use App\Repository\StockRequestItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use phpDocumentor\Reflection\Types\This;
 
 #[ORM\Entity(repositoryClass: StockRequestItemRepository::class)]
 class StockRequestItem
@@ -32,7 +31,7 @@ class StockRequestItem
     #[ORM\Column]
     private ?int $quantityApproved = 0;
 
-    #[ORM\Column(name: 'status', type: 'string', enumType: StockRequestItemsStatus::class)]
+    #[ORM\Column(name: 'status', type: 'integer', enumType: StockRequestItemsStatus::class)]
     private StockRequestItemsStatus $status = StockRequestItemsStatus::Pending;
 
     public function getId(): ?int
@@ -100,18 +99,18 @@ class StockRequestItem
         return $this;
     }
 
-    public function getRemainingQuantity(): ?int
-    {
-        $stockMovements = $this->stockRequest->getStockMovements();
-        $addedQuantity = 0;
-        foreach ($stockMovements as $stockMovement) {
-            $stockMovementItems = $stockMovement->getStockMovementItems();
-            foreach ($stockMovementItems as $stockMovementItem) {
-                if ($stockMovementItem->getProduct() === $this->product) {
-                    $addedQuantity += $stockMovementItem->getQuantity();
-                }
-            }
-        }
-        return $this->quantityApproved - $addedQuantity;
-    }
+//    public function getRemainingQuantity(): ?int
+//    {
+//        $stockMovements = $this->stockRequest->getStockMovements();
+//        $addedQuantity = 0;
+//        foreach ($stockMovements as $stockMovement) {
+//            $stockMovementItems = $stockMovement->getStockMovementItems();
+//            foreach ($stockMovementItems as $stockMovementItem) {
+//                if ($stockMovementItem->getProduct() === $this->product) {
+//                    $addedQuantity += $stockMovementItem->getQuantity();
+//                }
+//            }
+//        }
+//        return $this->quantityApproved - $addedQuantity;
+//    }
 }

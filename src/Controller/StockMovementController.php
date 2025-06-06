@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\StockMovement;
 use App\Entity\StockMovementItem;
 use App\Entity\StockRequest;
-use App\Enum\StockRequestItemsStatus;
 use App\Form\StockMovementForm;
 use App\Form\StockMovementItemForm;
+use App\Repository\StockMovementItemRepository;
 use App\Repository\StockMovementRepository;
 use App\Repository\StockRequestItemRepository;
 use App\Repository\StockRequestRepository;
@@ -71,12 +71,19 @@ final class StockMovementController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_stock_movement_edit', methods: ['GET', 'POST'])]
     public function edit(
-        Request                $request,
-        StockMovement          $stockMovement,
-        EntityManagerInterface $entityManager,
+        Request                     $request,
+        StockMovement               $stockMovement,
+        EntityManagerInterface      $entityManager,
         StockRequestItemRepository  $stockRequestItemRepository,
+        StockMovementItemRepository $stockMovementItemRepository
     ): Response
     {
+        //approved items from its request
+        $approvedStockRequestItems = $stockRequestItemRepository
+            ->getApprovedItemsFromStockRequest($stockMovement->getStockRequest())
+            ->getQuery()
+            ->getResult();
+
         //Stock Movement Form
         $stockMovementForm = $this->createForm(StockMovementForm::class, $stockMovement);
 
@@ -91,15 +98,17 @@ final class StockMovementController extends AbstractController
         $stockMovementForm->handleRequest($request);
         $stockMovementItemForm->handleRequest($request);
 
-        if ($stockMovementForm->isSubmitted() && $stockMovementForm->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_stock_movement_edit', [
-                'id' => $stockMovement->getId(),
-            ], Response::HTTP_SEE_OTHER);
-        }
 
         if ($stockMovementItemForm->isSubmitted() && $stockMovementItemForm->isValid()) {
+            $existedStockMovementItem = $stockMovementItemRepository->findOneBy([
+                'product' => $stockMovementItem->getProduct(),
+            ]);
+            if ($existedStockMovementItem) {
+                $existedStockMovementItem->setQuantity($existedStockMovementItem->getQuantity()
+                    + $stockMovementItem->getQuantity());
+                $stockMovementItem = $existedStockMovementItem;
+            }
+
             $stockMovement->addStockMovementItem($stockMovementItem);
             $entityManager->persist($stockMovementItem);
             $entityManager->flush();
@@ -110,10 +119,11 @@ final class StockMovementController extends AbstractController
             ]);
         }
 
-        $approvedStockRequestItems = $stockRequestItemRepository->findBy([
-            'stockRequest' => $stockMovement->getStockRequest(),
-            'status' => StockRequestItemsStatus::Approved,
-        ]);
+        if ($stockMovementForm->isSubmitted() && $stockMovementForm->isValid()) {
+            $entityManager->persist($stockMovement);
+            $entityManager->flush();
+        }
+
 
         return $this->render('stock_movement/edit.html.twig', [
             'stock_movement' => $stockMovement,
